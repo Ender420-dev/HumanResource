@@ -18,7 +18,7 @@ session_start();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../mdb/css/mdb.min.css">
     <link rel="icon" href="../logo.png">   
-    <link rel="stylesheet" href="../tm.css?v=2.4">
+    <link rel="stylesheet" href="../../tm.css?v=2.4">
 </head>
 <body>
     <div class="container-fluid">
@@ -41,13 +41,13 @@ session_start();
                         </a>
                     </li>
                     <li class="nav-item mt-2">
-                        <a href="../learning/learning.php" class="nav-link align-middle px-0 text-start">
+                        <a href="../learning/learning.php" class="nav-link active align-middle px-0 text-start">
                         <i class="fa-solid fa-book-medical"></i>
                             <span class="ms-1 d-none d-sm-inline">Learning Management</span>
                         </a>
                     </li>
                     <li class="nav-item mt-2">
-                        <a href="../ESS/ess.php" class="nav-link active align-middle px-0 text-start">
+                        <a href="../ESS/ess.php" class="nav-link  align-middle px-0 text-start">
                         <i class="fa-solid fa-user"></i>
                             <span class="ms-1 d-none d-sm-inline">Employee Self-Services</span>
                         </a>

@@ -18,8 +18,10 @@ session_start();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../mdb/css/mdb.min.css">
     <link rel="icon" href="../logo.png">   
-    <link rel="stylesheet" href="../../tm.css?v=2.5">
+    <link rel="stylesheet" href="../../../tm.css?v=3.5">
 </head>
+
+
 <body>
 <div class="container-fluid">
     <div class="row flex-nowrap">
@@ -36,38 +38,11 @@ session_start();
                 </a>
                 <ul class="nav nav-link flex-column mb-sm-auto mb-0 align-items-center align-items-sm-center" id="menu">
                 <li class="nav-item mt-2">
-  <a href="#submenu1" data-bs-toggle="collapse" class="nav-link align-middle px-0 text-start">
-    <i class="fa-solid fa-chalkboard-user"></i>
-    <span class="ms-1 d-none d-sm-inline">Training Management</span>
-  </a>
-  <ul class="collapse nav flex-column ms-3" id="submenu1" data-bs-parent="#menu">
-    <li class="w-100">
-      <a href="#" class="nav-link px-0">
-        <span class="d-none d-sm-inline">Training Program Management</span>
-      </a>
-    </li>
-    <li class="w-100">
-      <a href="#" class="nav-link px-0">
-        <span class="d-none d-sm-inline">Training Calendar and Scheduling</span>
-      </a>
-    </li>
-    <li class="w-100">
-      <a href="#" class="nav-link px-0">
-        <span class="d-none d-sm-inline">Trainee Enrollment and Approval</span>
-      </a>
-    </li>
-    <li class="w-100">
-      <a href="#" class="nav-link px-0">
-        <span class="d-none d-sm-inline">Trainer Faculty Management</span>
-      </a>
-    </li>
-    <li class="w-100">
-      <a href="#" class="nav-link px-0">
-        <span class="d-none d-sm-inline">Training Record and Certificate</span>
-      </a>
-    </li>
-  </ul>
-</li>
+                        <a href="../training_management/training_management.php" class="nav-link active align-middle px-0 text-start">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                            <span class="ms-1 d-none d-sm-inline">Training Management</span>
+                        </a>
+                    </li>
 
                     <li class="nav-item mt-2">
                         <a href="../learning/learning.php" class="nav-link align-middle px-0 text-start">
@@ -101,11 +76,46 @@ session_start();
         <div class="col main-content py-4">
             <div class="row">
                 <div class="col">
-                <div class="card" style="height: 400px; overflow: hidden;">
+              
+                <div class="card" style="height: 700px; overflow: hidden;">
+
+                
+
   <div class="card-content" style="height: 100%;">
     <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
       <div class="container" style="flex: 1; overflow: hidden;">
-        <h3 class="white-text card-title text-center">Training Program Management</h3>
+
+
+      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <li class="nav-item">
+    <button class="nav-link  active" id="pillsTPM-tab" data-bs-toggle="pill" data-bs-target="#pillsTPM" aria-controls="pillsTPM" aria-selected="true">Training Program Management</button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsCalendar-tab" data-bs-toggle="pill" data-bs-target="#pillsCalendar" aria-controls="pillsCalendar" aria-selected="false">Training Calendar and Scheduling</button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsEnrollment-tab" data-bs-toggle="pill" data-bs-target="#pillsEnrollment" aria-controls="pillsEnrollment" aria-selected="false">Trainee Enrollment and Approval
+    </button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsFaculty-tab" data-bs-toggle="pill" data-bs-target="#pillsFaculty" aria-controls="pillsCalendar" aria-selected="false">Trainer Faculty Management
+    </button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsRecord-tab" data-bs-toggle="pill" data-bs-target="#pillsRecord" aria-controls="pillsRecord" aria-selected="false">Training Record and Certificate
+
+    </button>
+  </li>
+</ul>
+
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pillsTPM" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Training Program Management</h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
           <table class="table table-hover table-striped">
@@ -138,31 +148,57 @@ session_start();
           </table>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-                    </div>
-                </div>
 
-                <div class="row">
-                <div class="col">
-                <div class="card" style="height: 400px; overflow: hidden;">
-  <div class="card-content" style="height: 100%;">
-    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
-      <div class="container" style="flex: 1; overflow: hidden;">
-        <h3 class="white-text card-title text-center">Training Calendar and Scheduling</h3>
+      <div class="tab-pane fade" id="pillsCalendar" role="tabpanel"> <h3 class="white-text card-title text-center">Training Calendar and Scheduling</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          
+        </div></div>
+
+        <div class="tab-pane fade" id="pillsEnrollment" role="tabpanel"> 
+
+          <h3 class="white-text card-title text-center">Trainee Enrollment and Approval</h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
           
         </div>
-      </div>
+        
+        </div>
+ <div class="tab-pane fade" id="pillsFaculty" role="tabpanel"> 
+          
+          <h3 class="white-text card-title text-center">Trainer Faculty Management
+          </h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          
+        </div>
+        
+        </div>
+
+
+        <div class="tab-pane fade" id="pillsRecord" role="tabpanel"> 
+          
+          <h3 class="white-text card-title text-center">Training Record and Certificate
+
+          </h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          
+        </div>
+        
+        </div>
     </div>
   </div>
 </div>
 
                     </div>
                 </div>
+  </div>
+</div>
+
+       
+                
 
                 
                 <div class="row">
@@ -171,11 +207,7 @@ session_start();
   <div class="card-content" style="height: 100%;">
     <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
       <div class="container" style="flex: 1; overflow: hidden;">
-        <h3 class="white-text card-title text-center">Trainee Enrollment and Approval</h3>
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-          
-        </div>
+      
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Management</title>
+    <title>Competency Management</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -18,12 +18,13 @@ session_start();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../mdb/css/mdb.min.css">
     <link rel="icon" href="../logo.png">   
-    <link rel="stylesheet" href="../../tm.css?v=2.4"></head>
+    <link rel="stylesheet" href="../../tm.css?v=2.5"></head>
 <body>
 <div class="container-fluid">
     <div class="row flex-nowrap">
         <!-- Sidebar -->
-        <div class="col-auto col-md-2 col-xl-2 px-sm-1 px-0 min-vh-100 bg-side">
+        <div class="col-auto col-md-2 col-xl-2 px-sm-1 px-0 bg-side" style="position: sticky; top: 0; height: 100vh;">
+
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white">
                 <a href="#!" class="d-flex text-decoration-none align-items-center mb-md-0 text-white">
                     <span class="fs-5 d-none d-sm-inline" style="color: white;">
@@ -49,7 +50,7 @@ session_start();
                     <li class="nav-item mt-2">
                         <a href="../competency/competency.php" class="nav-link active align-middle px-0 text-start">
                             <i class="fa-solid fa-ranking-star"></i>
-                            <span class="ms-1 d-none d-sm-inline">Competency</span>
+                            <span class="ms-1 d-none d-sm-inline">Competency Management</span>
                         </a>
                     </li>
                     <li class="nav-item mt-2">
@@ -71,17 +72,86 @@ session_start();
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="container">
-                            <h3 class="white-text text-center">No. of Trainees</h3>
+                <div class="col">
+                <div class="card" style="height: 400px; overflow: hidden;">
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+        <h3 class="white-text card-title text-center">Competency Management</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <div class="row">
+            <div class="col-md-2">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                               Job Roles
+                            </h5>
+                            <div class="list-group">
+                                <a href="" class="list-group-item list-group-item-action ">Staff Manager</a>
+                                <a href="" class="list-group-item list-group-item-action ">Nurse Chief</a>
+                                <a href="" class="list-group-item list-group-item-action ">Doctor</a>
+                                <a href="" class="list-group-item list-group-item-action ">Ewan</a>
+                                <a href="" class="list-group-item list-group-item-action ">Di ko na alam</a>
+                                <a href="" class="list-group-item list-group-item-action ">Ewan</a>
+                                <a href="" class="list-group-item list-group-item-action ">Ewan</a>
+                                <a href="" class="list-group-item list-group-item-action ">Ewan</a>
+                                <a href="" class="list-group-item list-group-item-action ">Ewan</a>
+                                
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="competencyModal" tabindex="-1" aria-labelledby="competencyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="competencyModalLabel">Competency Profile – Anna Cruz</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <p><strong>Current Role:</strong> HR Assistant</p>
+        <p><strong>Required Competencies:</strong></p>
+        <ul>
+          <li>Communication Skills – ✅</li>
+          <li>Time Management – ✅</li>
+          <li>Data Entry Accuracy – ❌</li>
+          <li>HR Software Knowledge – ✅</li>
+          <li>Policy Compliance – ❌</li>
+        </ul>
+
+        <hr>
+        <p><strong>Recommended Actions:</strong></p>
+        <ul>
+          <li>Enroll in "Data Entry Fundamentals"</li>
+          <li>Attend "Policy Compliance Training"</li>
+        </ul>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- <nav class="navbar navbar-blue" style="height:70px;">
 <div class="container">
     <a href="#!" class="navbar-brand" data-bs-toggle="offcanvas" aria-controls="staticBackdrop" data-bs-target="#sideBarNav" >

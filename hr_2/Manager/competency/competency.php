@@ -71,7 +71,7 @@ session_start();
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
+                <div class="col-2">
                     <div class="card">
                         <div class="container">
                             <h3 class="white-text text-center">No. of Trainees</h3>

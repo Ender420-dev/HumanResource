@@ -35,12 +35,40 @@ session_start();
                     </span>
                 </a>
                 <ul class="nav nav-link flex-column mb-sm-auto mb-0 align-items-center align-items-sm-center" id="menu">
-                    <li class="nav-item mt-2">
-                        <a href="../training_management/training_management.php" class="nav-link active align-middle px-0 text-start">
-                            <i class="fa-solid fa-chalkboard-user"></i>
-                            <span class="ms-1 d-none d-sm-inline">Training Management</span>
-                        </a>
-                    </li>
+                <li class="nav-item mt-2">
+  <a href="#submenu1" data-bs-toggle="collapse" class="nav-link align-middle px-0 text-start">
+    <i class="fa-solid fa-chalkboard-user"></i>
+    <span class="ms-1 d-none d-sm-inline">Training Management</span>
+  </a>
+  <ul class="collapse nav flex-column ms-3" id="submenu1" data-bs-parent="#menu">
+    <li class="w-100">
+      <a href="#" class="nav-link px-0">
+        <span class="d-none d-sm-inline">Training Program Management</span>
+      </a>
+    </li>
+    <li class="w-100">
+      <a href="#" class="nav-link px-0">
+        <span class="d-none d-sm-inline">Training Calendar and Scheduling</span>
+      </a>
+    </li>
+    <li class="w-100">
+      <a href="#" class="nav-link px-0">
+        <span class="d-none d-sm-inline">Trainee Enrollment and Approval</span>
+      </a>
+    </li>
+    <li class="w-100">
+      <a href="#" class="nav-link px-0">
+        <span class="d-none d-sm-inline">Trainer Faculty Management</span>
+      </a>
+    </li>
+    <li class="w-100">
+      <a href="#" class="nav-link px-0">
+        <span class="d-none d-sm-inline">Training Record and Certificate</span>
+      </a>
+    </li>
+  </ul>
+</li>
+
                     <li class="nav-item mt-2">
                         <a href="../learning/learning.php" class="nav-link align-middle px-0 text-start">
                             <i class="fa-solid fa-book-medical"></i>
@@ -50,7 +78,7 @@ session_start();
                     <li class="nav-item mt-2">
                         <a href="../competency/competency.php" class="nav-link align-middle px-0 text-start">
                             <i class="fa-solid fa-ranking-star"></i>
-                            <span class="ms-1 d-none d-sm-inline">Competency</span>
+                            <span class="ms-1 d-none d-sm-inline">Competency Management</span>
                         </a>
                     </li>
                     <li class="nav-item mt-2">
@@ -72,17 +100,238 @@ session_start();
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="container">
-                            <h3 class="white-text text-center">No. of Trainees</h3>
-                        </div>
+                <div class="col">
+                <div class="card" style="height: 400px; overflow: hidden;">
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+        <h3 class="white-text card-title text-center">Training Program Management</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <table class="table table-hover table-striped">
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col">Training Title</th>
+                <th scope="col">Trainer</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Employee Training 101</td>
+                <td>John Doe</td>
+                <td>2025-05-10</td>
+                <td>2025-06-10</td>
+                <td>Ongoing</td>
+                <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+
+                </td>
+              </tr>
+              <!-- Repeat more rows here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
                     </div>
                 </div>
+
+                <div class="row">
+                <div class="col">
+                <div class="card" style="height: 400px; overflow: hidden;">
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+        <h3 class="white-text card-title text-center">Training Calendar and Scheduling</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                <div class="col">
+                <div class="card" style="height: 400px; overflow: hidden;">
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+        <h3 class="white-text card-title text-center">Trainee Enrollment and Approval</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col">
+                <div class="card" style="height: 400px; overflow: hidden;">
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+        <h3 class="white-text card-title text-center">Trainer Faculty Management</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                <div class="col">
+                <div class="card" style="height: 400px; overflow: hidden;">
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+        <h3 class="white-text card-title text-center">Training Record and Certificate</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+                    </div>
+                </div>
+
+                
+
+
+                
+
+
+                
+                
+
+
+                
+
+                
             </div>
         </div>
     </div>
+</div><div class="modal fade" id="trainerModal" tabindex="-1" aria-labelledby="trainerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <h5 class="modal-title" id="trainerModalLabel">Trainer Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <h6><strong>Name:</strong> John Doe</h6>
+        <p><strong>Email:</strong> johndoe@example.com</p>
+        <p><strong>Expertise:</strong> Workplace Safety, HR Compliance</p>
+
+        <hr>
+        <h6><strong>Assigned Students:</strong></h6>
+        <ul>
+          <li>Anna Cruz</li>
+          <li>Mark Dela Peña</li>
+          <li>Ricky Santos</li>
+        </ul>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
 </div>
+<div class="modal fade" id="editTrainingModal" tabindex="-1" aria-labelledby="editTrainingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTrainingModalLabel">Edit Training Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Training Info -->
+        <form id="editTrainingForm">
+          <div class="mb-3">
+            <label for="trainingTitle" class="form-label">Training Title</label>
+            <input type="text" class="form-control" id="trainingTitle" value="Employee Training 101">
+          </div>
+
+          <div class="mb-3">
+            <label for="trainerName" class="form-label">Trainer</label>
+            <input type="text" class="form-control" id="trainerName" value="John Doe">
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="startDate" class="form-label">Start Date</label>
+              <input type="date" class="form-control" id="startDate" value="2025-05-10">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="endDate" class="form-label">End Date</label>
+              <input type="date" class="form-control" id="endDate" value="2025-06-10">
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Student List -->
+          <h6>Participants</h6>
+          <ul id="studentList" class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Anna Cruz
+              <button type="button" class="btn btn-sm btn-danger">Remove</button>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Mark Dela Peña
+              <button type="button" class="btn btn-sm btn-danger">Remove</button>
+            </li>
+          </ul>
+
+          <div class="mb-3">
+            <label for="newStudent" class="form-label">Add Student</label>
+            <input type="text" class="form-control mb-2" id="newStudent" placeholder="Enter student name">
+            <button type="button" class="btn btn-secondary" onclick="addStudent()">Add</button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- <nav class="navbar navbar-blue" style="height:70px;">
 <div class="container">
     <a href="#!" class="navbar-brand" data-bs-toggle="offcanvas" aria-controls="staticBackdrop" data-bs-target="#sideBarNav" >

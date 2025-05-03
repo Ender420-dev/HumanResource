@@ -50,7 +50,7 @@ session_start();
                     <li class="nav-item mt-2">
                         <a href="../competency/competency.php" class="nav-link align-middle px-0 text-start">
                             <i class="fa-solid fa-ranking-star"></i>
-                            <span class="ms-1 d-none d-sm-inline">Competency</span>
+                            <span class="ms-1 d-none d-sm-inline">Competency Management</span>
                         </a>
                     </li>
                     <li class="nav-item mt-2">

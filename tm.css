@@ -38,3 +38,10 @@ html, body {
     padding: 0;
     overflow-x: hidden;
 }
+
+
+.main-content {
+    height: 100vh;
+    overflow-y: auto;
+    padding-right: 10px; /* Optional for scrollbar spacing */
+}

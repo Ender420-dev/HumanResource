@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Management</title>
+    <title>Learning Management</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -51,7 +51,7 @@ session_start();
                     <li class="nav-item mt-2">
                         <a href="../competency/competency.php" class="nav-link align-middle px-0 text-start">
                             <i class="fa-solid fa-ranking-star"></i>
-                            <span class="ms-1 d-none d-sm-inline">Competency</span>
+                            <span class="ms-1 d-none d-sm-inline">Competency Management</span>
                         </a>
                     </li>
                     <li class="nav-item mt-2">
@@ -73,17 +73,163 @@ session_start();
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="container">
-                            <h3 class="white-text text-center">No. of Trainees</h3>
-                        </div>
-                    </div>
+                <div class="col">
+                <div class="card" style="height: 400px; overflow: hidden;">
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+        <h3 class="white-text card-title text-center">Learning Management</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <table class="table table-hover table-striped">
+            <thead class="thead-primary">
+              <tr>
+                <th>Course Title</th>
+                <th>Trainer</th>
+                <th>Enrolled</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Leadership Essentials</td>
+                <td>Jane Smith</td>
+                <td>25</td>
+                <td>Ongoing</td>
+                <td>
+                  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#viewCourseModal">View</button>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseModal">Edit</button>
+                  <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#uploadMaterialModal">Upload</button>
+                  <button class="btn btn-danger" >Delete</button>
+                </td>
+              </tr>
+              <!-- More rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="viewCourseModal" tabindex="-1" aria-labelledby="viewCourseLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewCourseLabel">Course Overview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <p><strong>Course Title:</strong> Leadership Essentials</p>
+        <p><strong>Trainer:</strong> Jane Smith</p>
+        <p><strong>Content:</strong> Video Modules, Reading Material, Case Studies</p>
+        
+        <hr>
+        <h6>Enrolled Learners:</h6>
+        <ul>
+          <li>Maria Gomez - 70% Complete</li>
+          <li>Arvin Santos - 40% Complete</li>
+          <li>Lea Valdez - 100% Complete (Certified)</li>
+        </ul>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Edit Course Modal -->
+<div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="editCourseLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCourseLabel">Edit Course Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Course Title</label>
+            <input type="text" class="form-control" value="Leadership Essentials">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Trainer</label>
+            <input type="text" class="form-control" value="Jane Smith">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="3">Introductory leadership skills course...</textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select">
+              <option selected>Ongoing</option>
+              <option>Completed</option>
+              <option>Upcoming</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- Upload Materials Modal -->
+<div class="modal fade" id="uploadMaterialModal" tabindex="-1" aria-labelledby="uploadLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadLabel">Upload Learning Materials</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Course</label>
+            <select class="form-select">
+              <option selected>Leadership Essentials</option>
+              <option>Communication Skills</option>
+              <!-- More courses -->
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Material Title</label>
+            <input type="text" class="form-control" placeholder="e.g., Introduction Video">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Upload File</label>
+            <input type="file" class="form-control">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
 <!-- <nav class="navbar navbar-blue" style="height:70px;">
 <div class="container">
     <a href="#!" class="navbar-brand" data-bs-toggle="offcanvas" aria-controls="staticBackdrop" data-bs-target="#sideBarNav" >

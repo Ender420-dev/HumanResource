@@ -18,7 +18,7 @@ session_start();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../mdb/css/mdb.min.css">
     <link rel="icon" href="../logo.png">   
-    <link rel="stylesheet" href="../../tm.css?v=2.4">
+    <link rel="stylesheet" href="../../../tm.css?v=2.4">
 
 </head>
 <body>
@@ -74,49 +74,182 @@ session_start();
         <div class="col main-content py-4">
             <div class="row">
                 <div class="col">
-                <div class="card" style="height: 400px; overflow: hidden;">
+                <div class="card" style="height: 700px; overflow: hidden;">
   <div class="card-content" style="height: 100%;">
     <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
       <div class="container" style="flex: 1; overflow: hidden;">
-        <h3 class="white-text card-title text-center">Learning Management</h3>
+
+      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <li class="nav-item">
+    <button class="nav-link  active" id="pillsCM-tab" data-bs-toggle="pill" data-bs-target="#pillsCM" aria-controls="pillsCM" aria-selected="true">Course Management</button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsLCM-tab" data-bs-toggle="pill" data-bs-target="#pillsLCM" aria-controls="pillsLCM" aria-selected="false">Learning Content Management</button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsLPT-tab" data-bs-toggle="pill" data-bs-target="#pillsLPT" aria-controls="pillsEnrollment" aria-selected="false">Learning Progress and Tracking
+    </button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsAC-tab" data-bs-toggle="pill" data-bs-target="#pillsAC" aria-controls="pillsAC" aria-selected="false">Assessment and Certification
+    </button>
+  </li>
+
+  
+</ul>
+
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pillsCM" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Course Management</h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
           <table class="table table-hover table-striped">
             <thead class="thead-primary">
               <tr>
-                <th>Course Title</th>
-                <th>Trainer</th>
-                <th>Enrolled</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th scope="col">Course Title</th>
+                <th scope="col">Trainer</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Leadership Essentials</td>
-                <td>Jane Smith</td>
-                <td>25</td>
+                <td>Employee Training 101</td>
+                <td>John Doe</td>
+                <td>2025-05-10</td>
+                <td>2025-06-10</td>
                 <td>Ongoing</td>
                 <td>
-                  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#viewCourseModal">View</button>
-                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseModal">Edit</button>
-                  <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#uploadMaterialModal">Upload</button>
-                  <button class="btn btn-danger" >Delete</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+
                 </td>
               </tr>
-              <!-- More rows -->
+              <!-- Repeat more rows here -->
             </tbody>
           </table>
         </div>
       </div>
-    </div>
-  </div>
 </div>
 
-                </div>
-            </div>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade" id="pillsLCM" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Learning Content Management</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <table class="table table-hover table-striped">
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col">Course Title</th>
+                <th scope="col">Trainer</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Employee Training 101</td>
+                <td>John Doe</td>
+                <td>2025-05-10</td>
+                <td>2025-06-10</td>
+                <td>Ongoing</td>
+                <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+
+                </td>
+              </tr>
+              <!-- Repeat more rows here -->
+            </tbody>
+          </table>
         </div>
-    </div>
+      </div>
+</div>
+
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show " id="pillsLPT" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Learning Progress and Tracking</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <table class="table table-hover table-striped">
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col">Course Title</th>
+                <th scope="col">Trainer</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Employee Training 101</td>
+                <td>John Doe</td>
+                <td>2025-05-10</td>
+                <td>2025-06-10</td>
+                <td>Ongoing</td>
+                <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+
+                </td>
+              </tr>
+              <!-- Repeat more rows here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+</div>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show " id="pillsAC" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Assessment and Certification</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <table class="table table-hover table-striped">
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col">Course Title</th>
+                <th scope="col">Trainer</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Employee Training 101</td>
+                <td>John Doe</td>
+                <td>2025-05-10</td>
+                <td>2025-06-10</td>
+                <td>Ongoing</td>
+                <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+
+                </td>
+              </tr>
+              <!-- Repeat more rows here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
 </div>
 
 <div class="modal fade" id="viewCourseModal" tabindex="-1" aria-labelledby="viewCourseLabel" aria-hidden="true">

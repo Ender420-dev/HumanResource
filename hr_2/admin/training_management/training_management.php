@@ -123,7 +123,10 @@ session_start();
           <table class="table table-hover table-striped">
             <thead class="thead-primary">
               <tr>
-                <th scope="col">Training Title</th>
+                <th scope="col">Program ID</th>
+                <th scope="col">Program Type</th>
+                <th>Program Name</th>
+
                 <th scope="col">Trainer</th>
                 <th scope="col">Start Date</th>
                 <th scope="col">End Date</th>
@@ -133,6 +136,8 @@ session_start();
             </thead>
             <tbody>
               <tr>
+                <td>1</td>
+                <td>ET101</td>
                 <td>Employee Training 101</td>
                 <td>John Doe</td>
                 <td>2025-05-10</td>
@@ -273,7 +278,36 @@ session_start();
           </h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
-          
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Trainee ID</th>
+                <th>Trainee Name</th>
+                <th>Program</th>
+               
+                <th>Progress</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>Employee Training 101</td>
+                <td>Incomplete</td>
+                <td>
+                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                <button type="button" class="btn btn-info btn-sm">View</button>
+                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                <button type="button" class="btn btn-success btn-sm">Generate</button>
+
+
+
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         
         </div>
@@ -350,8 +384,18 @@ session_start();
       <div class="modal-body">
         <!-- Training Info -->
         <form id="editTrainingForm">
+        <div class="mb-3">
+            <label for="trainingTitle" class="form-label">Program ID</label>
+            <input type="number" class="form-control" id="trainingTitle" value="1">
+          </div>
+
+        <div class="mb-3">
+            <label for="trainingTitle" class="form-label">Program Type</label>
+            <input type="text" class="form-control" id="trainingTitle" value="ET101">
+          </div>
+
           <div class="mb-3">
-            <label for="trainingTitle" class="form-label">Training Title</label>
+            <label for="trainingTitle" class="form-label">Program Name</label>
             <input type="text" class="form-control" id="trainingTitle" value="Employee Training 101">
           </div>
 
@@ -359,7 +403,10 @@ session_start();
             <label for="trainerName" class="form-label">Trainer</label>
             <input type="text" class="form-control" id="trainerName" value="John Doe">
           </div>
-
+          <div class="form-floating">
+  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+  <label for="floatingTextarea2">Program Description</label>
+</div>
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="startDate" class="form-label">Start Date</label>
@@ -370,6 +417,11 @@ session_start();
               <input type="date" class="form-control" id="endDate" value="2025-06-10">
             </div>
           </div>
+          <div class="mb-3">
+            <label for="trainingTitle" class="form-label">Program Type</label>
+            <input type="text" class="form-control" id="trainingTitle" value="Employee Training 101">
+          </div>
+
 
           <hr>
 

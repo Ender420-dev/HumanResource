@@ -16,9 +16,11 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../mdb/css/mdb.min.css">
     <link rel="icon" href="../logo.png">   
-    <link rel="stylesheet" href="tm.css?v=3.5">
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../../../tm.css?v=3.8">
 </head>
 
 
@@ -38,7 +40,7 @@ session_start();
                 </a>
                 <ul class="nav nav-link flex-column mb-sm-auto mb-0 align-items-center align-items-sm-center" id="menu">
                 <li class="nav-item mt-2">
-                        <a href="../training_management/training_management.php" class="nav-link active align-middle px-0 text-start">
+                        <a href="../training_management/training_management.php" class="nav-link  align-middle px-0 text-start">
                             <i class="fa-solid fa-chalkboard-user"></i>
                             <span class="ms-1 d-none d-sm-inline">Training Management</span>
                         </a>
@@ -63,7 +65,7 @@ session_start();
                         </a>
                     </li>
                     <li class="nav-item mt-2">
-                        <a href="../ESS/ess.php" class="nav-link  align-middle px-0 text-start">
+                        <a href="../ESS/ess.php" class="nav-link active  align-middle px-0 text-start">
                             <i class="fa-solid fa-user"></i>
                             <span class="ms-1 d-none d-sm-inline">Employee Self-Services</span>
                         </a>
@@ -88,72 +90,223 @@ session_start();
 
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
   <li class="nav-item">
-    <button class="nav-link  active" id="pillsTPM-tab" data-bs-toggle="pill" data-bs-target="#pillsTPM" aria-controls="pillsTPM" aria-selected="true">Training Program Management</button>
+    <button class="nav-link  active" id="pillsPM-tab" data-bs-toggle="pill" data-bs-target="#pillsPM" aria-controls="pillsTPM" aria-selected="true">Profile Management</button>
   </li>
 
   <li class="nav-item">
-    <button class="nav-link for-pills" id="pillsCalendar-tab" data-bs-toggle="pill" data-bs-target="#pillsCalendar" aria-controls="pillsCalendar" aria-selected="false">Training Calendar and Scheduling</button>
+    <button class="nav-link for-pills" id="pillsPM2-tab" data-bs-toggle="pill" data-bs-target="#pillsPM2" aria-controls="pillsCalendar" aria-selected="false">Performance Management</button>
   </li>
 
   <li class="nav-item">
-    <button class="nav-link for-pills" id="pillsEnrollment-tab" data-bs-toggle="pill" data-bs-target="#pillsEnrollment" aria-controls="pillsEnrollment" aria-selected="false">Trainee Enrollment and Approval
+    <button class="nav-link for-pills" id="pillsPSI-tab" data-bs-toggle="pill" data-bs-target="#pillsPSI" aria-controls="pillsEnrollment" aria-selected="false">Payroll & Salary Information
     </button>
   </li>
 
   <li class="nav-item">
-    <button class="nav-link for-pills" id="pillsFaculty-tab" data-bs-toggle="pill" data-bs-target="#pillsFaculty" aria-controls="pillsCalendar" aria-selected="false">Trainer Faculty Management
+    <button class="nav-link for-pills" id="pillsLAM-tab" data-bs-toggle="pill" data-bs-target="#pillsLAM" aria-controls="pillsFaculty" aria-selected="false">Leave and Attendance Management
     </button>
   </li>
 
-  <li class="nav-item">
-    <button class="nav-link for-pills" id="pillsRecord-tab" data-bs-toggle="pill" data-bs-target="#pillsRecord" aria-controls="pillsRecord" aria-selected="false">Training Record and Certificate
-
-    </button>
-  </li>
+  
 </ul>
 
 <div class="tab-content" id="pills-tabContent">
-  <div class="tab-pane fade show active" id="pillsTPM" role="tabpanel" >
+  <div class="tab-pane fade show active" id="pillsPM" role="tabpanel" >
 
-  <h3 class="white-text card-title text-center">Training Program Management</h3>
+  
         <br>
         <div style="overflow-y: auto; height: 100%;">
-          <table class="table table-hover table-striped">
-            <thead class="thead-primary">
-              <tr>
-                <th scope="col">Training Title</th>
-                <th scope="col">Trainer</th>
-                <th scope="col">Start Date</th>
-                <th scope="col">End Date</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Employee Training 101</td>
-                <td>John Doe</td>
-                <td>2025-05-10</td>
-                <td>2025-06-10</td>
-                <td>Ongoing</td>
-                <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+        <div class="container mt-4">
+  <h2 class="mb-4 text-center">Employee Profile Management (Admin)</h2>
 
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+  <!-- Search Bar -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <input type="text" class="form-control" placeholder="Search by name or Employee ID" id="searchInput">
+    </div>
+  </div>
 
-                </td>
-              </tr>
-              <!-- Repeat more rows here -->
-            </tbody>
-          </table>
+  <!-- Employee List Table -->
+  <table class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Employee ID</th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Position</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>001</td>
+        <td>Jane Doe</td>
+        <td>IT</td>
+        <td>Developer</td>
+        <td>
+          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Edit</button>
+        </td>
+      </tr>
+      <!-- More employee rows -->
+    </tbody>
+  </table>
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Employee Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <form>
+            <!-- Basic Info -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label>Employee ID</label>
+                <input type="text" class="form-control" value="001" readonly>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label>Profile ID</label>
+                <input type="text" class="form-control" value="P-0001-2025" readonly>
+              </div>
+            </div>
+
+            <!-- Personal Info -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label>Full Name</label>
+                <input type="text" class="form-control" value="Jane Doe">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label>Date of Birth</label>
+                <input type="date" class="form-control" value="1990-01-01">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label>Phone Number</label>
+                <input type="text" class="form-control" value="09171234567">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label>Address</label>
+                <input type="text" class="form-control" value="123 ABC Street, QC">
+              </div>
+            </div>
+
+            <!-- Professional Info -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label>Department</label>
+                <input type="text" class="form-control" value="IT">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label>Position</label>
+                <input type="text" class="form-control" value="Developer">
+              </div>
+            </div>
+
+            <!-- Profile Picture Upload -->
+            <div class="mb-3">
+              <label>Profile Picture</label>
+              <input type="file" class="form-control">
+            </div>
+
+            <div class="text-end">
+              <button type="submit" class="btn btn-success">Save Changes</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
         </div>
       </div>
+    </div>
+      <div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show " id="pillsPM2" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Performance Management</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+         
+
+
+
+
+
+        </div>
+      </div>
+      </div>
+      <div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show " id="pillsPSI" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Payroll & Salary Information</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+         
+
+
+
+
+
+        </div>
+      </div></div>
+
+
+      
+      <div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show " id="pillsLAM" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Leave & Attendance Management</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+         
+
+
+
+
+
+        </div>
+      </div>
+
 
 
       <div class="tab-pane fade" id="pillsCalendar" role="tabpanel"> <h3 class="white-text card-title text-center">Training Calendar and Scheduling</h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
-          
+          <div class="row">
+            <!-- <div class="col-sm-3">
+              <div class="card"  >
+                <div class="container">
+                  <div class="card-body">
+                    <h5 class="card-title">Schedule</h5>
+
+                    <div class="">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-sm">
+              <div class="card" style="height:700px; overflow:hidden;">
+                <div class="card-body">
+                  <h5 class="card-title">Calendar</h5>
+                  <div id="calendar" style=" min-height: 500px;"></div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
         </div></div>
 
         <div class="tab-pane fade" id="pillsEnrollment" role="tabpanel"> 
@@ -161,17 +314,80 @@ session_start();
           <h3 class="white-text card-title text-center">Trainee Enrollment and Approval</h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
-          
+        <div class="row">
+  <div class="col-md-2">
+    <!-- Vertical Nav Pills -->
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    <button class="nav-link new-tab active" id="v-pills-new-tab" data-bs-toggle="pill" data-bs-target="#v-pills-new" type="button" role="tab" aria-controls="v-pills-new" aria-selected="true">New</button>
+        <button class="nav-link approved-tab" id="v-pills-approve-tab" data-bs-toggle="pill" data-bs-target="#v-pills-approve" type="button" role="tab" aria-controls="v-pills-approve" aria-selected="false">Approved</button>
+        <button class="nav-link rejected-tab" id="v-pills-rejected-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rejected" type="button" role="tab" aria-controls="v-pills-rejected" aria-selected="false">Rejected</button>
+
+    </div>
+  </div>
+
+  <div class="col-md-10">
+    <!-- Tab Content -->
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-new" role="tabpanel" aria-labelledby="v-pills-new-tab">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">New Enrollment</h5>
+          </div>
         </div>
-        
+      </div>
+
+      <div class="tab-pane fade" id="v-pills-approve" role="tabpanel" aria-labelledby="v-pills-approve-tab">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Approved Enrollments</h5>
+          </div>
         </div>
+      </div>
+
+      <div class="tab-pane fade" id="v-pills-rejected" role="tabpanel" aria-labelledby="v-pills-rejected-tab">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Rejected Enrollments</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+        </div>
+        </div>
+        </div>
+
  <div class="tab-pane fade" id="pillsFaculty" role="tabpanel"> 
           
           <h3 class="white-text card-title text-center">Trainer Faculty Management
           </h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
-          
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Trainer ID</th>
+                <th>Full Name</th>
+                <th>Subject</th>
+                <th>Action</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>Employee 101</td>
+                <td>
+
+                <button type="button" class="btn btn-success">View</button>
+                <button type="button" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+
+              </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         
         </div>
@@ -184,7 +400,36 @@ session_start();
           </h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
-          
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Trainee ID</th>
+                <th>Trainee Name</th>
+                <th>Program</th>
+               
+                <th>Progress</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>John Doe</td>
+                <td>Employee Training 101</td>
+                <td>Incomplete</td>
+                <td>
+                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                <button type="button" class="btn btn-info btn-sm">View</button>
+                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                <button type="button" class="btn btn-success btn-sm">Generate</button>
+
+
+
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         
         </div>
@@ -201,57 +446,7 @@ session_start();
                 
 
                 
-                <div class="row">
-                <div class="col">
-                <div class="card" style="height: 400px; overflow: hidden;">
-  <div class="card-content" style="height: 100%;">
-    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
-      <div class="container" style="flex: 1; overflow: hidden;">
-      
-      </div>
-    </div>
-  </div>
-</div>
-
-                    </div>
-                </div>
-                <div class="row">
-                <div class="col">
-                <div class="card" style="height: 400px; overflow: hidden;">
-  <div class="card-content" style="height: 100%;">
-    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
-      <div class="container" style="flex: 1; overflow: hidden;">
-        <h3 class="white-text card-title text-center">Trainer Faculty Management</h3>
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-          
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                <div class="col">
-                <div class="card" style="height: 400px; overflow: hidden;">
-  <div class="card-content" style="height: 100%;">
-    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
-      <div class="container" style="flex: 1; overflow: hidden;">
-        <h3 class="white-text card-title text-center">Training Record and Certificate</h3>
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-          
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-                    </div>
-                </div>
+              
 
                 
 
@@ -311,8 +506,18 @@ session_start();
       <div class="modal-body">
         <!-- Training Info -->
         <form id="editTrainingForm">
+        <div class="mb-3">
+            <label for="trainingTitle" class="form-label">Program ID</label>
+            <input type="number" class="form-control" id="trainingTitle" value="1">
+          </div>
+
+        <div class="mb-3">
+            <label for="trainingTitle" class="form-label">Program Type</label>
+            <input type="text" class="form-control" id="trainingTitle" value="ET101">
+          </div>
+
           <div class="mb-3">
-            <label for="trainingTitle" class="form-label">Training Title</label>
+            <label for="trainingTitle" class="form-label">Program Name</label>
             <input type="text" class="form-control" id="trainingTitle" value="Employee Training 101">
           </div>
 
@@ -320,7 +525,10 @@ session_start();
             <label for="trainerName" class="form-label">Trainer</label>
             <input type="text" class="form-control" id="trainerName" value="John Doe">
           </div>
-
+          <div class="form-floating">
+  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+  <label for="floatingTextarea2">Program Description</label>
+</div>
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="startDate" class="form-label">Start Date</label>
@@ -331,6 +539,11 @@ session_start();
               <input type="date" class="form-control" id="endDate" value="2025-06-10">
             </div>
           </div>
+          <div class="mb-3">
+            <label for="trainingTitle" class="form-label">Program Type</label>
+            <input type="text" class="form-control" id="trainingTitle" value="Employee Training 101">
+          </div>
+
 
           <hr>
 
@@ -369,6 +582,7 @@ session_start();
     <a href="#!" class="navbar-brand" data-bs-toggle="offcanvas" aria-controls="staticBackdrop" data-bs-target="#sideBarNav" >
         <img src="logo.png" style="margin-top:-25px;" width="90" height="90" alt=""> <span class="white-text" style=" ">HR 2</span></a></div>
 </nav> -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -387,6 +601,75 @@ window.addEventListener('scroll',function(){
     }else{
         sidenav.classList.remove('fixed-sidebar');
     }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+  timeZone: 'UTC',
+  initialView: 'dayGridMonth', // default to month view
+  editable: true,
+  selectable: true,
+  events: 'fetch-events.php',
+
+  // Custom toolbar buttons
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+  },
+
+  // Selection for new event
+  select: function(info) {
+    var title = prompt('Enter Event Title:');
+    if (title) {
+      const newEvent = {
+        title: title,
+        start: info.startStr,
+        end: info.endStr
+      };
+
+      calendar.addEvent(newEvent);
+
+      fetch('add-event.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newEvent)
+      });
+    }
+    calendar.unselect();
+  },
+
+  eventDrop: function(info) {
+    updateEvent(info.event);
+  },
+
+  eventResize: function(info) {
+    updateEvent(info.event);
+  }
+});
+
+
+  calendar.render();
+
+  function updateEvent(event) {
+    fetch('update-event.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: event.id,
+        title: event.title,
+        start: event.start.toISOString(),
+        end: event.end ? event.end.toISOString() : null
+      })
+    });
+  }
 });
 
     </script>

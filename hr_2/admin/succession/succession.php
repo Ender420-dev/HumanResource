@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Management</title>
+    <title>Succession Planning</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -20,7 +20,7 @@ session_start();
 
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="../../../tm.css?v=3.8">
+    <link rel="stylesheet" href="../../../tm.css?v=4.0">
 </head>
 
 
@@ -71,6 +71,21 @@ session_start();
                         </a>
                     </li>
                 </ul>
+<hr>
+                <div class="dropdown pb-4">
+                  <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="ddUser" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="" width="30" height="30" alt="" class="rounded-circle">  
+                  <span class="user" id="user">User</span></a>
+
+                  <ul class="dropdown-menu dropdown-menu-bg text-small shadow" aria-labelledby="ddUser">
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-user-tie"></i> Profile</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-gears"></i> Settings</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+
+                  </ul>
+                </div>
+
+
             </div>
         </div>
 
@@ -78,17 +93,9 @@ session_start();
         <div class="col main-content py-4">
             <div class="row">
                 <div class="col">
-              
-                <div class="card" style="height: 700px; overflow: hidden;">
+                <nav class="navbar navbar-expand-lg">
 
-                
-
-  <div class="card-content" style="height: 100%;">
-    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
-      <div class="container" style="flex: 1; overflow: hidden;">
-
-
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+<ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
   <li class="nav-item">
     <button class="nav-link  active" id="pillsTI-tab" data-bs-toggle="pill" data-bs-target="#pillsTI" aria-controls="pillsTPM" aria-selected="true">Talent Identification</button>
   </li>
@@ -109,8 +116,28 @@ session_start();
     </button>
   </li>
 
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsSPM-tab" data-bs-toggle="pill" data-bs-target="#pillsSPM" aria-controls="pillsFaculty" aria-selected="false">Succession Plan Monitor
+    </button>
+  </li>
+
   
 </ul>
+
+</nav>
+              
+                <div class="card" style="height: 700px; overflow: hidden;">
+
+                
+
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+
+
+      
+
+
 
 <div class="tab-content" id="pills-tabContent">
   <div class="tab-pane fade show active" id="pillsTI" role="tabpanel" >
@@ -459,6 +486,47 @@ session_start();
         </div>
         
         </div>
+        <div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show " id="pillsSPM" role="tabpanel" >
+
+  
+        <div style="overflow-y: auto; height: 100%;">
+        <div class="container mt-5">
+  <h3 class="text-center mb-4">Succession Plan Evaluation Monitor</h3>
+
+  <!-- Evaluation Table -->
+  <table class="table table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Evaluation ID</th>
+        <th>Plan ID</th>
+        <th>Evaluation Date</th>
+        <th>Adjustment Needed</th>
+        <th>Effectiveness Rating</th>
+        <th>Next Review Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>EVAL-001</td>
+        <td>SPM-101</td>
+        <td>2025-04-15</td>
+        <td>Yes - Successor training lagging</td>
+        <td>Moderate</td>
+        <td>2025-07-15</td>
+        <td>
+          <button class="btn btn-sm btn-primary">Edit</button>
+          <button class="btn btn-sm btn-info">View</button>
+        </td>
+      </tr>
+      <!-- More rows as needed -->
+    </tbody>
+  </table>
+</div>
+
+  </div>
+</div>
 
 
         <div class="tab-pane fade" id="pillsRecord" role="tabpanel"> 

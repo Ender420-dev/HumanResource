@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Management</title>
+    <title>Learning Management</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -18,7 +18,7 @@ session_start();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
    
     <link rel="icon" href="../logo.png">   
-    <link rel="stylesheet" href="../../tm.css?v=2.5">
+    <link rel="stylesheet" href="../../../tm.css?v=2.5">
 </head>
 <body>
 <div class="container-fluid">
@@ -56,16 +56,113 @@ session_start();
                         </a>
                     </li>
                 </ul>
+                <hr>
+                <div class="dropdown pb-4">
+                  <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="ddUser" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="" width="30" height="30" alt="" class="rounded-circle">  
+                  <span class="user" id="user">User</span></a>
+
+                  <ul class="dropdown-menu dropdown-menu-bg text-small shadow" aria-labelledby="ddUser">
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-user-tie"></i> Profile</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-gears"></i> Settings</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+
+                  </ul>
+                </div>
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
-                    <div class="card">
+                <div class="col">
+                    <div class="card" style="height: 700px; overflow: hidden;">
                         <div class="container">
-                            <h3 class="white-text text-center">No. of Trainees</h3>
+                           <div class="card-body">
+                            
+
+
+                            <div class="row">
+    <div class="col-sm-3">
+        <div class="card" >
+            <div class="card-body">
+                <div class="card-header">My Course</div>
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-Course-1-list" data-bs-toggle="list" href="#Course-1" role="tab" aria-controls="Course-1" aria-selected="true">Course 1 - <span id="status">Incomplete</span> </a>
+                    <a class="list-group-item list-group-item-action" id="list-Course-2-list" data-bs-toggle="list" href="#Course-2" role="tab" aria-controls="Course-2" aria-selected="false">Course 2 - <span id="status">Incomplete</span></a>
+                    <a class="list-group-item list-group-item-action" id="list-Course-3-list" data-bs-toggle="list" href="#Course-3" role="tab" aria-controls="Course-3" aria-selected="false">Course 3 - <span id="status">Not Started</span></a>
+                    <a class="list-group-item list-group-item-action" id="list-Course-4-list" data-bs-toggle="list" href="#Course-4" role="tab" aria-controls="Course-4" aria-selected="false">Course 4 - <span id="status">Incomplete</span></a>
+                    <a class="list-group-item list-group-item-action" id="list-Course-5-list" data-bs-toggle="list" href="#Course-5" role="tab" aria-controls="Course-5" aria-selected="false">Course 5 - <span id="status">Complete</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-9">
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="Course-1" role="tabpanel" aria-labelledby="list-Course-1-list">
+                <h3 class="card-title">Course 1</h3>
+                
+
+                
+               
+        <p><strong>Instructor:</strong> Jane Doe</p>
+        <p><strong>Progress:</strong> 75%</p>
+        <div class="progress mb-3">
+          <div class="progress-bar bg-success" role="progressbar" style="width: 75%;">75%</div>
+        </div>
+        <p><strong>Quiz Score:</strong> 80%</p>
+        <button class="btn btn-primary">Continue Course</button>
+        <button class="btn btn-secondary">Take Quiz</button>
+        <button class="btn btn-success">Download Certificate</button>
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+            <div class="tab-pane fade" id="Course-2" role="tabpanel" aria-labelledby="list-Course-2-list">
+                <h3 class="card-title">Course 2</h3>
+
+
+
+            </div>
+            <div class="tab-pane fade" id="Course-3" role="tabpanel" aria-labelledby="list-Course-3-list">
+                <h3 class="card-title">Course 3</h3>
+
+                <h3>Leadership Essentials</h3>
+        <p>Start this course to develop leadership skills.</p>
+        <button class="btn btn-primary">Start Course</button>
+            </div>
+            <div class="tab-pane fade" id="Course-4" role="tabpanel" aria-labelledby="list-Course-4-list">
+                <h3 class="card-title">Course 4</h3>
+
+
+            </div>
+            <div class="tab-pane fade" id="Course-5" role="tabpanel" aria-labelledby="list-Course-5-list">
+                <h3 class="card-title">Course 5</h3>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+                           </div>
+
+
+                        
                         </div>
                     </div>
                 </div>

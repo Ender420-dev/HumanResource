@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Management</title>
+    <title>Competency Management</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -20,7 +20,7 @@ session_start();
 
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="../../../tm.css?v=3.9">
+    <link rel="stylesheet" href="../../../tm.css?v=4.0">
 </head>
 
 
@@ -71,6 +71,20 @@ session_start();
                         </a>
                     </li>
                 </ul>
+
+                <hr>
+                <div class="dropdown pb-4">
+                  <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="ddUser" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="" width="30" height="30" alt="" class="rounded-circle">  
+                  <span class="user" id="user">User</span></a>
+
+                  <ul class="dropdown-menu dropdown-menu-bg text-small shadow" aria-labelledby="ddUser">
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-user-tie"></i> Profile</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-gears"></i> Settings</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+
+                  </ul>
+                </div>
             </div>
         </div>
 
@@ -78,17 +92,8 @@ session_start();
         <div class="col main-content py-4">
             <div class="row">
                 <div class="col">
-              
-                <div class="card" style="height: 700px; overflow: hidden;">
-
-                
-
-  <div class="card-content" style="height: 100%;">
-    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
-      <div class="container" style="flex: 1; overflow: hidden;">
-
-
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <nav class="navbar navbar-expand-lg">
+              <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
   <li class="nav-item">
     <button class="nav-link  active" id="pillsTI-tab" data-bs-toggle="pill" data-bs-target="#pillsCFM" aria-controls="pillsTPM" aria-selected="true">Competency Framework & Mapping</button>
   </li>
@@ -114,6 +119,17 @@ session_start();
   </li>
   
 </ul>
+              </nav>
+                <div class="card" style="height: 700px; overflow: hidden;">
+
+                
+
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+
+
+      
 
 <div class="tab-content" id="pills-tabContent">
   <div class="tab-pane fade show active" id="pillsCFM" role="tabpanel" >

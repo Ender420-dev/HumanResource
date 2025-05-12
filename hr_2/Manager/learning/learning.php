@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Management</title>
+    <title>Learning Management</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -18,7 +18,7 @@ session_start();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../mdb/css/mdb.min.css">
     <link rel="icon" href="../logo.png">   
-    <link rel="stylesheet" href="../../tm.css?v=2.4">
+    <link rel="stylesheet" href="../../../tm.css?v=2.5">
 
 </head>
 <body>
@@ -51,7 +51,7 @@ session_start();
                     <li class="nav-item mt-2">
                         <a href="../competency/competency.php" class="nav-link align-middle px-0 text-start">
                             <i class="fa-solid fa-ranking-star"></i>
-                            <span class="ms-1 d-none d-sm-inline">Competency</span>
+                            <span class="ms-1 d-none d-sm-inline">Competency Management</span>
                         </a>
                     </li>
                     <li class="nav-item mt-2">
@@ -60,30 +60,288 @@ session_start();
                             <span class="ms-1 d-none d-sm-inline">Succession Planning</span>
                         </a>
                     </li>
-                    <li class="nav-item mt-2">
-                        <a href="../ESS/ess.php" class="nav-link  align-middle px-0 text-start">
-                            <i class="fa-solid fa-user"></i>
-                            <span class="ms-1 d-none d-sm-inline">Employee Self-Services</span>
-                        </a>
-                    </li>
+                   
                 </ul>
+                <hr>
+                <div class="dropdown pb-4">
+                  <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="ddUser" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="" width="30" height="30" alt="" class="rounded-circle">  
+                  <span class="user" id="user">User</span></a>
+
+                  <ul class="dropdown-menu dropdown-menu-bg text-small shadow" aria-labelledby="ddUser">
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-user-tie"></i> Profile</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-gears"></i> Settings</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+
+                  </ul>
+                </div>
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="container">
-                            <h3 class="white-text text-center">No. of Trainees</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div class="col">
+
+                <nav class="navbar navbar-white navbar-expand-lg">
+
+                <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+  
+
+  <li class="nav-item">
+    <button class="nav-link active for-pills" id="pillsLCM-tab" data-bs-toggle="pill" data-bs-target="#pillsLCM" aria-controls="pillsLCM" aria-selected="false">Learning Content Management</button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsLPT-tab" data-bs-toggle="pill" data-bs-target="#pillsLPT" aria-controls="pillsEnrollment" aria-selected="false">Learning Progress and Tracking
+    </button>
+  </li>
+
+  <li class="nav-item">
+    <button class="nav-link for-pills" id="pillsAC-tab" data-bs-toggle="pill" data-bs-target="#pillsAC" aria-controls="pillsAC" aria-selected="false">Assessment and Certification
+    </button>
+  </li>
+
+  
+</ul>
+
+                </nav>
+                <div class="card" style="height: 700px; overflow: hidden;">
+  <div class="card-content" style="height: 100%;">
+    <div class="card-body" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="container" style="flex: 1; overflow: hidden;">
+
+      
+
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pillsCM" role="tabpanel" >
+
+  
+
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pillsLCM" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Learning Content Management</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <table class="table table-hover table-striped">
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col">Course Title</th>
+                <th scope="col">Trainer</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Employee Training 101</td>
+                <td>John Doe</td>
+                <td>2025-05-10</td>
+                <td>2025-06-10</td>
+                <td>Ongoing</td>
+                <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+
+                </td>
+              </tr>
+              <!-- Repeat more rows here -->
+            </tbody>
+          </table>
         </div>
-    </div>
+      </div>
 </div>
+
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show " id="pillsLPT" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Learning Progress and Tracking</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <table class="table table-hover table-striped">
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col">Course Title</th>
+                <th scope="col">Trainer</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Employee Training 101</td>
+                <td>John Doe</td>
+                <td>2025-05-10</td>
+                <td>2025-06-10</td>
+                <td>Ongoing</td>
+                <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+
+                </td>
+              </tr>
+              <!-- Repeat more rows here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+</div>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show " id="pillsAC" role="tabpanel" >
+
+  <h3 class="white-text card-title text-center">Assessment and Certification</h3>
+        <br>
+        <div style="overflow-y: auto; height: 100%;">
+          <table class="table table-hover table-striped">
+            <thead class="thead-primary">
+              <tr>
+                <th scope="col">Course Title</th>
+                <th scope="col">Trainer</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Employee Training 101</td>
+                <td>John Doe</td>
+                <td>2025-05-10</td>
+                <td>2025-06-10</td>
+                <td>Ongoing</td>
+                <td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+
+                </td>
+              </tr>
+              <!-- Repeat more rows here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+</div>
+
+<div class="modal fade" id="viewCourseModal" tabindex="-1" aria-labelledby="viewCourseLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewCourseLabel">Course Overview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <p><strong>Course Title:</strong> Leadership Essentials</p>
+        <p><strong>Trainer:</strong> Jane Smith</p>
+        <p><strong>Content:</strong> Video Modules, Reading Material, Case Studies</p>
+        
+        <hr>
+        <h6>Enrolled Learners:</h6>
+        <ul>
+          <li>Maria Gomez - 70% Complete</li>
+          <li>Arvin Santos - 40% Complete</li>
+          <li>Lea Valdez - 100% Complete (Certified)</li>
+        </ul>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Edit Course Modal -->
+<div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="editCourseLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCourseLabel">Edit Course Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Course Title</label>
+            <input type="text" class="form-control" value="Leadership Essentials">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Trainer</label>
+            <input type="text" class="form-control" value="Jane Smith">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="3">Introductory leadership skills course...</textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select">
+              <option selected>Ongoing</option>
+              <option>Completed</option>
+              <option>Upcoming</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- Upload Materials Modal -->
+<div class="modal fade" id="uploadMaterialModal" tabindex="-1" aria-labelledby="uploadLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadLabel">Upload Learning Materials</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Course</label>
+            <select class="form-select">
+              <option selected>Leadership Essentials</option>
+              <option>Communication Skills</option>
+              <!-- More courses -->
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Material Title</label>
+            <input type="text" class="form-control" placeholder="e.g., Introduction Video">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Upload File</label>
+            <input type="file" class="form-control">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
 <!-- <nav class="navbar navbar-blue" style="height:70px;">
 <div class="container">
     <a href="#!" class="navbar-brand" data-bs-toggle="offcanvas" aria-controls="staticBackdrop" data-bs-target="#sideBarNav" >

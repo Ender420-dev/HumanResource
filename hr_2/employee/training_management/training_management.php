@@ -56,16 +56,115 @@ session_start();
                         </a>
                     </li>
                 </ul>
+                <hr>
+                <div class="dropdown pb-4">
+                  <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="ddUser" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="" width="30" height="30" alt="" class="rounded-circle">  
+                  <span class="user" id="user">User</span></a>
+
+                  <ul class="dropdown-menu dropdown-menu-bg text-small shadow" aria-labelledby="ddUser">
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-user-tie"></i> Profile</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-gears"></i> Settings</a></li>
+    <li><a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+
+                  </ul>
+                </div>
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
-                    <div class="card">
+                <div class="col">
+                    <div class="card" style="height: 700px; overflow: hidden;">
                         <div class="container">
-                            <h3 class="white-text text-center">No. of Trainees</h3>
+                        <div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    
+
+    <!-- Main Content -->
+    <div class="col-md-12 p-4">
+      <h2>Welcome, Employee</h2>
+
+      <!-- Summary Cards -->
+      <div class="row my-4">
+        <div class="col-md-3">
+          <div class="card text-center bg-success text-white">
+            <div class="card-body">
+              <h5>Completed</h5>
+              <h3>8</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center bg-info text-white">
+            <div class="card-body">
+              <h5>Ongoing</h5>
+              <h3>2</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center bg-warning text-dark">
+            <div class="card-body">
+              <h5>Upcoming</h5>
+              <h3>3</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-center bg-primary text-white">
+            <div class="card-body">
+              <h5>Total Hours</h5>
+              <h3>45h</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Courses -->
+      <h4>My Courses</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="course-card">
+            <h5>Leadership Essentials</h5>
+            <p>Self-paced | Due: May 31, 2025</p>
+            <div class="progress mb-2">
+              <div class="progress-bar bg-success" style="width: 75%;">75%</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="course-card">
+            <h5>Advanced Excel Training</h5>
+            <p>Instructor-led | Next session: May 20, 2025</p>
+            <div class="progress mb-2">
+              <div class="progress-bar bg-info" style="width: 40%;">40%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certificates -->
+      <h4 class="mt-4">My Certificates</h4>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Data Privacy Training
+          <a href="#" class="btn btn-sm btn-outline-primary">Download</a>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Fire Safety Awareness
+          <a href="#" class="btn btn-sm btn-outline-primary">Download</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+                        
                         </div>
                     </div>
                 </div>

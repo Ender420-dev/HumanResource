@@ -18,21 +18,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($password && $email) {
         include("Connections.php");
-        $check_email = mysqli_query($Connection, "SELECT * FROM login WHERE email = '$email'");
+        $check_email = mysqli_query($Connection, "SELECT * FROM login_tbl WHERE email = '$email'");
         $check_email_row = mysqli_num_rows($check_email);
         if ($check_email_row > 0) {
             while ($row = mysqli_fetch_assoc($check_email)) {
                 $db_pass = $row["Password"];
-                $db_acc_type = $row["Account_Type"];
+                $db_acc_type = $row["user_role"];
                 if ($password == $db_pass) {
                     if ($db_acc_type == "admin") {
-                        header("Location: ../admin/admin.php");
+                        header("Location: ../admin/training_management/training_management.php");
                         exit();
-                    } elseif ($db_acc_type == "manager") {
-                        header("Location: ../manager/manager.php");
+                    } elseif ($db_acc_type == "user") {
+                        header("Location: ../employee/training_management/training_management.php");
                         exit();
-                    } else {
-                        header("Location: ../user/user.php");
+                    }
+                     elseif ($db_acc_type == "trainer") {
+                        header("Location: ../trainer/training_management/training_management.php");
+                        exit();
+                    }
+                     else {
+                        header("Location: ../Manager/training_management/training_management.php");
                         exit();
                     }
                 } else {

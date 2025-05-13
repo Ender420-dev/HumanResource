@@ -48,6 +48,8 @@ session_start();
             <option value="admin">Admin</option>
             <option value="manager">HR Manager</option>
             <option value="user">Employee</option>
+            <option value="trainer">Trainer</option>
+            
             </select>
         </div>
                     

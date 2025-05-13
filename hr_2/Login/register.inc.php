@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } else {
             // Update query to remove account_type
-            $query = "INSERT INTO login (email, password , Account_Type) 
+            $query = "INSERT INTO login_tbl (email, password ,user_role) 
                       VALUES ('$Email', '$Password', '$user_role')";
             $query_run = mysqli_query($Connection, $query);
 

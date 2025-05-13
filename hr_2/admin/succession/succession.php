@@ -369,7 +369,7 @@ session_start();
           <td>Mark Lee</td>
           <td>
             <div class="progress" style="height: 20px;">
-              <div class="progress-bar bg-info" role="progressbar" style="width: 45%">45%</div>
+              <div class="progress-bar bg-info" role="progressbar" style="width: 50%">50%</div>
             </div>
           </td>
           <td>

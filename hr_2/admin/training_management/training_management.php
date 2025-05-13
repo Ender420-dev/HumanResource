@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+
+require_once("../../../phpcon/conn.php");
+
+
 ?>
 
 <!DOCTYPE html>
@@ -138,6 +143,7 @@ session_start();
   <h3 class="white-text card-title text-center">Training Program Management</h3>
         <br>
         <div style="overflow-y: auto; height: 100%;">
+
           <table class="table table-hover table-striped">
             <thead class="thead-primary">
               <tr>

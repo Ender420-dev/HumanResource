@@ -19,8 +19,8 @@ session_start();
     <link rel="icon" href="../logo.png">   
 
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css" rel="stylesheet" />
-
-    <link rel="stylesheet" href="../../../tm.css?v=4.4">
+        <link rel="stylesheet" href="../../../tm.css?v=4.6">
+    <!-- <link rel="stylesheet" href="../../../tm.css?v=4.5"> -->
 </head>
 
 
@@ -494,10 +494,10 @@ session_start();
   <!-- Tabs -->
   <ul class="nav nav-pills mb-3" id="leaveTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="attendance-tab" data-bs-toggle="pill" data-bs-target="#attendance" type="button">Attendance History</button>
+      <button class="nav-link button-1 active" id="attendance-tab" data-bs-toggle="pill" data-bs-target="#attendance" type="button">Attendance History</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="leave-tab" data-bs-toggle="pill" data-bs-target="#leave" type="button">Leave Requests</button>
+      <button class="nav-link button-1" id="leave-tab" data-bs-toggle="pill" data-bs-target="#leave" type="button">Leave Requests</button>
     </li>
   </ul>
 

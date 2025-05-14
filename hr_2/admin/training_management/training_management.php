@@ -471,14 +471,14 @@ while ($sched=$result->fetch_assoc()):
 
 
   </tr>
-
+  <?php
+    endwhile;?>
 </tbody>
     </table>
     
     
     
-    <?php
-    endwhile;?>
+   
     
     </div>
 

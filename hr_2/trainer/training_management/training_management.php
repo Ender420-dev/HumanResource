@@ -19,6 +19,22 @@ session_start();
     <link rel="stylesheet" href="../mdb/css/mdb.min.css">
     <link rel="icon" href="../logo.png">   
     <link rel="stylesheet" href="../../tm.css?v=2.5">
+    <style>
+        .collapse-animated {
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            opacity: 1;
+            max-height: 500px;
+        }
+        .collapse-animated:not(.show) {
+            opacity: 0;
+            max-height: 0 !important;
+        }
+        .collapse-animated.show {
+            opacity: 1;
+            max-height: 500px;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -36,18 +52,26 @@ session_start();
                 </a>
                 <ul class="nav nav-link flex-column mb-sm-auto mb-0 align-items-center align-items-sm-center" id="menu">
                     <li class="nav-item mt-2">
-                        <a href="../training_management/training_management.php" class="nav-link active align-middle px-0 text-start">
+                        <a href="#trainingSubmodules" data-bs-toggle="collapse" aria-controls="trainingSubmodules" aria-expanded="false" class="nav-link align-middle px-0 text-start">
                             <i class="fa-solid fa-chalkboard-user"></i>
                             <span class="ms-1 d-none d-sm-inline">Training Management</span>
                         </a>
+                        <ul class="nav flex-column ms-4 collapse collapse-animated" id="trainingSubmodules">
+                            <li class="nav-item"><a href="./training_program.php" class="nav-link px-0 text-start">Training Program Management</a></li>
+                            <li class="nav-item"><a href="./training_calendar.php" class="nav-link px-0 text-start">Training Calendar and Scheduling</a></li>
+
+                        </ul>
                     </li>
                     <li class="nav-item mt-2">
-                        <a href="../learning/learning.php" class="nav-link align-middle  px-0 text-start">
+                        <a href="#learningSubmodules" data-bs-toggle="collapse" aria-controls="learningSubmodules" aria-expanded="false" class="nav-link align-middle px-0 text-start">
                             <i class="fa-solid fa-book-medical"></i>
                             <span class="ms-1 d-none d-sm-inline">Learning Management</span>
                         </a>
+                        <ul class="nav flex-column ms-4 collapse collapse-animated" id="learningSubmodules">
+                            <li class="nav-item"><a href="#" class="nav-link px-0 text-start">Course Management</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link px-0 text-start">Learning Content and Management</a></li>
+                        </ul>
                     </li>
-                    
                 </ul>
             </div>
         </div>
@@ -58,7 +82,7 @@ session_start();
                 <div class="col-6">
                     <div class="card">
                         <div class="container">
-                            <h3 class="white-text text-center">No. of Trainees</h3>
+                            <h3 class="white-text text-center">Welcome Trainer</h3>
                         </div>
                     </div>
                 </div>
@@ -73,14 +97,11 @@ session_start();
 </nav> -->
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="../mdb/js/mdb.es.min.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script type="text/javascript" src="../mdb/js/mdb.es.min.js"></script>
 
-    
-    <script>
+<script>
 
 window.addEventListener('scroll',function(){
     let sidenav=document.querySelector('.bg-side');
@@ -91,7 +112,7 @@ window.addEventListener('scroll',function(){
     }
 });
 
-    </script>
+</script>
 
 
 </body>

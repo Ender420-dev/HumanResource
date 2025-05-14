@@ -102,7 +102,7 @@ session_start();
   </li>
 
   <li class="nav-item">
-    <button class="nav-link for-pills" id="pillsPSI-tab" data-bs-toggle="pill" data-bs-target="#pillsPSI" aria-controls="pillsEnrollment" aria-selected="false">Payroll & Salary Information
+    <button class="nav-link for-pills" id="pillsPSI-tab" data-bs-toggle="pill" data-bs-target="#pillsPSI" aria-controls="pillsEnrollment" aria-selected="false">Payroll 
     </button>
   </li>
 
@@ -373,16 +373,14 @@ session_start();
          
 
         <div class="container mt-5">
-  <h2 class="text-center mb-4">Payroll & Salary Information</h2>
+  <h2 class="text-center mb-4">Payroll </h2>
 
   <!-- Search Filter -->
   <div class="row mb-3">
     <div class="col-md-6">
       <input type="text" class="form-control" placeholder="Search by Employee ID">
     </div>
-    <div class="col-md-6 text-end">
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payrollModal">Add Payroll</button>
-    </div>
+    
   </div>
 
   <!-- Payroll Table -->
@@ -403,7 +401,7 @@ session_start();
         <td>2025-04-30</td>
         <td>₱50,000</td>
         <td>
-          <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#payrollModal">Edit</button>
+          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#payrollModal">View</button>
         </td>
       </tr>
     </tbody>

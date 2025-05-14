@@ -68,8 +68,8 @@ session_start();
                             <span class="ms-1 d-none d-sm-inline">Learning Management</span>
                         </a>
                         <ul class="nav flex-column ms-4 collapse collapse-animated" id="learningSubmodules">
-                            <li class="nav-item"><a href="#" class="nav-link px-0 text-start">Course Management</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link px-0 text-start">Learning Content and Management</a></li>
+                            <li class="nav-item"><a href="./course_management.php" class="nav-link px-0 text-start">Course Management</a></li>
+                            <li class="nav-item"><a href="./learning_content.php" class="nav-link px-0 text-start">Learning Content and Management</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -81,8 +81,79 @@ session_start();
             <div class="row">
                 <div class="col-6">
                     <div class="card">
-                        <div class="container">
-                            <h3 class="white-text text-center">Welcome Trainer</h3>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4 w-100 h-100">
+                        <div class="card-header bg-side text-white">
+                            <h5 class="mb-0">Course Management</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive" style="height:calc(100vh - 180px); min-height:300px;">
+                                <table class="table table-bordered table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Course ID</th>
+                                            <th>Course Title</th>
+                                            <th>Trainer Assign</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Example row, replace with PHP loop for dynamic data -->
+                                        <tr>
+                                            <td>CRS-001</td>
+                                            <td>Effective Communication</td>
+                                            <td>Jane Smith</td>
+                                            <td><span class="badge bg-success">Active</span></td>
+                                            <td><button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#studentListModal">View</button></td>
+                                        </tr>
+                                        <!-- End example row -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Student List Modal -->
+            <div class="modal fade" id="studentListModal" tabindex="-1" aria-labelledby="studentListModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-side text-white">
+                            <h5 class="modal-title" id="studentListModalLabel">Student List</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Employee ID</th>
+                                            <th>Employee Name</th>
+                                            <th>Position</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Example row, replace with PHP loop for dynamic data -->
+                                        <tr>
+                                            <td>EMP-001</td>
+                                            <td>Michael Johnson</td>
+                                            <td>Nurse</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EMP-002</td>
+                                            <td>Sarah Lee</td>
+                                            <td>Technician</td>
+                                        </tr>
+                                        <!-- End example row -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

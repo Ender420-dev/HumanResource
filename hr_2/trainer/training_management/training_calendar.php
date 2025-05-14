@@ -19,6 +19,7 @@ session_start();
     <link rel="stylesheet" href="../mdb/css/mdb.min.css">
     <link rel="icon" href="../logo.png">   
     <link rel="stylesheet" href="../../tm.css?v=2.5">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css' rel='stylesheet' />
     <style>
         .collapse-animated {
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -68,8 +69,8 @@ session_start();
                             <span class="ms-1 d-none d-sm-inline">Learning Management</span>
                         </a>
                         <ul class="nav flex-column ms-4 collapse collapse-animated" id="learningSubmodules">
-                            <li class="nav-item"><a href="#" class="nav-link px-0 text-start">Course Management</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link px-0 text-start">Learning Content and Management</a></li>
+                            <li class="nav-item"><a href="./course_management.php" class="nav-link px-0 text-start">Course Management</a></li>
+                            <li class="nav-item"><a href="./learning_content.php" class="nav-link px-0 text-start">Learning Content and Management</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -79,10 +80,47 @@ session_start();
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="container">
-                            <h3 class="white-text text-center">Welcome Trainer</h3>
+                <!-- Schedule Table Column (now on the left, larger) -->
+                <div class="col-md-8 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-side text-white">
+                            <h5 class="mb-0">Training Schedule</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive" style="height:calc(100vh - 220px); min-height:300px;">
+                                <table class="table table-bordered table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Program Name</th>
+                                            <th>Trainer</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Example row, replace with PHP loop for dynamic data -->
+                                        <tr>
+                                            <td>Leadership 101</td>
+                                            <td>John Doe</td>
+                                            <td>2025-06-01</td>
+                                            <td>2025-06-05</td>
+                                        </tr>
+                                        <!-- End example row -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Calendar Column (now on the right, smaller) -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-side text-white">
+                            <h5 class="mb-0">Calendar</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- FullCalendar.io widget integration -->
+                            <div id="calendar"></div>
                         </div>
                     </div>
                 </div>
@@ -100,8 +138,32 @@ session_start();
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script type="text/javascript" src="../mdb/js/mdb.es.min.js"></script>
-
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    if(calendarEl) {
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 400,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: [
+                // Example event, replace with dynamic events if needed
+                {
+                    title: 'Leadership 101',
+                    start: '2025-06-01',
+                    end: '2025-06-05',
+                    color: '#1a237e'
+                }
+            ]
+        });
+        calendar.render();
+    }
+});
 
 window.addEventListener('scroll',function(){
     let sidenav=document.querySelector('.bg-side');

@@ -68,8 +68,8 @@ session_start();
                             <span class="ms-1 d-none d-sm-inline">Learning Management</span>
                         </a>
                         <ul class="nav flex-column ms-4 collapse collapse-animated" id="learningSubmodules">
-                            <li class="nav-item"><a href="#" class="nav-link px-0 text-start">Course Management</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link px-0 text-start">Learning Content and Management</a></li>
+                            <li class="nav-item"><a href="./course_management.php" class="nav-link px-0 text-start">Course Management</a></li>
+                            <li class="nav-item"><a href="./learning_content.php" class="nav-link px-0 text-start">Learning Content and Management</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -79,10 +79,42 @@ session_start();
         <!-- Main Content -->
         <div class="col main-content py-4">
             <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="container">
-                            <h3 class="white-text text-center">Welcome Trainer</h3>
+                <div class="col-12">
+                    <div class="card mb-4 w-100 h-100">
+                        <div class="card-header bg-side text-white">
+                            <h5 class="mb-0">Training Programs</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive" style="height:calc(100vh - 180px); min-height:300px;">
+                                <table class="table table-bordered table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Program Type</th>
+                                            <th>Program Name</th>
+                                            <th>Description Program</th>
+                                            <th>Trainer</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Example row, replace with PHP loop for dynamic data -->
+                                        <tr>
+                                            <td>Internal</td>
+                                            <td>Leadership 101</td>
+                                            <td>Basic leadership skills training</td>
+                                            <td>John Doe</td>
+                                            <td>2025-06-01</td>
+                                            <td>2025-06-05</td>
+                                            <td><span class="badge bg-success">Active</span></td>
+                                            <td><a href="#" class="btn btn-sm btn-info">View</a></td>
+                                        </tr>
+                                        <!-- End example row -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -707,7 +707,7 @@ $resultRejected = $connection->query($queryRejected);
             </tbody>
           </table>
         </div>
-      </div>
+      </div></div>
 
     <!-- Rejected Enrollments -->
     <div class="tab-pane fade" id="v-pills-rejected" role="tabpanel" aria-labelledby="v-pills-rejected-tab">
@@ -788,7 +788,7 @@ $resultRejected = $connection->query($queryRejected);
     </div>
 
   </div>
-</div></div></div></div></div>
+</div></div></div></div>
 
 
  <div class="tab-pane fade" id="pillsFaculty" role="tabpanel"> 

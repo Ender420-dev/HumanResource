@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once("../../../phpcon/conn.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -138,21 +140,33 @@ session_start();
               </tr>
             </thead>
             <tbody>
+            <?php
+$query = "
+SELECT tp.PROGRAM_ID, tp.PROGRAM_TYPE, tp.PROGRAM_NAME, tf.TRAINER_ID, tf.FULLNAME, tp.STATUS,tp.DESCRIPTION_PROGRAM, tp.START AS START_DATE, tp.END AS END_DATE
+    FROM training_program tp 
+    LEFT JOIN trainer_faculty tf ON tp.TRAINER = tf.TRAINER_ID
+";
+$result=$connection->query($query);
+?>
+<?php
+while ($program=$result->fetch_assoc()):
+?>
               <tr>
-                <td>Employee Training 101</td>
-                <td>John Doe</td>
-                <td>2025-05-10</td>
-                <td>2025-06-10</td>
-                <td>Ongoing</td>
-                <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
-
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
-
-                </td>
+              <td><?php echo htmlspecialchars($program['PROGRAM_NAME']); ?></td>
+            <td><?php echo htmlspecialchars($program['FULLNAME']); ?></td>
+            <td><?php echo htmlspecialchars($program['START_DATE']); ?></td>
+            <td><?php echo htmlspecialchars($program['END_DATE']); ?></td>
+           
+            <td><?php echo htmlspecialchars($program['STATUS']); ?></td>
+            <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal<?php echo $program['PROGRAM_ID']; ?>">Edit</button>
+            
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#viewTrainingModal<?php echo $program['PROGRAM_ID']; ?>">View</button>
+  </td>
+              
               </tr>
               <!-- Repeat more rows here -->
-            </tbody>
+            </tbody><?php endwhile;?>
           </table>
         </div>
       </div>
@@ -207,6 +221,7 @@ session_start();
               <tr>
                 <th scope="col">Course Title</th>
                 <th scope="col">Trainer</th>
+                <th>Progress</th>
                 <th scope="col">Start Date</th>
                 <th scope="col">End Date</th>
                 <th scope="col">Status</th>
@@ -217,6 +232,9 @@ session_start();
               <tr>
                 <td>Employee Training 101</td>
                 <td>John Doe</td>
+                <td><div class="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar text-bg-success" style="width:25%;">25%</div>
+                </div></td>
                 <td>2025-05-10</td>
                 <td>2025-06-10</td>
                 <td>Ongoing</td>

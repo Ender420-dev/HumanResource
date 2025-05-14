@@ -155,7 +155,7 @@ require_once("../../../phpcon/conn.php");
                 <th scope="col">Program Type</th>
                 <th>Program Name</th>
 
-                <th scope="col">Trainer</th>
+                
                 <th scope="col">Start Date</th>
                 <th scope="col">End Date</th>
                 <th scope="col">Status</th>
@@ -178,7 +178,7 @@ while ($program=$result->fetch_assoc()):
               <td><?php echo htmlspecialchars($program['PROGRAM_ID']); ?></td>
             <td><?php echo htmlspecialchars($program['PROGRAM_TYPE']); ?></td>
             <td><?php echo htmlspecialchars($program['PROGRAM_NAME']); ?></td>
-            <td><?php echo htmlspecialchars($program['FULLNAME']); ?></td>
+           
             <td><?php echo htmlspecialchars($program['START_DATE']); ?></td>
             <td><?php echo htmlspecialchars($program['END_DATE']); ?></td>
             <td><?php echo htmlspecialchars($program['STATUS']); ?></td>
@@ -281,7 +281,8 @@ $trainerResult = $connection->query($trainerQuery);
     <option value="">Select Trainer</option>
     <?php while($trainer = $trainerResult->fetch_assoc()): ?>
       <option value="<?php echo $trainer['TRAINER_ID']; ?>"
-        <?php if($program['FULLNAME'] == $trainer['TRAINER_ID']) echo 'selected'; ?>>
+        <?php if($program['TRAINER_ID'] == $trainer['TRAINER_ID']) echo 'selected'; ?>
+        >
         <?php echo htmlspecialchars($trainer['FULLNAME']); ?>
       </option>
     <?php endwhile; ?>
@@ -520,34 +521,59 @@ while ($sched=$result->fetch_assoc()):
   <div class="tab-content" id="v-pills-tabContent">
   <?php
 $queryNew = "
-SELECT tea.*, 
-       tf.FULLNAME AS TRAINER_FULLNAME,
-       et.FULLNAME AS EMPLOYEE_FULLNAME
-FROM trainee_enrollment_approval tea
-LEFT JOIN trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
-LEFT JOIN employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
-WHERE tea.STATUS = 'New'
+SELECT 
+    tea.*, 
+    tf.FULLNAME AS TRAINER_FULLNAME,
+    et.FULLNAME AS EMPLOYEE_FULLNAME,
+    tp.PROGRAM_NAME
+FROM 
+    trainee_enrollment_approval tea
+LEFT JOIN 
+    trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
+LEFT JOIN 
+    employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
+LEFT JOIN 
+    training_program tp ON tea.COURSE_PROGRAM = tp.PROGRAM_ID
+WHERE 
+    tea.STATUS = 'New'
 ";
 
 $queryApproved = "
-SELECT tea.*, 
-       tf.FULLNAME AS TRAINER_FULLNAME,
-       et.FULLNAME AS EMPLOYEE_FULLNAME
-FROM trainee_enrollment_approval tea
-LEFT JOIN trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
-LEFT JOIN employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
-WHERE tea.STATUS = 'Approved'
+SELECT 
+    tea.*, 
+    tf.FULLNAME AS TRAINER_FULLNAME,
+    et.FULLNAME AS EMPLOYEE_FULLNAME,
+    tp.PROGRAM_NAME
+FROM 
+    trainee_enrollment_approval tea
+LEFT JOIN 
+    trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
+LEFT JOIN 
+    employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
+LEFT JOIN 
+    training_program tp ON tea.COURSE_PROGRAM = tp.PROGRAM_ID
+WHERE 
+    tea.STATUS = 'Approved'
 ";
 
 $queryRejected = "
-SELECT tea.*, 
-       tf.FULLNAME AS TRAINER_FULLNAME,
-       et.FULLNAME AS EMPLOYEE_FULLNAME
-FROM trainee_enrollment_approval tea
-LEFT JOIN trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
-LEFT JOIN employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
-WHERE tea.STATUS = 'Rejected'
+SELECT 
+    tea.*, 
+    tf.FULLNAME AS TRAINER_FULLNAME,
+    et.FULLNAME AS EMPLOYEE_FULLNAME,
+    tp.PROGRAM_NAME
+FROM 
+    trainee_enrollment_approval tea
+LEFT JOIN 
+    trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
+LEFT JOIN 
+    employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
+LEFT JOIN 
+    training_program tp ON tea.COURSE_PROGRAM = tp.PROGRAM_ID
+WHERE 
+    tea.STATUS = 'Rejected'
 ";
+
 
 
 
@@ -602,10 +628,12 @@ $resultRejected = $connection->query($queryRejected);
                 <div class="modal-body">
                   <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
                   <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
-                  <p><strong>Trainee Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
+              
                   <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
                   <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
+                  <p><strong>Trainer Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
                   <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
+                  <p><strong>Program Title:</strong> <?php echo $row['PROGRAM_NAME']; ?></p>
                   <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
                   <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
                 </div>
@@ -676,12 +704,14 @@ $resultRejected = $connection->query($queryRejected);
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
+                <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
                   <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
-                  <p><strong>Trainee Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
+              
                   <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
                   <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
+                  <p><strong>Trainer Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
                   <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
+                  <p><strong>Program Title:</strong> <?php echo $row['PROGRAM_NAME']; ?></p>
                   <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
                   <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
                 </div>
@@ -753,12 +783,14 @@ $resultRejected = $connection->query($queryRejected);
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
+                <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
                   <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
-                  <p><strong>Trainee Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
+              
                   <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
                   <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
+                  <p><strong>Trainer Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
                   <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
+                  <p><strong>Program Title:</strong> <?php echo $row['PROGRAM_NAME']; ?></p>
                   <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
                   <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
                 </div>

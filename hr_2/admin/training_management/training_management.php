@@ -165,7 +165,7 @@ require_once("../../../phpcon/conn.php");
             <tbody>
             <?php
 $query = "
-SELECT tp.PROGRAM_ID, tp.PROGRAM_TYPE, tp.PROGRAM_NAME, tf.TRAINER_ID, tf.FULLNAME, tp.STATUS, tp.START AS START_DATE, tp.END AS END_DATE
+SELECT tp.PROGRAM_ID, tp.PROGRAM_TYPE, tp.PROGRAM_NAME, tf.TRAINER_ID, tf.FULLNAME, tp.STATUS,tp.DESCRIPTION_PROGRAM, tp.START AS START_DATE, tp.END AS END_DATE
     FROM training_program tp 
     LEFT JOIN trainer_faculty tf ON tp.TRAINER = tf.TRAINER_ID
 ";
@@ -217,7 +217,7 @@ while ($program=$result->fetch_assoc()):
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Trainer:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['TRAINER']); ?></div>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['FULLNAME']); ?></div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Start Date:</label>

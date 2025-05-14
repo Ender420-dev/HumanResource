@@ -276,22 +276,100 @@ require_once("../../../phpcon/conn.php");
               </tr>
             </thead>
             <tbody>
+<?php
+$query="SELECT * FROM trainer_faculty";
+$result=$connection->query($query);
+?>
+<?php
+while ($trainer=$result->fetch_assoc()):
+?>
               <tr>
-                <td>1</td>
-                <td>John Doe</td>
-                <td>Employee 101</td>
+                <td><?php echo htmlspecialchars($trainer['TRAINER_ID']);?></td>
+                <td><?php echo htmlspecialchars($trainer['FULLNAME']);?></td>
+                <td><?php echo htmlspecialchars($trainer['course']);?></td>
                 <td>
 
-                <button type="button" class="btn btn-success">View</button>
-                <button type="button" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerViewID<?php echo $trainer['TRAINER_ID']?>">View</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trainerEditID<?php echo $trainer['TRAINER_ID']?>">Edit</button>
                 <button type="button" class="btn btn-danger">Delete</button>
 
               </td>
               </tr>
+
+              <div class="modal fade" id="trainerViewID<?php echo $trainer['TRAINER_ID']?>">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Trainer Details</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                      <div class="modal-body">
+                        <p><strong>Trainer ID: </strong> <?php echo htmlspecialchars($trainer['TRAINER_ID']);?></p>
+                        <p><strong>Full Name: </strong><?php echo htmlspecialchars($trainer['FULLNAME']);?></p>
+                        <p><strong>Subject: </strong><?php echo htmlspecialchars($trainer['course']);?></p>
+                        <p><strong>Update at: </strong><?php echo htmlspecialchars($trainer['update_at']);?></p>
+                        <p><strong>Created at: </strong><?php echo htmlspecialchars($trainer['create_at']);?></p>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="modal fade" data-bs-Backdrop="static" id="trainerEditID<?php echo $trainer['TRAINER_ID']?>">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Trainer </h5>
+
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                
+                </div>
+
+                <div class="modal-body">
+                  <form action="updateTrainer.php" method="post" enctype="multipart/form-data">
+                    <div class="container">
+                      <h1 class="text-center">Edit Trainer ID #<?php echo htmlspecialchars($trainer['TRAINER_ID']);?></h1>
+
+                      <input type="hidden" name="TRAINER_ID" value="<?php echo htmlspecialchars($trainer['TRAINER_ID']);?>">
+
+                      <div class="mb-3">
+                        <label for="FULLNAME" class="form-label">Full Name</label>
+                        <input type="text" name="FULLNAME" id="FULLNAME" value="<?php echo htmlspecialchars($trainer['FULLNAME']);?>" class="form-control">
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="course" class="form-label">Subject</label>
+                        <input type="text" name="course" id="course" value="<?php echo htmlspecialchars($trainer['course']);?>" class="form-control">
+                      </div>
+                      <div class="modal-footer"><button name="submit" type="submit" class="btn btn-success">Submit</button></div>
+                    </div>
+                  
+
+
+                  </form>
+                </div>
+                
+              </div>
+            </div>
+
+
+          </div>
+
+
+       
+
+
+
+
+              <?php endwhile;?>
             </tbody>
           </table>
         </div>
         
+
+       
         </div>
 
 

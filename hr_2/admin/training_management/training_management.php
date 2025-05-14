@@ -517,36 +517,279 @@ while ($sched=$result->fetch_assoc()):
   </div>
 
   <div class="col-md-10">
-    <!-- Tab Content -->
-    <div class="tab-content" id="v-pills-tabContent">
-      <div class="tab-pane fade show active" id="v-pills-new" role="tabpanel" aria-labelledby="v-pills-new-tab">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">New Enrollment</h5>
+  <div class="tab-content" id="v-pills-tabContent">
+  <?php
+$queryNew = "
+SELECT tea.*, 
+       tf.FULLNAME AS TRAINER_FULLNAME,
+       et.FULLNAME AS EMPLOYEE_FULLNAME
+FROM trainee_enrollment_approval tea
+LEFT JOIN trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
+LEFT JOIN employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
+WHERE tea.STATUS = 'New'
+";
+
+$queryApproved = "
+SELECT tea.*, 
+       tf.FULLNAME AS TRAINER_FULLNAME,
+       et.FULLNAME AS EMPLOYEE_FULLNAME
+FROM trainee_enrollment_approval tea
+LEFT JOIN trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
+LEFT JOIN employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
+WHERE tea.STATUS = 'Approved'
+";
+
+$queryRejected = "
+SELECT tea.*, 
+       tf.FULLNAME AS TRAINER_FULLNAME,
+       et.FULLNAME AS EMPLOYEE_FULLNAME
+FROM trainee_enrollment_approval tea
+LEFT JOIN trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
+LEFT JOIN employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
+WHERE tea.STATUS = 'Rejected'
+";
+
+
+
+$resultNew = $connection->query($queryNew);
+$resultApproved = $connection->query($queryApproved);
+$resultRejected = $connection->query($queryRejected);
+?>
+
+   <!-- New Enrollments -->
+<div class="tab-pane fade show active" id="v-pills-new" role="tabpanel" aria-labelledby="v-pills-new-tab">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">New Enrollment</h5>
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Enrollment ID</th>
+            <th>Trainee ID</th>
+            <th>Employee ID</th>
+            <th>Course Program</th>
+            <th>Trainer</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while($row = $resultNew->fetch_assoc()): ?>
+          <tr>
+            <td><?php echo $row['ENROLLMENT_ID']; ?></td>
+            <td><?php echo $row['TRAINEE_ID']; ?></td>
+            <td><?php echo $row['EMPLOYEE_ID']; ?></td>
+            <td><?php echo $row['COURSE_PROGRAM']; ?></td>
+            <td><?php echo $row['TRAINER']; ?></td>
+            <td><?php echo $row['STATUS']; ?></td>
+            <td>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['ENROLLMENT_ID']; ?>">
+                  View
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Modal per enrollment -->
+          <div class="modal fade" id="enroll-<?php echo $row['ENROLLMENT_ID']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>">Enrollment Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
+                  <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
+                  <p><strong>Trainee Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
+                  <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
+                  <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
+                  <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
+                  <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-success update-status-btn"
+        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-status="Approved">
+  Approve
+</button>
+
+<button type="button" class="btn btn-danger update-status-btn"
+        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-status="Rejected">
+  Reject
+</button>
+
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
           </div>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="tab-pane fade" id="v-pills-approve" role="tabpanel" aria-labelledby="v-pills-approve-tab">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Approved Enrollments</h5>
+          <table class="table table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>Enrollment ID</th>
+                <th>Trainee ID</th>
+                <th>Employee ID</th>
+                <th>Course Program</th>
+                <th>Trainer</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while($row = $resultApproved->fetch_assoc()): ?>
+              <tr>
+                <td><?php echo $row['ENROLLMENT_ID']; ?></td>
+                <td><?php echo $row['TRAINEE_ID']; ?></td>
+                <td><?php echo $row['EMPLOYEE_ID']; ?></td>
+                <td><?php echo $row['COURSE_PROGRAM']; ?></td>
+                <td><?php echo $row['TRAINER']; ?></td>
+                <td><?php echo $row['STATUS']; ?></td>
+                <td>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['ENROLLMENT_ID']; ?>">
+                  View
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Modal per enrollment -->
+          <div class="modal fade" id="enroll-<?php echo $row['ENROLLMENT_ID']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>">Enrollment Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
+                  <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
+                  <p><strong>Trainee Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
+                  <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
+                  <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
+                  <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
+                  <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-success update-status-btn"
+        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-status="Approved">
+  Approve
+</button>
+
+<button type="button" class="btn btn-danger update-status-btn"
+        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-status="Rejected">
+  Reject
+</button>
+
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <div class="tab-pane fade" id="v-pills-approve" role="tabpanel" aria-labelledby="v-pills-approve-tab">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Approved Enrollments</h5>
-          </div>
-        </div>
-      </div>
+    <!-- Rejected Enrollments -->
+    <div class="tab-pane fade" id="v-pills-rejected" role="tabpanel" aria-labelledby="v-pills-rejected-tab">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Rejected Enrollments</h5>
+          <table class="table table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>Enrollment ID</th>
+                <th>Trainee ID</th>
+                <th>Employee ID</th>
+                <th>Course Program</th>
+                <th>Trainer</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while($row = $resultRejected->fetch_assoc()): ?>
+              <tr>
+                <td><?php echo $row['ENROLLMENT_ID']; ?></td>
+                <td><?php echo $row['TRAINEE_ID']; ?></td>
+                <td><?php echo $row['EMPLOYEE_ID']; ?></td>
+                <td><?php echo $row['COURSE_PROGRAM']; ?></td>
+                <td><?php echo $row['TRAINER']; ?></td>
+                <td><?php echo $row['STATUS']; ?></td>
+                <td>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['ENROLLMENT_ID']; ?>">
+                  View
+                </button>
+              </div>
+            </td>
+          </tr>
 
-      <div class="tab-pane fade" id="v-pills-rejected" role="tabpanel" aria-labelledby="v-pills-rejected-tab">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Rejected Enrollments</h5>
+          <!-- Modal per enrollment -->
+          <div class="modal fade" id="enroll-<?php echo $row['ENROLLMENT_ID']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>">Enrollment Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
+                  <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
+                  <p><strong>Trainee Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
+                  <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
+                  <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
+                  <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
+                  <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-success update-status-btn"
+        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-status="Approved">
+  Approve
+</button>
+
+<button type="button" class="btn btn-danger update-status-btn"
+        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-status="Rejected">
+  Reject
+</button>
+
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
           </div>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+
   </div>
-        </div>
-        </div>
-        </div>
+</div></div></div></div></div>
+
 
  <div class="tab-pane fade" id="pillsFaculty" role="tabpanel"> 
           
@@ -745,13 +988,9 @@ while ($trainer=$result->fetch_assoc()):
         
         </div>
     </div>
-  </div>
-</div>
+  
 
-                    </div>
-                </div>
-  </div>
-</div>
+
 
        
                 
@@ -894,6 +1133,7 @@ while ($trainer=$result->fetch_assoc()):
         <img src="logo.png" style="margin-top:-25px;" width="90" height="90" alt=""> <span class="white-text" style=" ">HR 2</span></a></div>
 </nav> -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -904,7 +1144,32 @@ while ($trainer=$result->fetch_assoc()):
 
     
     <script>
-     
+     $(document).ready(function() {
+  $('.update-status-btn').on('click', function() {
+    var enrollmentId = $(this).data('enrollment-id');
+    var newStatus = $(this).data('status');
+    var button = $(this);
+
+    $.ajax({
+      url: 'update-enrollment-status.php',
+      type: 'POST',
+      data: { enrollment_id: enrollmentId, status: newStatus },
+      success: function(response) {
+        // Update status cell in the table
+        $('tr:has(button[data-enrollment-id="' + enrollmentId + '"]) td:nth-child(6)').text(newStatus);
+
+        // Optional: show toast / alert
+        alert(response);
+
+        // Close the modal
+        $('#enroll-' + enrollmentId).modal('hide');
+      },
+      error: function() {
+        alert('Failed to update status.');
+      }
+    });
+  });
+});
 function deleteTrainer(trainerID) {
     if (confirm("Are you sure you want to delete Trainer ID #" + trainerID + "?")) {
         const formData = new FormData();

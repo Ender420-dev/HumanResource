@@ -112,7 +112,7 @@ require_once("../../../phpcon/conn.php");
   </li>
 
   <li class="nav-item">
-    <button class="nav-link for-pills" id="pillsSI-tab" data-bs-toggle="pill" data-bs-target="#pillsSGATR" aria-controls="pillsFaculty" aria-selected="false">Skill Gap Analysis Training Recommendation
+    <button class="nav-link for-pills" id="pillsSI-tab" data-bs-toggle="pill" data-bs-target="#pillsSGATR" aria-controls="pillsFaculty" aria-selected="false">Skill Qualification
     </button>
   </li>
   <li class="nav-item">
@@ -531,7 +531,7 @@ require_once("../../../phpcon/conn.php");
         <br>
         <div style="overflow-y: auto; height: 100%;">
         <div class="container mt-5">
-  <h2 class="text-center mb-4">Skill-Gap Analysis & Training Recommendation</h2>
+  <h2 class="text-center mb-4">Skill Qualification</h2>
 
   <!-- Filter & Search Controls -->
   <div class="row mb-4">
@@ -540,9 +540,9 @@ require_once("../../../phpcon/conn.php");
     </div>
     <div class="col-md-3">
       <select class="form-select">
-        <option selected>Filter by Gap Level</option>
+        <option selected>Filter by Skill Level</option>
         <option>Low</option>
-        <option>Medium</option>
+        <option>Normal</option>
         <option>High</option>
       </select>
     </div>
@@ -550,7 +550,7 @@ require_once("../../../phpcon/conn.php");
       <input type="date" class="form-control" placeholder="Training Deadline">
     </div>
     <div class="col-md-2 text-end">
-      <button class="btn btn-primary">Add Gap</button>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSQ">Add Skill Qualification</button>
     </div>
   </div>
 
@@ -558,10 +558,10 @@ require_once("../../../phpcon/conn.php");
   <table class="table table-bordered table-hover">
     <thead class="table-dark">
       <tr>
-        <th>Gap ID</th>
+        <th>Skill ID</th>
         <th>Employee ID</th>
-        <th>Competency</th>
-        <th>Gap Level</th>
+        <th>Skill</th>
+        <th>Skill Level</th>
         <th>Recommended Training</th>
         <th>Training Deadline</th>
         <th>Actions</th>
@@ -587,7 +587,53 @@ require_once("../../../phpcon/conn.php");
 
 
         </div>
-        
+        <div class="modal" id="addSQ">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Skill Qualification</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        </div>
+        <div class="modal-body">
+          <form action="addSQ.php" method="post">
+          <div class="mb-3">
+            <label for="EMPLOYEE_ID" class="form-label">Employee ID</label>
+            <input type="number" name="EMPLOYEE_ID" placeholder="Enter Employee ID" id="EMPLOYEE_ID" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="EMPLOYEE_ID" class="form-label">Skill</label>
+            <input type="text" name="SKILL" placeholder="Enter SKILL" id="SKILL" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <select class="form-select" name="SKILL_LEVEL" id="SKILL_LEVEL">
+<option value="Low">Low</option>
+<option value="Normal">Normal</option>
+<option value="High">High</option>
+
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="RECOMMENDED_TRAINING" class="form-label">RECOMMENDED TRAINING</label>
+            <input type="text" name="RECOMMENDED_TRAINING" placeholder="Enter RECOMMENDED TRAINING" id="RECOMMENDED_TRAINING" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="TRAINING_DEADLINE" class="form-label">Training Deadline</label>
+            <input type="date" name="TRAINING_DEADLINE" placeholder="Enter Training Deadline" id="TRAINING_DEADLINE" class="form-control">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" name="submit" >Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+          </div>
+
+</form>
+        </div>
+      </div>
+    </div>
+  </div>
         </div> </div>
 
         <div class="tab-pane fade" id="pillsCDP" role="tabpanel"> 
@@ -611,9 +657,11 @@ require_once("../../../phpcon/conn.php");
       </select>
     </div>
     <div class="col-md-3 text-end">
-      <button class="btn btn-success">Add Development Plan</button>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDP">Add Development Plan</button>
     </div>
   </div>
+
+  
 
   <!-- Development Plan Table -->
   <table class="table table-striped table-hover">
@@ -645,7 +693,33 @@ require_once("../../../phpcon/conn.php");
     </tbody>
   </table>
 </div>
+<div class="modal" id="addDP">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Development Plan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="EMPLOYEE_ID" class="form-label">EMPLOYEE ID</label>
+          <input class="form-control" type="number" name="EMPLOYEE_ID" id="EMPLOYEE_ID" placeholder="Enter Employee ID">
+        </div>
 
+              <div class="modal-body">
+        <div class="mb-3">
+          <label for="GOAL_DESCRIPTION" class="form-label">GOAL DESCRIPTION</label>
+        <textarea name="GOAL_DESCRIPTION" id="GOAL_DESCRIPTION"></textarea>
+        </div>
+
+        <?php
+        $trainingQuery="SELECT "
+        ?>
+
+      </div>
+    </div>
+  </div>
+</div>
   
           </div>
           

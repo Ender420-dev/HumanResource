@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once("../../../phpcon/conn.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -163,7 +165,7 @@ session_start();
       </select>
     </div>
     <div class="col-md-2 text-end">
-      <button class="btn btn-primary">Add Competency</button>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCF">Add Competency</button>
     </div>
   </div>
 
@@ -175,29 +177,140 @@ session_start();
         <th>Name</th>
         <th>Role</th>
         <th>Department</th>
-        <th>Compliance</th>
+       
         <th>Last Updated</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
+      <?php
+      $competencyfwquery="SELECT * FROM competency_framework";
+      $competencyfwresult =$connection->query($competencyfwquery);
+      
+      
+      ?>
+      <?php while ($cfw=$competencyfwresult->fetch_assoc()):?>
       <tr>
-        <td>CMP001</td>
-        <td>Conflict Resolution</td>
-        <td>HR Manager</td>
-        <td>HR</td>
-        <td>Yes</td>
-        <td>2025-04-15</td>
-        <td>
-          <button class="btn btn-sm btn-primary">Edit</button>
-          <button class="btn btn-sm btn-danger">Delete</button>
-        </td>
+      <td><?php echo htmlspecialchars($cfw['COMPETENCY_ID']); ?></td>
+      <td><?php echo htmlspecialchars($cfw['NAME']); ?></td>
+      <td><?php echo htmlspecialchars($cfw['ROLE']); ?></td>
+      <td><?php echo htmlspecialchars($cfw['DEPARTMENT']); ?></td>
+      <td><?php echo htmlspecialchars($cfw['LASTUPDATE']); ?></td>
+      <td>
+  <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editCF<?php echo $cfw['COMPETENCY_ID']; ?>">Edit</button>
+  
+  <form action="deleteCompetencyFW.php" method="post" style="display:inline-block;" onsubmit="return confirm('Are you sure to delete this competency?');">
+    <input type="hidden" name="COMPETENCY_ID" value="<?php echo $cfw['COMPETENCY_ID']; ?>">
+    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+  </form>
+</td>
+
       </tr>
+     
       <!-- More rows here -->
     </tbody>
+    <!-- Edit Competency Framework Modal -->
+<div class="modal fade" id="editCF<?php echo $cfw['COMPETENCY_ID']; ?>" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Competency Framework (ID: <?php echo $cfw['COMPETENCY_ID']; ?>)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form action="updateCompetencyFW.php" method="post">
+          <input type="hidden" name="COMPETENCY_ID" value="<?php echo $cfw['COMPETENCY_ID']; ?>">
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="Name" class="form-control" value="<?php echo htmlspecialchars($cfw['NAME']); ?>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select name="ROLE" class="form-select" >
+              <option value="HR Manager" <?php if($cfw['ROLE']=='HR Manager') echo 'selected'; ?>>HR Manager</option>
+              <option value="IT Support" <?php if($cfw['ROLE']=='IT Support') echo 'selected'; ?>>IT Support</option>
+              <option value="Nurse" <?php if($cfw['ROLE']=='Nurse') echo 'selected'; ?>>Nurse</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Department</label>
+            <select name="DEPARTMENT" class="form-select">
+              <option value="HR" <?php if($cfw['DEPARTMENT']=='HR') echo 'selected'; ?>>HR</option>
+              <option value="IT" <?php if($cfw['DEPARTMENT']=='IT') echo 'selected'; ?>>IT</option>
+              <option value="Medical" <?php if($cfw['DEPARTMENT']=='Medical') echo 'selected'; ?>>Medical</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" name="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+    <?php endwhile;?>
   </table>
 </div>
 
+        </div>
+        <div class="modal fade" id="addCF">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add Competency Framework</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+              </div>
+
+              <div class="modal-body">
+                <form action="addCompetencyFW.php" method="post">
+                  <div class="mb-3">
+                    <label for="NAME" class="form-label">Name</label>
+                    <input type="text" name="Name" id="NAME" placeholder="Name " class="form-control">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="ROLE" class="form-label">Role</label>
+                    <select name="ROLE" id="ROLE" class="form-select form-select-lg">
+                      <option value="" >Select Role</option>
+                      <option value="HR Manager">HR Manager</option>
+                      <option value="IT Support">IT Support</option>
+                      <option value="Nurse">Nurse</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="DEPARTMENT" class="form-label">Department</label>
+                    <select name="DEPARTMENT" id="DEPARTMENT" class="form-select form-select-lg">
+                      <option value="" >Select Department</option>
+                      <option value="HR">HR</option>
+                      <option value="IT">IT</option>
+                      <option value="Medical">Medical</option>
+                    </select>
+                  </div>
+
+<div class="mb-3">
+                  
+                  </div>
+                  <div class="modal-footer">
+            <button type="submit" name="submit" class="btn btn-success">Add Program</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+                </form>
+
+              </div>
+
+
+            </div>
+          </div>
         </div>
       </div>
 
@@ -231,9 +344,11 @@ session_start();
       </select>
     </div>
     <div class="col-md-2 text-end">
-      <button class="btn btn-primary">Add Assessment</button>
+      <button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAss">Add Assessment</button>
     </div>
   </div>
+
+  <
 
   <!-- Assessment Table -->
   <table class="table table-bordered table-striped">
@@ -249,20 +364,90 @@ session_start();
       </tr>
     </thead>
     <tbody>
+      <?php
+      $queryAss="SELECT * FROM competency_assessment";
+      $resultAss=$connection->query($queryAss);
+      ?>
+      <?php 
+      while($rowAss = $resultAss->fetch_assoc()):
+        ?>
       <tr>
-        <td>A001</td>
-        <td>Jane Smith</td>
-        <td>Manager</td>
-        <td>85%</td>
-        <td>2025-05-01</td>
-        <td>Leadership</td>
-        <td>
-          <button class="btn btn-sm btn-primary">Edit</button>
-          <button class="btn btn-sm btn-danger">Delete</button>
-        </td>
+      <td><?php echo htmlspecialchars($rowAss['ASSESSMENT_ID']); ?></td>
+      <td><?php echo htmlspecialchars($rowAss['EMPLOYEE']); ?></td>
+      <td><?php echo htmlspecialchars($rowAss['ASSESSMENT_TYPE']); ?></td>
+      <td><?php echo htmlspecialchars($rowAss['SCORE']); ?>%</td>
+      <td><?php echo htmlspecialchars($rowAss['DATE']); ?></td>
+      <td><?php echo htmlspecialchars($rowAss['COMPETENCY']); ?></td>
+      <td>
+      <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editAss<?php echo $rowAss['ASSESSMENT_ID']; ?>">
+  Edit
+</button>
+
+  <a href="deleteAss.php?id=<?php echo $rowAss['ASSESSMENT_ID']; ?>" 
+     class="btn btn-sm btn-danger" 
+     onclick="return confirm('Are you sure you want to delete this assessment?');">
+    Delete
+  </a>
+</td>
+
       </tr>
       <!-- More rows here -->
     </tbody>
+    <div class="modal fade" id="editAss<?php echo $rowAss['ASSESSMENT_ID']; ?>" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Assessment (ID: <?php echo $rowAss['ASSESSMENT_ID']; ?>)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form action="editAss.php" method="post">
+          <input type="hidden" name="ASSESSMENT_ID" value="<?php echo $rowAss['ASSESSMENT_ID']; ?>">
+
+          <div class="mb-3">
+            <label class="form-label">Employee Name</label>
+            <input type="text" name="EMPLOYEE" class="form-control" value="<?php echo htmlspecialchars($rowAss['EMPLOYEE']); ?>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Assessment Type</label>
+            <select name="ASSESSMENT_TYPE" class="form-select">
+              <option value="Self" <?php if($rowAss['ASSESSMENT_TYPE']=='Self') echo 'selected'; ?>>Self</option>
+              <option value="Manager" <?php if($rowAss['ASSESSMENT_TYPE']=='Manager') echo 'selected'; ?>>Manager</option>
+              <option value="360 Review" <?php if($rowAss['ASSESSMENT_TYPE']=='360 Review') echo 'selected'; ?>>360 Review</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Score</label>
+            <input type="number" name="SCORE" class="form-control" min="0" max="100" value="<?php echo $rowAss['SCORE']; ?>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Competency</label>
+            <select name="COMPETENCY" class="form-select">
+              <option value="Leadership" <?php if($rowAss['COMPETENCY']=='Leadership') echo 'selected'; ?>>Leadership</option>
+              <option value="Technical Skills" <?php if($rowAss['COMPETENCY']=='Technical Skills') echo 'selected'; ?>>Technical Skills</option>
+              <option value="Teamwork" <?php if($rowAss['COMPETENCY']=='Teamwork') echo 'selected'; ?>>Teamwork</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" name="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+    <?php
+  endwhile; ?>
   </table>
 </div>
 
@@ -534,7 +719,56 @@ session_start();
             </div>
         </div>
     </div>
-</div><div class="modal fade" id="trainerModal" tabindex="-1" aria-labelledby="trainerModalLabel" aria-hidden="true">
+</div>
+
+<div class="modal fade" id="addAss">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+
+
+          <h5 class="modal-title">Add Assessment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <form action="addAss.php" method="post">
+
+<div class="mb-3">
+<label for="EMPLOYEE" class="form-label">Employee</label>
+<input type="text" name="EMPLOYEE" id="EMPLOYEE" class="form-control" placeholder="Enter Employee Name">
+</div>
+<div class="mb-3">
+      <select class="form-select" name="ASSESSMENT_TYPE" id="ASSESSMENT_TYPE">
+        <option selected >Select Assessment Type</option>
+        <option value="Self">Self</option>
+        <option value="Manager">Manager</option>
+        <option value="360 Review">360 Review</option>
+        <!-- Populate dynamically -->
+      </select>
+    </div>
+    <div class="mb-3">
+  <label for="EMPLOYEE" class="form-label">Score</label>
+  <input type="number" name="SCORE" id="SCORE" class="form-control" placeholder="Enter Score" min="0" max="100">
+</div>
+<div class="mb-3">
+      <select class="form-select" name="COMPETENCY" id="COMPETENCY">
+        <option selected >Select Competency</option>
+        <option value="Leadership">Leadership</option>
+        <option value="Technical Skills">Technical Skills</option>
+        <option value="Teamwork">Teamwork</option>
+        <!-- Populate dynamically -->
+      </select>
+    </div>
+    <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Update Assessment</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+  </form>
+</div>
+        </div>
+      </div>
+    </div>
+<div class="modal fade" id="trainerModal" tabindex="-1" aria-labelledby="trainerModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     

@@ -141,7 +141,8 @@ require_once("../../../phpcon/conn.php");
   <div class="tab-pane fade show active" id="pillsTPM" role="tabpanel" >
 
   <h3 class="white-text card-title text-center">Training Program Management</h3>
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTrainingModal">
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTrainingModal">
   + Add New Training Program
 </button>
 </div>

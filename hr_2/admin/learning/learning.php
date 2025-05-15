@@ -165,6 +165,143 @@ while ($program=$result->fetch_assoc()):
   </td>
               
               </tr>
+                          <!-- View Training Modal -->
+<div class="modal fade" id="viewTrainingModal<?php echo $program['PROGRAM_ID']; ?>" tabindex="-1" aria-labelledby="viewTrainingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <h5 class="modal-title">View Training Program Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Program ID:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['PROGRAM_ID']); ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Program Type:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['PROGRAM_TYPE']); ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Program Name:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['PROGRAM_NAME']); ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Trainer:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['FULLNAME']); ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Start Date:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['START_DATE']); ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">End Date:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['END_DATE']); ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Description:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['DESCRIPTION_PROGRAM']); ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Status:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['STATUS']); ?></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+            <div class="modal fade" id="editTrainingModal<?php echo $program['PROGRAM_ID']; ?>" tabindex="-1" aria-labelledby="editTrainingModalLabel<?php echo $program['PROGRAM_ID']; ?>" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTrainingModalLabel<?php echo $program['PROGRAM_ID']; ?>">Edit Training Details (Program ID: <?php echo $program['PROGRAM_ID']; ?>)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form action="updateTrainingProgram.php" method="post">
+          <input type="hidden" name="PROGRAM_ID" value="<?php echo $program['PROGRAM_ID']; ?>">
+
+          <div class="mb-3">
+            <label for="PROGRAM_TYPE<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Program Type</label>
+            <input type="text" class="form-control" id="PROGRAM_TYPE<?php echo $program['PROGRAM_ID']; ?>" name="PROGRAM_TYPE" value="<?php echo htmlspecialchars($program['PROGRAM_TYPE']); ?>">
+          </div>
+
+          <div class="mb-3">
+            <label for="PROGRAM_NAME<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Program Name</label>
+            <input type="text" class="form-control" id="PROGRAM_NAME<?php echo $program['PROGRAM_ID']; ?>" name="PROGRAM_NAME" value="<?php echo htmlspecialchars($program['PROGRAM_NAME']); ?>">
+          </div>
+
+          <?php
+// Fetch trainer list
+$trainerQuery = "SELECT TRAINER_ID, FULLNAME FROM trainer_faculty";
+$trainerResult = $connection->query($trainerQuery);
+?>
+
+<div class="mb-3">
+  <label for="TRAINER<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Trainer</label>
+  <select class="form-select" id="TRAINER<?php echo $program['PROGRAM_ID']; ?>" name="TRAINER_I">
+    <option value="">Select Trainer</option>
+    <?php while($trainer = $trainerResult->fetch_assoc()): ?>
+      <option value="<?php echo $trainer['TRAINER_ID']; ?>"
+        <?php if($program['TRAINER_ID'] == $trainer['TRAINER_ID']) echo 'selected'; ?>
+        >
+        <?php echo htmlspecialchars($trainer['FULLNAME']); ?>
+      </option>
+    <?php endwhile; ?>
+  </select>
+</div>
+
+
+<div class="mb-3">
+  <label for="STATUS<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Status</label>
+  <select class="form-select" id="STATUS<?php echo $program['PROGRAM_ID']; ?>" name="STATUS">
+    <option value="Cancel" <?php echo $program['STATUS'] == 'Cancel' ? 'selected' : ''; ?>>Cancel</option>
+    <option value="Ongoing" <?php echo $program['STATUS'] == 'Ongoing' ? 'selected' : ''; ?>>Ongoing</option>
+    <option value="Pending" <?php echo $program['STATUS'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
+    <option value="Complete" <?php echo $program['STATUS'] == 'Complete' ? 'selected' : ''; ?>>Complete</option>
+  </select>
+</div>
+
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="START_DATE<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Start Date</label>
+              <input type="date" class="form-control" id="START_DATE<?php echo $program['PROGRAM_ID']; ?>" name="START_DATE" value="<?php echo htmlspecialchars($program['START_DATE']); ?>">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="END_DATE<?php echo $program['PROGRAM_ID']; ?>" class="form-label">End Date</label>
+              <input type="date" class="form-control" id="END_DATE<?php echo $program['PROGRAM_ID']; ?>" name="END_DATE" value="<?php echo htmlspecialchars($program['END_DATE']); ?>">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="DESCRIPTION_PROGRAM<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Description</label>
+            <textarea type="text" class="form-control" id="STATUS<?php echo $program['PROGRAM_ID']; ?>" name="DESCRIPTION_PROGRAM" value="<?php echo htmlspecialchars($program['STATUS']); ?>">
+          </textarea>
+
+          <div class="modal-footer">
+            <button type="submit" name="submit" class="btn btn-success">Save Changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
               <!-- Repeat more rows here -->
             </tbody><?php endwhile;?>
           </table>
@@ -190,19 +327,32 @@ while ($program=$result->fetch_assoc()):
               </tr>
             </thead>
             <tbody>
+          <?php  $query = "
+SELECT tp.PROGRAM_ID, tp.PROGRAM_TYPE, tp.PROGRAM_NAME, tf.TRAINER_ID, tf.FULLNAME, tp.STATUS,tp.DESCRIPTION_PROGRAM, tp.START AS START_DATE, tp.END AS END_DATE
+    FROM training_program tp 
+    LEFT JOIN trainer_faculty tf ON tp.TRAINER = tf.TRAINER_ID
+";
+$result=$connection->query($query);
+?>
+<?php
+while ($program=$result->fetch_assoc()):
+?>
               <tr>
-                <td>Employee Training 101</td>
-                <td>John Doe</td>
-                <td>2025-05-10</td>
-                <td>2025-06-10</td>
-                <td>Ongoing</td>
-                <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
-
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
-
-                </td>
+              <td><?php echo htmlspecialchars($program['PROGRAM_NAME']); ?></td>
+            <td><?php echo htmlspecialchars($program['FULLNAME']); ?></td>
+            <td><?php echo htmlspecialchars($program['START_DATE']); ?></td>
+            <td><?php echo htmlspecialchars($program['END_DATE']); ?></td>
+           
+            <td><?php echo htmlspecialchars($program['STATUS']); ?></td>
+            <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal<?php echo $program['PROGRAM_ID']; ?>">Edit</button>
+            
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#viewTrainingModal<?php echo $program['PROGRAM_ID']; ?>">View</button>
+  </td>
+              
               </tr>
+              <!-- Repeat more rows here -->
+            </tbody><?php endwhile;?>
               <!-- Repeat more rows here -->
             </tbody>
           </table>

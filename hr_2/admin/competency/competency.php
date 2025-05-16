@@ -624,7 +624,7 @@ require_once("../../../phpcon/conn.php");
             <input type="date" name="TRAINING_DEADLINE" placeholder="Enter Training Deadline" id="TRAINING_DEADLINE" class="form-control">
           </div>
           <div class="modal-footer">
-            <button type="submit" name="submit" >Submit</button>
+            <button type="submit" class="btn btn-success" name="submit" >Submit</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
           </div>
@@ -657,7 +657,7 @@ require_once("../../../phpcon/conn.php");
       </select>
     </div>
     <div class="col-md-3 text-end">
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDP">Add Development Plan</button>
+      <button class="btn  btn-success" data-bs-toggle="modal" data-bs-target="#addDP">Add Development Plan</button>
     </div>
   </div>
 
@@ -677,18 +677,115 @@ require_once("../../../phpcon/conn.php");
       </tr>
     </thead>
     <tbody>
+
+    <?php
+   $devPlansQuery = "
+   SELECT 
+       cd.PLAN_ID, 
+       cd.EMPLOYEE_ID, 
+       cd.GOAL_DESCRIPTION, 
+       cd.ASSIGNED_TRAINING, 
+       cd.MILESTONE_START, 
+       cd.MILESTONE_END, 
+       cd.STATUS,
+       tp.PROGRAM_NAME
+   FROM 
+       competancy_development cd 
+   LEFT JOIN 
+       training_program tp ON cd.ASSIGNED_TRAINING = tp.PROGRAM_ID
+";
+$devPlansResult = $connection->query($devPlansQuery);
+    ?>
+
+<?php while ($devRow = $devPlansResult->fetch_assoc()): ?>
+
+
       <tr>
-        <td>PLAN1001</td>
-        <td>EMP204</td>
-        <td>Improve client presentation skills</td>
-        <td>Presentation Mastery Course</td>
-        <td>2025-06-01, 2025-07-15</td>
-        <td>In Progress</td>
+        <td><?php echo htmlspecialchars($devRow['PLAN_ID'])?></td>
+        <td><?php echo htmlspecialchars($devRow['EMPLOYEE_ID'])?></td>
+        <td><?php echo htmlspecialchars($devRow['GOAL_DESCRIPTION'])?></td>
+        <td><?php echo htmlspecialchars($devRow['PROGRAM_NAME'])?></td>
+        <td><?php echo htmlspecialchars($devRow['MILESTONE_START'])?> <?php echo htmlspecialchars($devRow['MILESTONE_END'])?></td>
+        <td><?php echo htmlspecialchars($devRow['STATUS'])?></td>
         <td>
-          <button class="btn btn-sm btn-primary">Edit</button>
-          <button class="btn btn-sm btn-danger">Delete</button>
-        </td>
+       
+  <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editDP<?php echo $devRow['PLAN_ID']; ?>">Edit</button>
+  <button class="btn btn-sm btn-danger">Delete</button>
+</td>
+          
+       
       </tr>
+
+      
+      <div class="modal fade" id="editDP<?php echo $devRow['PLAN_ID']; ?>" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Development Plan (ID: <?php echo $devRow['PLAN_ID']; ?>)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="editDevplan.php" method="post">
+          <input type="hidden" name="PLAN_ID" value="<?php echo $devRow['PLAN_ID']; ?>">
+
+          <div class="mb-3">
+            <label class="form-label">Employee ID</label>
+            <input type="number" name="EMPLOYEE_ID" class="form-control" value="<?php echo htmlspecialchars($devRow['EMPLOYEE_ID']); ?>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Goal Description</label>
+            <textarea name="GOAL_DESCRIPTION" class="form-control"><?php echo htmlspecialchars($devRow['GOAL_DESCRIPTION']); ?></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Assigned Training</label>
+            <select name="ASSIGNED_TRAINING" class="form-select">
+              <option value="">Select Training</option>
+              <?php
+              $trainingResult = mysqli_query($connection, "SELECT * FROM training_program;");
+              while($program=$trainingResult->fetch_assoc()):
+              ?>
+              <option value="<?php echo $program['PROGRAM_ID'];?>" <?php if($devRow['ASSIGNED_TRAINING']==$program['PROGRAM_ID']) echo 'selected'; ?>>
+                <?php echo $program['PROGRAM_NAME'];?>
+              </option>
+              <?php endwhile;?>
+            </select>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <label class="form-label">Milestone Date Start</label>
+              <input type="date" name="MILESTONE_START" class="form-control" value="<?php echo $devRow['MILESTONE_START']; ?>">
+            </div>
+            <div class="col-6">
+              <label class="form-label">Milestone Date End</label>
+              <input type="date" name="MILESTONE_END" class="form-control" value="<?php echo $devRow['MILESTONE_END']; ?>">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="STATUS" class="form-select">
+              <option value="Pending" <?php if($devRow['STATUS']=='Pending') echo 'selected'; ?>>Pending</option>
+              <option value="In Progress" <?php if($devRow['STATUS']=='In Progress') echo 'selected'; ?>>In Progress</option>
+              <option value="Complete" <?php if($devRow['STATUS']=='Complete') echo 'selected'; ?>>Complete</option>
+              <option value="Cancelled" <?php if($devRow['STATUS']=='Cancelled') echo 'selected'; ?>>Cancelled</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <?php endwhile;?>
       <!-- More rows can be dynamically rendered -->
     </tbody>
   </table>
@@ -701,6 +798,7 @@ require_once("../../../phpcon/conn.php");
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <form action="addDevplan.php" method="post">
         <div class="mb-3">
           <label for="EMPLOYEE_ID" class="form-label">EMPLOYEE ID</label>
           <input class="form-control" type="number" name="EMPLOYEE_ID" id="EMPLOYEE_ID" placeholder="Enter Employee ID">
@@ -709,13 +807,53 @@ require_once("../../../phpcon/conn.php");
               <div class="modal-body">
         <div class="mb-3">
           <label for="GOAL_DESCRIPTION" class="form-label">GOAL DESCRIPTION</label>
-        <textarea name="GOAL_DESCRIPTION" id="GOAL_DESCRIPTION"></textarea>
+        <textarea name="GOAL_DESCRIPTION" id="GOAL_DESCRIPTION" class="form-control"></textarea>
         </div>
 
         <?php
-        $trainingQuery="SELECT "
-        ?>
+        $trainingQuery="SELECT * FROM training_program;";
+        $trainingResult = mysqli_query($connection, $trainingQuery);
 
+        ?>
+<div class="mb-3">
+  <select name="ASSIGN_TRAINING" id="ASSIGN_TRAINING" class="form-select">
+
+  <option value="">Select Training</option>
+  <?php
+        while($program=$trainingResult->fetch_assoc()):
+        ?>
+        <option value="<?php echo $program['PROGRAM_ID'];?>"><?php echo $program['PROGRAM_NAME'];?></option>
+
+        <?php endwhile;?>
+  </select>
+
+</div>
+<div class="row">
+<div class="col-6">
+  <label for="" class="form-label">Milestone Date Start</label>
+  <input type="date" name="MILESTONE_START" id="MILESTONE_START" class="form-control">
+</div>
+<div class="col-6">
+  <label for="" class="form-label">Milestone Date End</label>
+  <input type="date" name="MILESTONE_END" id="MILESTONE_END" class="form-control">
+</div>
+</div>
+<div class="mb-3">
+  <label for="" class="form-label">Status</label>
+  <select name="STATUS" id="STATUS" class="form-select">
+    <option value="" disabled selected>Select Status</option>
+    <option value="Pending">Pending</option>
+    <option value="In Progress">In Progress</option>
+    <option value="Complete">Complete</option>
+    <option value="Cancelled">Cancelled</option>
+  </select>
+</div>
+<div class="modal-footer">
+        <button type="submit" name="submit" class="btn btn-success">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+
+</form>
       </div>
     </div>
   </div>

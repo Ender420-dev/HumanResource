@@ -710,13 +710,13 @@ $devPlansResult = $connection->query($devPlansQuery);
         <td>
        
   <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editDP<?php echo $devRow['PLAN_ID']; ?>">Edit</button>
-  <button class="btn btn-sm btn-danger">Delete</button>
-</td>
+  <a href="deleteDevPlan.php?PLAN_ID=<?php echo $devRow['PLAN_ID']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this plan?');">Delete</a>
+  </td>
           
        
       </tr>
 
-      
+
       <div class="modal fade" id="editDP<?php echo $devRow['PLAN_ID']; ?>" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">

@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 14, 2025 at 09:03 AM
+-- Host: localhost:3307
+-- Generation Time: May 16, 2025 at 07:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,10 +31,18 @@ CREATE TABLE `competancy_development` (
   `PLAN_ID` int(11) NOT NULL,
   `EMPLOYEE_ID` varchar(45) DEFAULT NULL,
   `GOAL_DESCRIPTION` varchar(45) DEFAULT NULL,
-  `ASSIGNED_TRAINING` varchar(45) DEFAULT NULL,
-  `MILESTONE_DATE` date DEFAULT NULL,
+  `ASSIGNED_TRAINING` int(45) DEFAULT NULL,
+  `MILESTONE_START` date DEFAULT NULL,
+  `MILESTONE_END` date NOT NULL,
   `STATUS` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `competancy_development`
+--
+
+INSERT INTO `competancy_development` (`PLAN_ID`, `EMPLOYEE_ID`, `GOAL_DESCRIPTION`, `ASSIGNED_TRAINING`, `MILESTONE_START`, `MILESTONE_END`, `STATUS`) VALUES
+(2, '23123', 'asdasd', 5, '2025-05-31', '2025-07-09', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -51,6 +59,13 @@ CREATE TABLE `competency_assessment` (
   `COMPETENCY` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `competency_assessment`
+--
+
+INSERT INTO `competency_assessment` (`ASSESSMENT_ID`, `EMPLOYEE`, `ASSESSMENT_TYPE`, `SCORE`, `DATE`, `COMPETENCY`) VALUES
+(2, 'asdas123', 'Self', 51, '2025-05-15', 'Leadership');
+
 -- --------------------------------------------------------
 
 --
@@ -59,12 +74,19 @@ CREATE TABLE `competency_assessment` (
 
 CREATE TABLE `competency_framework` (
   `COMPETENCY_ID` int(11) NOT NULL,
-  `NAME` int(11) NOT NULL,
+  `NAME` varbinary(45) DEFAULT NULL,
   `ROLE` varbinary(45) DEFAULT NULL,
   `DEPARTMENT` varbinary(45) DEFAULT NULL,
-  `LASTUPDATE` date DEFAULT NULL,
+  `LASTUPDATE` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `DESCRIPTION` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=binary;
+
+--
+-- Dumping data for table `competency_framework`
+--
+
+INSERT INTO `competency_framework` (`COMPETENCY_ID`, `NAME`, `ROLE`, `DEPARTMENT`, `LASTUPDATE`, `DESCRIPTION`) VALUES
+(2, 0x74657374313233, 0x495420537570706f7274, 0x4954, '2025-05-15 00:08:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -123,6 +145,13 @@ CREATE TABLE `employe_table` (
   `GENDER` varchar(45) DEFAULT NULL,
   `POSITION` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employe_table`
+--
+
+INSERT INTO `employe_table` (`EMPLOYEE_ID`, `FULLNAME`, `GENDER`, `POSITION`) VALUES
+(1, 'mary jane', 'femail', 'employee');
 
 -- --------------------------------------------------------
 
@@ -313,6 +342,13 @@ CREATE TABLE `trainee_enrollment_approval` (
   `STATUS` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `trainee_enrollment_approval`
+--
+
+INSERT INTO `trainee_enrollment_approval` (`ENROLLMENT_ID`, `TRAINEE_ID`, `EMPLOYEE_ID`, `COURSE_PROGRAM`, `TRAINER`, `STATUS`) VALUES
+(2, 1, 1, 4, 6, 'Rejected');
+
 -- --------------------------------------------------------
 
 --
@@ -342,7 +378,7 @@ INSERT INTO `trainee_table` (`TRAINEE_ID`, `FULLNAME`, `GENDER`, `POSITION`) VAL
 CREATE TABLE `trainer_faculty` (
   `TRAINER_ID` int(11) NOT NULL,
   `FULLNAME` varchar(45) DEFAULT NULL,
-  `course` int(255) DEFAULT NULL,
+  `course` int(11) DEFAULT NULL,
   `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `create_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -352,9 +388,10 @@ CREATE TABLE `trainer_faculty` (
 --
 
 INSERT INTO `trainer_faculty` (`TRAINER_ID`, `FULLNAME`, `course`, `update_at`, `create_at`) VALUES
-(3, 'john doeq', 0, '2025-05-14 02:31:09', '2025-05-14 10:31:09'),
-(4, 'john doeq', 0, '2025-05-14 02:31:20', '2025-05-14 10:31:20'),
-(6, 'John cardo dalosay', 0, '2025-05-14 02:37:21', '2025-05-14 10:37:05');
+(3, 'john doeq', 4, '2025-05-14 11:01:18', '2025-05-14 10:31:09'),
+(6, 'John cardo dalosay', 4, '2025-05-14 11:01:18', '2025-05-14 10:37:05'),
+(7, 'john doeq', 4, '2025-05-14 11:01:18', '2025-05-14 10:31:09'),
+(9, 'John cardo dalosay', 4, '2025-05-14 11:01:18', '2025-05-14 10:37:05');
 
 -- --------------------------------------------------------
 
@@ -389,7 +426,8 @@ CREATE TABLE `training_program` (
 --
 
 INSERT INTO `training_program` (`PROGRAM_ID`, `PROGRAM_TYPE`, `PROGRAM_NAME`, `TRAINER`, `START`, `END`, `STATUS`, `DESCRIPTION_PROGRAM`) VALUES
-(4, 'emp101', 'employee 101', 6, '2025-05-22', '2025-05-28', 'Ongoing', NULL);
+(4, 'emp101', 'employee 101', 6, '2025-05-22', '2025-05-28', 'Ongoing', ''),
+(5, 'LTP101', 'Leadership Training Program', 6, '2025-05-03', '2025-05-31', 'Pending', '');
 
 -- --------------------------------------------------------
 
@@ -412,7 +450,8 @@ CREATE TABLE `training_records` (
 -- Indexes for table `competancy_development`
 --
 ALTER TABLE `competancy_development`
-  ADD PRIMARY KEY (`PLAN_ID`);
+  ADD PRIMARY KEY (`PLAN_ID`),
+  ADD KEY `training joint` (`ASSIGNED_TRAINING`);
 
 --
 -- Indexes for table `competency_assessment`
@@ -539,7 +578,8 @@ ALTER TABLE `trainee_table`
 -- Indexes for table `trainer_faculty`
 --
 ALTER TABLE `trainer_faculty`
-  ADD PRIMARY KEY (`TRAINER_ID`);
+  ADD PRIMARY KEY (`TRAINER_ID`),
+  ADD KEY `trainer_faculty_ibfk_1` (`course`);
 
 --
 -- Indexes for table `training_calendar`
@@ -568,16 +608,22 @@ ALTER TABLE `training_records`
 --
 
 --
+-- AUTO_INCREMENT for table `competancy_development`
+--
+ALTER TABLE `competancy_development`
+  MODIFY `PLAN_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `competency_assessment`
 --
 ALTER TABLE `competency_assessment`
-  MODIFY `ASSESSMENT_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ASSESSMENT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `competency_framework`
 --
 ALTER TABLE `competency_framework`
-  MODIFY `COMPETENCY_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `COMPETENCY_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `course_management`
@@ -601,7 +647,7 @@ ALTER TABLE `employee_competency`
 -- AUTO_INCREMENT for table `employe_table`
 --
 ALTER TABLE `employe_table`
-  MODIFY `EMPLOYEE_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `EMPLOYEE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `ess_attendance`
@@ -661,7 +707,7 @@ ALTER TABLE `talent_identification`
 -- AUTO_INCREMENT for table `trainee_enrollment_approval`
 --
 ALTER TABLE `trainee_enrollment_approval`
-  MODIFY `ENROLLMENT_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ENROLLMENT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `trainee_table`
@@ -673,7 +719,7 @@ ALTER TABLE `trainee_table`
 -- AUTO_INCREMENT for table `trainer_faculty`
 --
 ALTER TABLE `trainer_faculty`
-  MODIFY `TRAINER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `TRAINER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `training_calendar`
@@ -685,11 +731,17 @@ ALTER TABLE `training_calendar`
 -- AUTO_INCREMENT for table `training_program`
 --
 ALTER TABLE `training_program`
-  MODIFY `PROGRAM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `PROGRAM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `competancy_development`
+--
+ALTER TABLE `competancy_development`
+  ADD CONSTRAINT `training joint` FOREIGN KEY (`ASSIGNED_TRAINING`) REFERENCES `training_program` (`PROGRAM_ID`);
 
 --
 -- Constraints for table `course_management`
@@ -712,6 +764,12 @@ ALTER TABLE `trainee_enrollment_approval`
   ADD CONSTRAINT `FK_COURSE_PROGRAM1` FOREIGN KEY (`COURSE_PROGRAM`) REFERENCES `training_program` (`PROGRAM_ID`),
   ADD CONSTRAINT `FK_EMPLOYEE` FOREIGN KEY (`EMPLOYEE_ID`) REFERENCES `employe_table` (`EMPLOYEE_ID`),
   ADD CONSTRAINT `FK_TRAINER_1` FOREIGN KEY (`TRAINER`) REFERENCES `trainer_faculty` (`TRAINER_ID`);
+
+--
+-- Constraints for table `trainer_faculty`
+--
+ALTER TABLE `trainer_faculty`
+  ADD CONSTRAINT `trainer_faculty_ibfk_1` FOREIGN KEY (`course`) REFERENCES `training_program` (`PROGRAM_ID`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `training_calendar`

@@ -1,14 +1,14 @@
 .nav-tabs .nav-link {
-    color: blue !important; /* non-active pill color */
+    color: black !important; /* non-active pill color */
   }
   .nav-tabs .nav-link:hover {
     color: white !important; /* active pill text color */
-    background-color: #0d6efd !important; /* Bootstrap primary, or change to your preferred color */
+    background-color: #4A628A !important; /* Bootstrap primary, or change to your preferred color */
   }
 
   .nav-tabs .nav-link.active {
     color: white !important; /* active pill text color */
-    background-color: #0d6efd !important; /* Bootstrap primary, or change to your preferred color */
+    background-color: #4A628A !important; /* Bootstrap primary, or change to your preferred color */
   }
   
 a.disabled {

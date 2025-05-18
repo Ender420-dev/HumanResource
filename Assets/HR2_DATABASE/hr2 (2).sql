@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: May 16, 2025 at 07:52 PM
+-- Generation Time: May 18, 2025 at 05:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -194,7 +194,36 @@ CREATE TABLE `learning_content` (
   `TRAINER` int(11) NOT NULL,
   `CALENDAR` int(11) NOT NULL,
   `STATUS` int(11) DEFAULT NULL,
-  `COURSE` varchar(45) DEFAULT NULL
+  `COURSE` int(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `learning_content_essay_submission`
+--
+
+CREATE TABLE `learning_content_essay_submission` (
+  `ESSAY_ID` int(255) NOT NULL,
+  `EMPLOYEE_ID` int(11) DEFAULT NULL,
+  `PROGRAM_ID` int(11) DEFAULT NULL,
+  `ESSAY` text DEFAULT NULL,
+  `SUBMITTED_AT` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `GRADE` int(11) DEFAULT NULL,
+  `TRAINER` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `learning_materials`
+--
+
+CREATE TABLE `learning_materials` (
+  `LM_ID` int(11) NOT NULL,
+  `PROGRAM_ID` int(11) DEFAULT NULL,
+  `TEXT_BOOK` text DEFAULT NULL,
+  `UPDATE_AT` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -347,7 +376,7 @@ CREATE TABLE `trainee_enrollment_approval` (
 --
 
 INSERT INTO `trainee_enrollment_approval` (`ENROLLMENT_ID`, `TRAINEE_ID`, `EMPLOYEE_ID`, `COURSE_PROGRAM`, `TRAINER`, `STATUS`) VALUES
-(2, 1, 1, 4, 6, 'Rejected');
+(2, 1, 1, 4, 6, 'Approved');
 
 -- --------------------------------------------------------
 
@@ -509,7 +538,22 @@ ALTER TABLE `ess_leave`
 ALTER TABLE `learning_content`
   ADD PRIMARY KEY (`LEARNING_ID`),
   ADD KEY `FK_TRAINER2_idx` (`TRAINER`),
-  ADD KEY `FK_CALENDAR1_idx` (`CALENDAR`);
+  ADD KEY `FK_CALENDAR1_idx` (`CALENDAR`),
+  ADD KEY `COURSE` (`COURSE`);
+
+--
+-- Indexes for table `learning_content_essay_submission`
+--
+ALTER TABLE `learning_content_essay_submission`
+  ADD PRIMARY KEY (`ESSAY_ID`),
+  ADD KEY `PROGRAM_ID` (`PROGRAM_ID`),
+  ADD KEY `TRAINER` (`TRAINER`);
+
+--
+-- Indexes for table `learning_materials`
+--
+ALTER TABLE `learning_materials`
+  ADD PRIMARY KEY (`LM_ID`);
 
 --
 -- Indexes for table `login_tbl`
@@ -662,6 +706,18 @@ ALTER TABLE `ess_leave`
   MODIFY `LEAVE_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `learning_content_essay_submission`
+--
+ALTER TABLE `learning_content_essay_submission`
+  MODIFY `ESSAY_ID` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `learning_materials`
+--
+ALTER TABLE `learning_materials`
+  MODIFY `LM_ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `login_tbl`
 --
 ALTER TABLE `login_tbl`
@@ -755,7 +811,15 @@ ALTER TABLE `course_management`
 --
 ALTER TABLE `learning_content`
   ADD CONSTRAINT `FK_CALENDAR1` FOREIGN KEY (`CALENDAR`) REFERENCES `training_calendar` (`CALENDAR_ID`),
-  ADD CONSTRAINT `FK_TRAINER2` FOREIGN KEY (`TRAINER`) REFERENCES `trainer_faculty` (`TRAINER_ID`);
+  ADD CONSTRAINT `FK_TRAINER2` FOREIGN KEY (`TRAINER`) REFERENCES `trainer_faculty` (`TRAINER_ID`),
+  ADD CONSTRAINT `learning_content_ibfk_1` FOREIGN KEY (`COURSE`) REFERENCES `training_program` (`PROGRAM_ID`);
+
+--
+-- Constraints for table `learning_content_essay_submission`
+--
+ALTER TABLE `learning_content_essay_submission`
+  ADD CONSTRAINT `learning_content_essay_submission_ibfk_1` FOREIGN KEY (`PROGRAM_ID`) REFERENCES `training_program` (`PROGRAM_ID`),
+  ADD CONSTRAINT `learning_content_essay_submission_ibfk_2` FOREIGN KEY (`TRAINER`) REFERENCES `trainer_faculty` (`TRAINER_ID`);
 
 --
 -- Constraints for table `trainee_enrollment_approval`

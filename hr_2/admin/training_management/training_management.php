@@ -25,7 +25,7 @@ require_once("../../../phpcon/conn.php");
 
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="../../../tm.css?v=4.6">
+    <link rel="stylesheet" href="../../../tm.css?v=4.7">
 </head>
 
 

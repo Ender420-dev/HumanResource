@@ -1,10 +1,10 @@
 <?php
 include '../../../phpcon/conn.php';
 
-if (isset($_POST['TRAINER_ID'])) {
-    $trainerID = $_POST['TRAINER_ID'];
+if (isset($_POST['LEARNING_ID'])) {
+    $trainerID = $_POST['LEARNING_ID'];
 
-    $sql = "DELETE FROM trainer_faculty WHERE TRAINER_ID = ?";
+    $sql = "DELETE FROM learning_content WHERE LEARNING_ID = ?";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param("i", $trainerID);
 

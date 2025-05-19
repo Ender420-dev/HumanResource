@@ -330,36 +330,40 @@ $trainerResult = $connection->query($trainerQuery);
               </tr>
             </thead>
             <tbody>
-          <?php  $query = "
-
-SELECT lc.LEARNING_ID,
-lc.TRAINER,
-lc.START_DATE,
-lc.END_DATE,
-lc.STATUS,
-lc.COURSE,
-tp.TRAINER,
+            <?php  
+$query = "
+SELECT 
+  lc.LEARNING_ID,
+  lc.STATUS,
+  lc.COURSE,
+  lc.CALENDAR,
+  tf.FULLNAME AS TRAINER_NAME,
+  tp.START AS START_DATE,
+  tp.END AS END_DATE,
+  tp.PROGRAM_TYPE,
+  tp.PROGRAM_NAME
 FROM learning_content lc
-LEFT JOIN training_program tp ON lc.COURSE = tp.PROGRAM_NAME
 LEFT JOIN trainer_faculty tf ON lc.TRAINER = tf.TRAINER_ID
+LEFT JOIN training_program tp ON lc.CALENDAR = tp.PROGRAM_ID
 
 ";
-$result=$connection->query($query);
+$lcm = $connection->query($query);
 ?>
+
 <?php
-while ($program=$result->fetch_assoc()):
+while ($lcmRow=$lcm->fetch_assoc()):
 ?>
               <tr>
-              <td><?php echo htmlspecialchars($program['PROGRAM_NAME']); ?></td>
-            <td><?php echo htmlspecialchars($program['FULLNAME']); ?></td>
-            <td><?php echo htmlspecialchars($program['START_DATE']); ?></td>
-            <td><?php echo htmlspecialchars($program['END_DATE']); ?></td>
+              <td><?php echo htmlspecialchars($lcmRow['COURSE']); ?></td>
+            <td><?php echo htmlspecialchars($lcmRow['TRAINER_NAME']); ?></td>
+            <td><?php echo htmlspecialchars($lcmRow['START_DATE']); ?></td>
+            <td><?php echo htmlspecialchars($lcmRow['END_DATE']); ?></td>
            
-            <td><?php echo htmlspecialchars($program['STATUS']); ?></td>
+            <td><?php echo htmlspecialchars($lcmRow['STATUS']); ?></td>
             <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editLearningModal<?php echo $program['PROGRAM_ID']; ?>">Edit</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editLearningModal<?php echo $lcmRow['LEARNING_ID']; ?>">Edit</button>
             
-  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#viewLearningModal<?php echo $program['PROGRAM_ID']; ?>">View</button>
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#viewLearningModal<?php echo $lcmRow['LEARNING_ID']; ?>">View</button>
   </td>
               
               </tr>
@@ -367,52 +371,53 @@ while ($program=$result->fetch_assoc()):
             </tbody>
             
             
-            <div class="modal fade" id="viewLearningModal<?php echo $program['PROGRAM_ID']; ?>" tabindex="-1" aria-labelledby="viewTrainingModalLabel" aria-hidden="true">
+           <!-- View Modal -->
+<div class="modal fade" id="viewLearningModal<?php echo $lcmRow['LEARNING_ID']; ?>" tabindex="-1" aria-labelledby="viewLearningModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
-    
+
       <div class="modal-header">
         <h5 class="modal-title">View Learning Program Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      
+
       <div class="modal-body">
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label class="form-label">Program ID:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['PROGRAM_ID']); ?></div>
+            <label class="form-label">Learning ID:</label>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($lcmRow['LEARNING_ID']); ?></div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Program Type:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['PROGRAM_TYPE']); ?></div>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($lcmRow['PROGRAM_TYPE']); ?></div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Program Name:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['PROGRAM_NAME']); ?></div>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($lcmRow['PROGRAM_NAME']); ?></div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Trainer:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['FULLNAME']); ?></div>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($lcmRow['TRAINER_NAME']); ?></div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Start Date:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['START_DATE']); ?></div>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($lcmRow['START_DATE']); ?></div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">End Date:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['END_DATE']); ?></div>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($lcmRow['END_DATE']); ?></div>
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-12 mb-3">
             <label class="form-label">Description:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['DESCRIPTION_PROGRAM']); ?></div>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($lcmRow['DESCRIPTION_PROGRAM'] ?? 'N/A'); ?></div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Status:</label>
-            <div class="form-control-plaintext"><?php echo htmlspecialchars($program['STATUS']); ?></div>
+            <div class="form-control-plaintext"><?php echo htmlspecialchars($lcmRow['STATUS']); ?></div>
           </div>
         </div>
       </div>
-      
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
@@ -421,76 +426,73 @@ while ($program=$result->fetch_assoc()):
   </div>
 </div>
 
-            <div class="modal fade" id="editLearningModal<?php echo $program['PROGRAM_ID']; ?>" tabindex="-1" aria-labelledby="editTrainingModalLabel<?php echo $program['PROGRAM_ID']; ?>" aria-hidden="true">
+            <!-- Edit Modal -->
+<div class="modal fade" id="editLearningModal<?php echo $lcmRow['LEARNING_ID']; ?>" tabindex="-1" aria-labelledby="editLearningModalLabel<?php echo $lcmRow['LEARNING_ID']; ?>" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
 
       <div class="modal-header">
-        <h5 class="modal-title" id="editLearningModalLabel<?php echo $program['PROGRAM_ID']; ?>">Edit Learning Details (Program ID: <?php echo $program['PROGRAM_ID']; ?>)</h5>
+        <h5 class="modal-title">Edit Learning Details (Learning ID: <?php echo $lcmRow['LEARNING_ID']; ?>)</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body">
         <form action="updateLearningProgram.php" method="post">
-          <input type="hidden" name="PROGRAM_ID" value="<?php echo $program['PROGRAM_ID']; ?>">
+          <input type="hidden" name="PROGRAM_ID" value="<?php echo $lcmRow['LEARNING_ID']; ?>">
 
           <div class="mb-3">
-            <label for="PROGRAM_TYPE<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Program Type</label>
-            <input type="text" class="form-control" id="PROGRAM_TYPE<?php echo $program['PROGRAM_ID']; ?>" name="PROGRAM_TYPE" value="<?php echo htmlspecialchars($program['PROGRAM_TYPE']); ?>">
+            <label class="form-label">Program Type</label>
+            <input type="text" class="form-control" name="PROGRAM_TYPE" value="<?php echo htmlspecialchars($lcmRow['PROGRAM_TYPE']); ?>">
           </div>
 
           <div class="mb-3">
-            <label for="PROGRAM_NAME<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Program Name</label>
-            <input type="text" class="form-control" id="PROGRAM_NAME<?php echo $program['PROGRAM_ID']; ?>" name="PROGRAM_NAME" value="<?php echo htmlspecialchars($program['PROGRAM_NAME']); ?>">
+            <label class="form-label">Program Name</label>
+            <input type="text" class="form-control" name="PROGRAM_NAME" value="<?php echo htmlspecialchars($lcmRow['PROGRAM_NAME']); ?>">
           </div>
 
           <?php
-// Fetch trainer list
-$trainerQuery = "SELECT TRAINER_ID, FULLNAME FROM trainer_faculty";
-$trainerResult = $connection->query($trainerQuery);
-?>
+          // Fetch trainer list again to reset pointer
+          $trainerResult = $connection->query("SELECT TRAINER_ID, FULLNAME FROM trainer_faculty");
+          ?>
 
-<div class="mb-3">
-  <label for="TRAINER<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Trainer</label>
-  <select class="form-select" id="TRAINER<?php echo $program['PROGRAM_ID']; ?>" name="TRAINER_I">
-    <option value="">Select Trainer</option>
-    <?php while($trainer = $trainerResult->fetch_assoc()): ?>
-      <option value="<?php echo $trainer['TRAINER_ID']; ?>"
-        <?php if($program['TRAINER_ID'] == $trainer['TRAINER_ID']) echo 'selected'; ?>
-        >
-        <?php echo htmlspecialchars($trainer['FULLNAME']); ?>
-      </option>
-    <?php endwhile; ?>
-  </select>
-</div>
+          <div class="mb-3">
+            <label class="form-label">Trainer</label>
+            <select class="form-select" name="TRAINER">
+              <option value="">Select Trainer</option>
+              <?php while($trainer = $trainerResult->fetch_assoc()): ?>
+                <option value="<?php echo $trainer['TRAINER_ID']; ?>"
+                  <?php echo ($trainer['FULLNAME'] == $lcmRow['TRAINER_NAME']) ? 'selected' : ''; ?>>
+                  <?php echo htmlspecialchars($trainer['FULLNAME']); ?>
+                </option>
+              <?php endwhile; ?>
+            </select>
+          </div>
 
-
-<div class="mb-3">
-  <label for="STATUS<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Status</label>
-  <select class="form-select" id="STATUS<?php echo $program['PROGRAM_ID']; ?>" name="STATUS">
-    <option value="Cancel" <?php echo $program['STATUS'] == 'Cancel' ? 'selected' : ''; ?>>Cancel</option>
-    <option value="Ongoing" <?php echo $program['STATUS'] == 'Ongoing' ? 'selected' : ''; ?>>Ongoing</option>
-    <option value="Pending" <?php echo $program['STATUS'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
-    <option value="Complete" <?php echo $program['STATUS'] == 'Complete' ? 'selected' : ''; ?>>Complete</option>
-  </select>
-</div>
-
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select" name="STATUS">
+              <option value="Cancel" <?php echo $lcmRow['STATUS'] == 'Cancel' ? 'selected' : ''; ?>>Cancel</option>
+              <option value="Ongoing" <?php echo $lcmRow['STATUS'] == 'Ongoing' ? 'selected' : ''; ?>>Ongoing</option>
+              <option value="Pending" <?php echo $lcmRow['STATUS'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
+              <option value="Complete" <?php echo $lcmRow['STATUS'] == 'Complete' ? 'selected' : ''; ?>>Complete</option>
+            </select>
+          </div>
 
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="START_DATE<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Start Date</label>
-              <input type="date" class="form-control" id="START_DATE<?php echo $program['PROGRAM_ID']; ?>" name="START_DATE" value="<?php echo htmlspecialchars($program['START_DATE']); ?>">
+              <label class="form-label">Start Date</label>
+              <input type="date" class="form-control" name="START_DATE" value="<?php echo htmlspecialchars($lcmRow['START_DATE']); ?>" disabled>
             </div>
-
             <div class="col-md-6 mb-3">
-              <label for="END_DATE<?php echo $program['PROGRAM_ID']; ?>" class="form-label">End Date</label>
-              <input type="date" class="form-control" id="END_DATE<?php echo $program['PROGRAM_ID']; ?>" name="END_DATE" value="<?php echo htmlspecialchars($program['END_DATE']); ?>">
+              <label class="form-label">End Date</label>
+              <input type="date" class="form-control" name="END_DATE" value="<?php echo htmlspecialchars($lcmRow['END_DATE']); ?>" disabled>
             </div>
           </div>
+
           <div class="mb-3">
-            <label for="DESCRIPTION_PROGRAM<?php echo $program['PROGRAM_ID']; ?>" class="form-label">Description</label>
-            <textarea type="text" class="form-control" id="STATUS<?php echo $program['PROGRAM_ID']; ?>" name="DESCRIPTION_PROGRAM" value="<?php echo htmlspecialchars($program['STATUS']); ?>">
-          </textarea>
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="DESCRIPTION_PROGRAM"><?php echo htmlspecialchars($lcmRow['DESCRIPTION_PROGRAM'] ?? ''); ?></textarea>
+          </div>
 
           <div class="modal-footer">
             <button type="submit" name="submit" class="btn btn-success">Save Changes</button>
@@ -499,10 +501,10 @@ $trainerResult = $connection->query($trainerQuery);
 
         </form>
       </div>
-
     </div>
   </div>
 </div>
+
             
             <?php endwhile;?>
               <!-- Repeat more rows here -->
@@ -522,8 +524,8 @@ $trainerResult = $connection->query($trainerQuery);
             <thead class="thead-primary">
               <tr>
                 <th scope="col">Course Title</th>
-                <th scope="col">Trainer</th>
-                <th>Progress</th>
+                <th scope="col">Trainee</th>
+                <th scope="col">Progress</th>
                 <th scope="col">Start Date</th>
                 <th scope="col">End Date</th>
                 <th scope="col">Status</th>
@@ -531,9 +533,31 @@ $trainerResult = $connection->query($trainerQuery);
               </tr>
             </thead>
             <tbody>
+
+            <?php
+            $LPQuery=" SELECT 
+            lp.LP_ID,
+            lp.EMPLOYEE_ID,
+            lp.PROGRESS,
+            lp.START,
+            lp.END,
+            lp.STATUS,
+            lp.COURSE,
+            tp.PROGRAM_NAME
+
+            FROM learning_progress lp
+            LEFT JOIN training_program tp ON lp.COURSE = tp.PROGRAM_ID
+            LEFT JOIN 
+            
+            
+            ";
+            $LPResult=$connection->query($LPQuery);
+            ?>
+
+            <?php while($LPRow=$LPResult->fetch_assoc()):?>
               <tr>
-                <td>Employee Training 101</td>
-                <td>John Doe</td>
+                <td><?php echo htmlspecialchars($LPRow['PROGRAM_NAME']); ?></td>
+                <td><?php echo htmlspecialchars($LPRow['PROGRAM_NAME']); ?></td>
                 <td><div class="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                   <div class="progress-bar text-bg-success" style="width:25%;">25%</div>
                 </div></td>
@@ -547,8 +571,10 @@ $trainerResult = $connection->query($trainerQuery);
 
                 </td>
               </tr>
+              <?php endwhile;?>
               <!-- Repeat more rows here -->
             </tbody>
+          
           </table>
         </div>
       </div>

@@ -166,7 +166,14 @@ require_once("../../../phpcon/conn.php");
             <tbody>
             <?php
 $query = "
-SELECT tp.PROGRAM_ID, tp.PROGRAM_TYPE, tp.PROGRAM_NAME, tf.TRAINER_ID, tf.FULLNAME, tp.STATUS,tp.DESCRIPTION_PROGRAM, tp.START AS START_DATE, tp.END AS END_DATE
+SELECT tp.PROGRAM_ID, 
+tp.PROGRAM_TYPE, 
+tp.PROGRAM_NAME, 
+tf.TRAINER_ID, 
+tf.FULLNAME, tp.STATUS,
+tp.DESCRIPTION_PROGRAM, 
+tp.START AS START_DATE, 
+tp.END AS END_DATE
     FROM training_program tp 
     LEFT JOIN trainer_faculty tf ON tp.TRAINER = tf.TRAINER_ID
 ";

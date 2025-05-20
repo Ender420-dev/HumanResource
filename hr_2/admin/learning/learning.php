@@ -515,180 +515,330 @@ while ($lcmRow=$lcm->fetch_assoc()):
 </div>
 
 <div class="tab-content" id="pills-tabContent">
-  <div class="tab-pane fade show " id="pillsLPT" role="tabpanel" >
+  <div class="tab-pane fade show" id="pillsLPT" role="tabpanel">
 
-  <h3 class="white-text card-title text-center">Learning Progress and Tracking</h3>
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-          <table class="table table-hover table-striped">
-            <thead class="thead-primary">
-              <tr>
-                <th scope="col">Course Title</th>
-                <th scope="col">Trainee</th>
-                <th scope="col">Progress</th>
-                <th scope="col">Start Date</th>
-                <th scope="col">End Date</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+    <h3 class="white-text card-title text-center">Learning Progress and Tracking</h3>
+    <div class="text-end mb-3">
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLearningProgressModal">
+    + Add Learning Progress
+  </button>
+</div>
 
-            <?php
-            $LPQuery=" SELECT 
-            lp.LP_ID,
-            lp.EMPLOYEE_ID,
-            lp.PROGRESS,
-            lp.START,
-            lp.END,
-            lp.STATUS,
-            lp.COURSE,
-            tp.PROGRAM_NAME
-
+    <br>
+    <div style="overflow-y: auto; height: 100%;">
+      <table class="table table-hover table-striped">
+        <thead class="thead-primary">
+          <tr>
+            <th scope="col">Course Title</th>
+            <th scope="col">Trainee</th>
+            <th scope="col">Progress</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $LPQuery = "
+            SELECT 
+              lp.LP_ID,
+              lp.EMPLOYEE_ID,
+              lp.PROGRESS,
+              lp.START,
+              lp.END,
+              lp.STATUS,
+              lp.COURSE,
+              tp.PROGRAM_NAME,
+              tt.FULLNAME AS TRAINEE_NAME
             FROM learning_progress lp
             LEFT JOIN training_program tp ON lp.COURSE = tp.PROGRAM_ID
-            LEFT JOIN 
-            
-            
-            ";
-            $LPResult=$connection->query($LPQuery);
-            ?>
+            LEFT JOIN trainee_table tt ON lp.EMPLOYEE_ID = tt.TRAINEE_ID
+          ";
+          $LPResult = $connection->query($LPQuery);
+          ?>
 
-            <?php while($LPRow=$LPResult->fetch_assoc()):?>
-              <tr>
-                <td><?php echo htmlspecialchars($LPRow['PROGRAM_NAME']); ?></td>
-                <td><?php echo htmlspecialchars($LPRow['PROGRAM_NAME']); ?></td>
-                <td><div class="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                  <div class="progress-bar text-bg-success" style="width:25%;">25%</div>
-                </div></td>
-                <td>2025-05-10</td>
-                <td>2025-06-10</td>
-                <td>Ongoing</td>
-                <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
+          <?php while($LPRow = $LPResult->fetch_assoc()): ?>
+          <tr>
+            <td><?php echo htmlspecialchars($LPRow['PROGRAM_NAME']); ?></td>
+            <td><?php echo htmlspecialchars($LPRow['TRAINEE_NAME']); ?></td>
+            <td>
+              <div class="progress" role="progressbar" aria-valuenow="<?php echo (int)$LPRow['PROGRESS']; ?>" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar text-bg-success" style="width:<?php echo (int)$LPRow['PROGRESS']; ?>%;">
+                  <?php echo (int)$LPRow['PROGRESS']; ?>%
+                </div>
+              </div>
+            </td>
+            <td><?php echo htmlspecialchars($LPRow['START']); ?></td>
+            <td><?php echo htmlspecialchars($LPRow['END']); ?></td>
+            <td><?php echo htmlspecialchars($LPRow['STATUS']); ?></td>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal<?php echo $LPRow['LP_ID']; ?>">Edit</button>
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal<?php echo $LPRow['LP_ID']; ?>">View</button>
+            </td>
+          </tr>
 
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
+          <!-- View Modal -->
+          <div class="modal fade" id="trainerModal<?php echo $LPRow['LP_ID']; ?>" tabindex="-1" aria-labelledby="trainerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Learning Progress Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p><strong>Course Title:</strong> <?php echo htmlspecialchars($LPRow['PROGRAM_NAME']); ?></p>
+                  <p><strong>Trainee:</strong> <?php echo htmlspecialchars($LPRow['TRAINEE_NAME']); ?></p>
+                  <p><strong>Progress:</strong> <?php echo (int)$LPRow['PROGRESS']; ?>%</p>
+                  <p><strong>Start Date:</strong> <?php echo htmlspecialchars($LPRow['START']); ?></p>
+                  <p><strong>End Date:</strong> <?php echo htmlspecialchars($LPRow['END']); ?></p>
+                  <p><strong>Status:</strong> <?php echo htmlspecialchars($LPRow['STATUS']); ?></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                </td>
-              </tr>
-              <?php endwhile;?>
-              <!-- Repeat more rows here -->
-            </tbody>
-          
-          </table>
-        </div>
-      </div>
-</div>
-<div class="tab-content" id="pills-tabContent">
-  <div class="tab-pane fade show " id="pillsAC" role="tabpanel" >
-
-  <h3 class="white-text card-title text-center">Assessment and Certification</h3>
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-          <table class="table table-hover table-striped">
-            <thead class="thead-primary">
-              <tr>
-                <th scope="col">Course Title</th>
-                <th scope="col">Trainer</th>
-                <th scope="col">Start Date</th>
-                <th scope="col">End Date</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Employee Training 101</td>
-                <td>John Doe</td>
-                <td>2025-05-10</td>
-                <td>2025-06-10</td>
-                <td>Ongoing</td>
-                <td>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTrainingModal">Edit</button>
-
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerModal">View</button>
-
-                </td>
-              </tr>
-              <!-- Repeat more rows here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-</div>
-
-<div class="modal fade" id="viewCourseModal" tabindex="-1" aria-labelledby="viewCourseLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewCourseLabel">Course Overview</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      <div class="modal-body">
-        <p><strong>Course Title:</strong> Leadership Essentials</p>
-        <p><strong>Trainer:</strong> Jane Smith</p>
-        <p><strong>Content:</strong> Video Modules, Reading Material, Case Studies</p>
-        
-        <hr>
-        <h6>Enrolled Learners:</h6>
-        <ul>
-          <li>Maria Gomez - 70% Complete</li>
-          <li>Arvin Santos - 40% Complete</li>
-          <li>Lea Valdez - 100% Complete (Certified)</li>
-        </ul>
-      </div>
-      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-
+          <!-- Edit Modal (you can implement update logic later) -->
+          <div class="modal fade" id="editTrainingModal<?php echo $LPRow['LP_ID']; ?>" tabindex="-1" aria-labelledby="editTrainingModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Learning Progress</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="updateLearningProgress.php" method="post">
+                  <div class="modal-body">
+                    <input type="hidden" name="LP_ID" value="<?php echo $LPRow['LP_ID']; ?>">
+                    <div class="mb-3">
+                      <label class="form-label">Progress (%)</label>
+                      <input type="number" name="PROGRESS" class="form-control" value="<?php echo (int)$LPRow['PROGRESS']; ?>" min="0" max="100">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Status</label>
+                      <select name="STATUS" class="form-select">
+                        <option value="Pending" <?php if($LPRow['STATUS'] == 'Pending') echo 'selected'; ?>>Pending</option>
+                        <option value="Ongoing" <?php if($LPRow['STATUS'] == 'Ongoing') echo 'selected'; ?>>Ongoing</option>
+                        <option value="Complete" <?php if($LPRow['STATUS'] == 'Complete') echo 'selected'; ?>>Complete</option>
+                        <option value="Cancelled" <?php if($LPRow['STATUS'] == 'Cancelled') echo 'selected'; ?>>Cancelled</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" name="submit" class="btn btn-success">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
-<!-- Edit Course Modal -->
-<div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="editCourseLabel" aria-hidden="true">
+<!-- Add Learning Progress Modal -->
+<div class="modal fade" id="addLearningProgressModal" tabindex="-1" aria-labelledby="addLearningProgressLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title" id="editCourseLabel">Edit Course Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+      <form action="addLearningProgress.php" method="post">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addLearningProgressLabel">Add Learning Progress</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
-      <form>
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label">Course Title</label>
-            <input type="text" class="form-control" value="Leadership Essentials">
+            <label class="form-label">Trainee</label>
+            <select name="EMPLOYEE_ID" class="form-select" required>
+              <option value="" disabled selected>Select trainee</option>
+              <?php
+              $trainees = $connection->query("SELECT TRAINEE_ID, FULLNAME FROM trainee_table");
+              while ($t = $trainees->fetch_assoc()):
+              ?>
+                <option value="<?= $t['TRAINEE_ID']; ?>"><?= htmlspecialchars($t['FULLNAME']); ?></option>
+              <?php endwhile; ?>
+            </select>
           </div>
+
           <div class="mb-3">
-            <label class="form-label">Trainer</label>
-            <input type="text" class="form-control" value="Jane Smith">
+            <label class="form-label">Course</label>
+            <select name="COURSE" class="form-select" required>
+              <option value="" disabled selected>Select course</option>
+              <?php
+              $courses = $connection->query("SELECT PROGRAM_ID, PROGRAM_NAME FROM training_program");
+              while ($c = $courses->fetch_assoc()):
+              ?>
+                <option value="<?= $c['PROGRAM_ID']; ?>"><?= htmlspecialchars($c['PROGRAM_NAME']); ?></option>
+              <?php endwhile; ?>
+            </select>
           </div>
+
           <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" rows="3">Introductory leadership skills course...</textarea>
+            <label class="form-label">Progress (%)</label>
+            <input type="number" name="PROGRESS" class="form-control" min="0" max="100" value="0" required>
           </div>
+
+          <div class="mb-3">
+            <label class="form-label">Start Date</label>
+            <input type="date" name="START" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">End Date</label>
+            <input type="date" name="END" class="form-control">
+          </div>
+
           <div class="mb-3">
             <label class="form-label">Status</label>
-            <select class="form-select">
-              <option selected>Ongoing</option>
-              <option>Completed</option>
-              <option>Upcoming</option>
+            <select name="STATUS" class="form-select" required>
+              <option value="Pending">Pending</option>
+              <option value="Ongoing">Ongoing</option>
+              <option value="Complete">Complete</option>
+              <option value="Cancelled">Cancelled</option>
             </select>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="submit" name="submit" class="btn btn-success">Add Progress</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
       </form>
 
     </div>
   </div>
 </div>
+
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show" id="pillsAC" role="tabpanel">
+
+    <h3 class="white-text card-title text-center">Assessment and Certification</h3>
+    <br>
+    <div style="overflow-y: auto; height: 100%;">
+      <table class="table table-hover table-striped">
+        <thead class="thead-primary">
+          <tr>
+            <th scope="col">Course Title</th>
+            <th scope="col">Trainer</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $query = "
+            SELECT 
+              tp.PROGRAM_ID,
+              tp.PROGRAM_NAME,
+              tp.START,
+              tp.END,
+              tp.STATUS,
+              t.FULLNAME AS TRAINER_NAME
+            FROM training_program tp
+            LEFT JOIN trainer_faculty t ON tp.TRAINER = t.TRAINER_ID
+          ";
+          $result = $connection->query($query);
+
+          while ($row = $result->fetch_assoc()):
+          ?>
+            <tr>
+              <td><?= htmlspecialchars($row['PROGRAM_NAME']); ?></td>
+              <td><?= htmlspecialchars($row['TRAINER_NAME']); ?></td>
+              <td><?= htmlspecialchars($row['START']); ?></td>
+              <td><?= htmlspecialchars($row['END']); ?></td>
+              <td><?= htmlspecialchars($row['STATUS']); ?></td>
+              <td>
+                <!-- Trigger Modals -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCourseModal<?= $row['PROGRAM_ID']; ?>">Edit</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#viewCourseModal<?= $row['PROGRAM_ID']; ?>">View</button>
+              </td>
+            </tr>
+
+            <!-- View Modal -->
+            <div class="modal fade" id="viewCourseModal<?= $row['PROGRAM_ID']; ?>" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Course Overview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p><strong>Course Title:</strong> <?= htmlspecialchars($row['PROGRAM_NAME']); ?></p>
+                    <p><strong>Trainer:</strong> <?= htmlspecialchars($row['TRAINER_NAME']); ?></p>
+                    <p><strong>Schedule:</strong> <?= htmlspecialchars($row['START']); ?> to <?= htmlspecialchars($row['END']); ?></p>
+                    <p><strong>Status:</strong> <?= htmlspecialchars($row['STATUS']); ?></p>
+                    <hr>
+                    <h6>Enrolled Learners:</h6>
+                    <ul>
+                      <?php
+                      $learnerQuery = "
+                        SELECT e.FULLNAME, lp.PROGRESS
+                        FROM learning_progress lp
+                        LEFT JOIN hr1.employeeprofilesetup e ON lp.EMPLOYEE_ID = e.EmployeeID
+                        WHERE lp.COURSE = " . intval($row['PROGRAM_ID']);
+                      $learners = $connection->query($learnerQuery);
+                      while ($learner = $learners->fetch_assoc()):
+                      ?>
+                        <li><?= htmlspecialchars($learner['FULLNAME']); ?> - <?= (int)$learner['PROGRESS']; ?>% Complete</li>
+                      <?php endwhile; ?>
+                    </ul>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editCourseModal<?= $row['PROGRAM_ID']; ?>" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Course Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form action="updateCourse.php" method="post">
+                    <div class="modal-body">
+                      <input type="hidden" name="PROGRAM_ID" value="<?= $row['PROGRAM_ID']; ?>">
+                      <div class="mb-3">
+                        <label class="form-label">Course Title</label>
+                        <input type="text" name="PROGRAM_NAME" class="form-control" value="<?= htmlspecialchars($row['PROGRAM_NAME']); ?>">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Trainer</label>
+                        <input type="text" name="TRAINER_NAME" class="form-control" value="<?= htmlspecialchars($row['TRAINER_NAME']); ?>">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="STATUS" class="form-select">
+                          <option <?= $row['STATUS'] === 'Ongoing' ? 'selected' : ''; ?>>Ongoing</option>
+                          <option <?= $row['STATUS'] === 'Completed' ? 'selected' : ''; ?>>Completed</option>
+                          <option <?= $row['STATUS'] === 'Upcoming' ? 'selected' : ''; ?>>Upcoming</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- Upload Materials Modal -->
 <div class="modal fade" id="uploadMaterialModal" tabindex="-1" aria-labelledby="uploadLabel" aria-hidden="true">
   <div class="modal-dialog">

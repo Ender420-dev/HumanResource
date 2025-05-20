@@ -831,117 +831,118 @@ $resultRejected = $connection->query($queryRejected);
 </div></div></div></div>
 
 
- <div class="tab-pane fade" id="pillsFaculty" role="tabpanel"> 
-          
-          <h3 class="white-text card-title text-center">Trainer Faculty Management
-          </h3>
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-          <div class="d-grid gap-2 d-md-flex justify-content-md-end"><button type="button" class="btn d-flex text-center btn-primary" data-bs-toggle="modal" data-bs-target="#addTrainerForm">Add Trainer</button></div>
-          
-          <table class="table table-striped">
-            <thead class="table-dark">
-              <tr>
-                <th>Trainer ID</th>
-                <th>Full Name</th>
-                <th>Subject</th>
-                <th>Action</th>
+<div class="tab-pane fade" id="pillsFaculty" role="tabpanel">
+  <h3 class="white-text card-title text-center">Trainer Faculty Management</h3>
+  <br>
 
-              </tr>
-            </thead>
-            <tbody>
-<?php
-$query="SELECT * FROM trainer_faculty";
-$result=$connection->query($query);
-?>
-<?php
-while ($trainer=$result->fetch_assoc()):
-?>
-              <tr>
-                <td><?php echo htmlspecialchars($trainer['TRAINER_ID']);?></td>
-                <td><?php echo htmlspecialchars($trainer['FULLNAME']);?></td>
-                <td><?php echo htmlspecialchars($trainer['course']);?></td>
-                <td>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTrainerForm">Add Trainer</button>
+  </div>
 
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#trainerViewID<?php echo $trainer['TRAINER_ID']?>">View</button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trainerEditID<?php echo $trainer['TRAINER_ID']?>">Edit</button>
-                <button type="button" class="btn btn-danger" onclick="deleteTrainer(<?php echo $trainer['TRAINER_ID']; ?>)">Delete</button>
+  <div style="overflow-y: auto; height: 100%;">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Trainer ID</th>
+          <th>Full Name</th>
+          <th>Subject</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        $query = "
+        SELECT tf.TRAINER_ID, tf.FULLNAME, tf.course, tf.update_at, tf.create_at,
+               tp.PROGRAM_NAME
+        FROM trainer_faculty tf
+        LEFT JOIN training_program tp ON tf.course = tp.PROGRAM_ID
+      ";
+      
+        $result = $connection->query($query);
+        while ($trainer = $result->fetch_assoc()):
+        ?>
+        <tr>
+          <td><?= htmlspecialchars($trainer['TRAINER_ID']); ?></td>
+          <td><?= htmlspecialchars($trainer['FULLNAME']); ?></td>
+          <td><?= htmlspecialchars($trainer['PROGRAM_NAME']); ?></td>
+          <td>
+            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#trainerViewID<?= $trainer['TRAINER_ID'] ?>">View</button>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#trainerEditID<?= $trainer['TRAINER_ID'] ?>">Edit</button>
+            <form action="deleteTrainer.php" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this trainer?');">
+              <input type="hidden" name="TRAINER_ID" value="<?= $trainer['TRAINER_ID'] ?>">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
 
+        <!-- View Modal -->
+        <div class="modal fade" id="trainerViewID<?= $trainer['TRAINER_ID'] ?>" tabindex="-1" aria-labelledby="trainerViewLabel<?= $trainer['TRAINER_ID'] ?>" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Trainer Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p><strong>Trainer ID:</strong> <?= htmlspecialchars($trainer['TRAINER_ID']); ?></p>
+                <p><strong>Full Name:</strong> <?= htmlspecialchars($trainer['FULLNAME']); ?></p>
+                <p><strong>Subject:</strong> <?= htmlspecialchars($trainer['PROGRAM_NAME']); ?></p>
+                <p><strong>Updated At:</strong> <?= htmlspecialchars($trainer['update_at']); ?></p>
+                <p><strong>Created At:</strong> <?= htmlspecialchars($trainer['create_at']); ?></p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-              </td>
-              </tr>
+        <!-- Edit Modal -->
+        <div class="modal fade" id="trainerEditID<?= $trainer['TRAINER_ID'] ?>" tabindex="-1" aria-labelledby="trainerEditLabel<?= $trainer['TRAINER_ID'] ?>" aria-hidden="true" data-bs-backdrop="static">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Trainer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form action="updateTrainer.php" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                  <input type="hidden" name="TRAINER_ID" value="<?= htmlspecialchars($trainer['TRAINER_ID']); ?>">
 
-              <div class="modal fade" id="trainerViewID<?php echo $trainer['TRAINER_ID']?>">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Trainer Details</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                      <div class="modal-body">
-                        <p><strong>Trainer ID: </strong> <?php echo htmlspecialchars($trainer['TRAINER_ID']);?></p>
-                        <p><strong>Full Name: </strong><?php echo htmlspecialchars($trainer['FULLNAME']);?></p>
-                        <p><strong>Subject: </strong><?php echo htmlspecialchars($trainer['course']);?></p>
-                        <p><strong>Update at: </strong><?php echo htmlspecialchars($trainer['update_at']);?></p>
-                        <p><strong>Created at: </strong><?php echo htmlspecialchars($trainer['create_at']);?></p>
-                      </div>
+                  <div class="mb-3">
+                    <label for="FULLNAME<?= $trainer['TRAINER_ID'] ?>" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="FULLNAME<?= $trainer['TRAINER_ID'] ?>" name="FULLNAME" value="<?= htmlspecialchars($trainer['FULLNAME']); ?>">
+                  </div>
+
+                  <div class="mb-3">
+                  <label for="course<?= $trainer['TRAINER_ID'] ?>" class="form-label">Assigned Program</label>
+
+                    <select name="course" id="course<?= $trainer['TRAINER_ID'] ?>" class="form-select">
+  <?php
+  $programQuery = "SELECT PROGRAM_ID, PROGRAM_NAME FROM training_program";
+  $programs = $connection->query($programQuery);
+  while ($program = $programs->fetch_assoc()):
+  ?>
+    <option value="<?= $program['PROGRAM_ID']; ?>" <?= ($program['PROGRAM_ID'] == $trainer['course']) ? 'selected' : '' ?>>
+      <?= htmlspecialchars($program['PROGRAM_NAME']); ?>
+    </option>
+  <?php endwhile; ?>
+</select>
 
                   </div>
                 </div>
-              </div>
-
-
-              
-
-
-
-              <div class="modal fade" data-bs-Backdrop="static" id="trainerEditID<?php echo $trainer['TRAINER_ID']?>">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Edit Trainer </h5>
-
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                
+                <div class="modal-footer">
+                  <button type="submit" name="submit" class="btn btn-success">Save Changes</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
-
-                <div class="modal-body">
-                  <form action="updateTrainer.php" method="post" enctype="multipart/form-data">
-                    <div class="container">
-                      <h1 class="text-center">Edit Trainer ID #<?php echo htmlspecialchars($trainer['TRAINER_ID']);?></h1>
-
-                      <input type="hidden" name="TRAINER_ID" value="<?php echo htmlspecialchars($trainer['TRAINER_ID']);?>">
-
-                      <div class="mb-3">
-                        <label for="FULLNAME" class="form-label">Full Name</label>
-                        <input type="text" name="FULLNAME" id="FULLNAME" value="<?php echo htmlspecialchars($trainer['FULLNAME']);?>" class="form-control">
-                      </div>
-
-                      <div class="mb-3">
-                        <label for="course" class="form-label">Subject</label>
-                        <input type="text" name="course" id="course" value="<?php echo htmlspecialchars($trainer['course']);?>" class="form-control">
-                      </div>
-                      <div class="modal-footer"><button name="submit" type="submit" class="btn btn-success">Submit</button></div>
-                    </div>
-                  
-
-
-                  </form>
-                </div>
-                
-              </div>
+              </form>
             </div>
-
-
           </div>
+        </div>
 
+        <?php endwhile; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-       
-
-
-
-
-              <?php endwhile;?>
             </tbody>
           </table>
 
@@ -984,51 +985,122 @@ while ($trainer=$result->fetch_assoc()):
               </div>
 
        
-        </div>
-
 
         <div class="tab-pane fade" id="pillsRecord" role="tabpanel"> 
-          
-          <h3 class="white-text card-title text-center">Training Record and Certificate
+  <h3 class="white-text card-title text-center">Training Record and Certificate</h3>
+  <br>
+  <div style="overflow-y: auto; height: 100%;">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Trainee ID</th>
+          <th>Trainee Name</th>
+          <th>Program</th>
+          <th>Progress</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        $recordQuery = "
+          SELECT 
+            lp.LP_ID,
+            lp.EMPLOYEE_ID,
+            tt.FULLNAME AS TRAINEE_NAME,
+            tp.PROGRAM_NAME,
+            lp.PROGRESS
+          FROM learning_progress lp
+          LEFT JOIN trainee_table tt ON lp.EMPLOYEE_ID = tt.TRAINEE_ID
+          LEFT JOIN training_program tp ON lp.COURSE = tp.PROGRAM_ID
+        ";
 
-          </h3>
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Trainee ID</th>
-                <th>Trainee Name</th>
-                <th>Program</th>
-               
-                <th>Progress</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>John Doe</td>
-                <td>Employee Training 101</td>
-                <td>Incomplete</td>
-                <td>
-                <button type="button" class="btn btn-primary btn-sm">Edit</button>
-                <button type="button" class="btn btn-info btn-sm">View</button>
-                <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                <button type="button" class="btn btn-success btn-sm">Generate</button>
+        $recordResult = $connection->query($recordQuery);
+        while($record = $recordResult->fetch_assoc()):
+        ?>
+        <tr>
+          <td><?= htmlspecialchars($record['EMPLOYEE_ID']) ?></td>
+          <td><?= htmlspecialchars($record['TRAINEE_NAME']) ?></td>
+          <td><?= htmlspecialchars($record['PROGRAM_NAME']) ?></td>
+          <td><?= ((int)$record['PROGRESS'] === 100) ? 'Complete' : 'Incomplete' ?></td>
+          <td>
+            <!-- Edit Button -->
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editRecordModal<?= $record['LP_ID'] ?>">Edit</button>
 
+            <!-- View Button -->
+            <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewRecordModal<?= $record['LP_ID'] ?>">View</button>
 
+            <!-- Delete Button -->
+            <form action="deleteLearningProgress.php" method="post" style="display:inline;">
+              <input type="hidden" name="LP_ID" value="<?= $record['LP_ID'] ?>">
+              <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
+            </form>
 
+            <!-- Generate Certificate -->
+            <a href="generateCertificate.php?lp_id=<?= $record['LP_ID'] ?>" class="btn btn-success btn-sm" target="_blank">Generate</a>
+          </td>
+        </tr>
 
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- View Modal -->
+        <div class="modal fade" id="viewRecordModal<?= $record['LP_ID'] ?>" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Training Record Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <p><strong>Trainee ID:</strong> <?= $record['EMPLOYEE_ID'] ?></p>
+                <p><strong>Name:</strong> <?= $record['TRAINEE_NAME'] ?></p>
+                <p><strong>Program:</strong> <?= $record['PROGRAM_NAME'] ?></p>
+                <p><strong>Progress:</strong> <?= $record['PROGRESS'] ?>%</p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
         </div>
-        
+
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editRecordModal<?= $record['LP_ID'] ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form action="updateLearningProgress.php" method="post">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Training Record</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <input type="hidden" name="LP_ID" value="<?= $record['LP_ID'] ?>">
+                  <div class="mb-3">
+                    <label class="form-label">Progress (%)</label>
+                    <input type="number" name="PROGRESS" class="form-control" value="<?= $record['PROGRESS'] ?>" min="0" max="100">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select name="STATUS" class="form-select">
+                      <option value="Pending">Pending</option>
+                      <option value="Ongoing">Ongoing</option>
+                      <option value="Complete" <?= $record['PROGRESS'] == 100 ? 'selected' : '' ?>>Complete</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-    </div>
-  
+
+        <?php endwhile; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
 
 

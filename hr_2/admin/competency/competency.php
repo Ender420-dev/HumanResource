@@ -453,188 +453,319 @@ require_once("../../../phpcon/conn.php");
 
         </div></div></div>
 
-        <div class="tab-pane fade" id="pillsECP" role="tabpanel"> 
+        <?php
+// Fetch competency profiles from DB
+$query = "SELECT * FROM employee_competency";
+$result = $connection->query($query);
+?>
+<div class="tab-pane fade" id="pillsECP" role="tabpanel"> 
+  <br>
+  <div style="overflow-y: auto; height: 100%;">
+    <div class="row">
+      <div class="container mt-5">
+        <h2 class="text-center mb-4">Employee Competency Profiles</h2>
 
-        
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-        <div class="row">
-        <div class="container mt-5">
-  <h2 class="text-center mb-4">Employee Competency Profiles</h2>
-
-  <!-- Filter/Search Bar -->
-  <div class="row mb-3">
-    <div class="col-md-4">
-      <input type="text" class="form-control" placeholder="Search by Employee ID or Name">
-    </div>
-    <div class="col-md-3">
-      <select class="form-select">
-        <option selected>Filter by Competency</option>
-        <option>Leadership</option>
-        <option>Technical Writing</option>
-        <option>Team Collaboration</option>
-        <!-- Dynamically populate -->
-      </select>
-    </div>
-    <div class="col-md-3">
-      <select class="form-select">
-        <option selected>Filter by Certification Status</option>
-        <option>Certified</option>
-        <option>In Progress</option>
-        <option>Not Certified</option>
-      </select>
-    </div>
-    <div class="col-md-2 text-end">
-      <button class="btn btn-primary">Add Profile</button>
-    </div>
-  </div>
-
-  <!-- Competency Profile Table -->
-  <table class="table table-bordered table-hover">
-    <thead class="table-dark">
-      <tr>
-        <th>Profile ID</th>
-        <th>Employee ID</th>
-        <th>Competency</th>
-        <th>Proficiency</th>
-        <th>Certification Status</th>
-        <th>Last Updated</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>CP001</td>
-        <td>EMP1234</td>
-        <td>Leadership</td>
-        <td>Advanced</td>
-        <td>Certified</td>
-        <td>2025-05-03</td>
-        <td>
-          <button class="btn btn-sm btn-primary">Edit</button>
-          <button class="btn btn-sm btn-danger">Delete</button>
-        </td>
-      </tr>
-      <!-- Additional rows -->
-    </tbody>
-  </table>
-</div>
-
-</div>
-
-        </div>
-        </div>
-       
-
- <div class="tab-pane fade" id="pillsSGATR" role="tabpanel"> 
-          
-        <br>
-        <div style="overflow-y: auto; height: 100%;">
-        <div class="container mt-5">
-  <h2 class="text-center mb-4">Skill Qualification</h2>
-
-  <!-- Filter & Search Controls -->
-  <div class="row mb-4">
-    <div class="col-md-4">
-      <input type="text" class="form-control" placeholder="Search by Employee ID or Name">
-    </div>
-    <div class="col-md-3">
-      <select class="form-select">
-        <option selected>Filter by Skill Level</option>
-        <option>Low</option>
-        <option>Normal</option>
-        <option>High</option>
-      </select>
-    </div>
-    <div class="col-md-3">
-      <input type="date" class="form-control" placeholder="Training Deadline">
-    </div>
-    <div class="col-md-2 text-end">
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSQ">Add Skill Qualification</button>
-    </div>
-  </div>
-
-  <!-- Gap Table -->
-  <table class="table table-bordered table-hover">
-    <thead class="table-dark">
-      <tr>
-        <th>Skill ID</th>
-        <th>Employee ID</th>
-        <th>Skill</th>
-        <th>Skill Level</th>
-        <th>Recommended Training</th>
-        <th>Training Deadline</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>GAP001</td>
-        <td>EMP1023</td>
-        <td>Technical Skills</td>
-        <td>High</td>
-        <td>Advanced Java Workshop</td>
-        <td>2025-06-15</td>
-        <td>
-          <button class="btn btn-sm btn-primary">Edit</button>
-          <button class="btn btn-sm btn-danger">Delete</button>
-        </td>
-      </tr>
-      <!-- More rows dynamically populated -->
-    </tbody>
-  </table>
-</div>
-
-
-        </div>
-        <div class="modal" id="addSQ">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add Skill Qualification</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-        </div>
-        <div class="modal-body">
-          <form action="addSQ.php" method="post">
-          <div class="mb-3">
-            <label for="EMPLOYEE_ID" class="form-label">Employee ID</label>
-            <input type="number" name="EMPLOYEE_ID" placeholder="Enter Employee ID" id="EMPLOYEE_ID" class="form-control">
+        <!-- Filter/Search Bar -->
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Search by Employee ID or Name">
           </div>
-          <div class="mb-3">
-            <label for="EMPLOYEE_ID" class="form-label">Skill</label>
-            <input type="text" name="SKILL" placeholder="Enter SKILL" id="SKILL" class="form-control">
-          </div>
-
-          <div class="mb-3">
-            <select class="form-select" name="SKILL_LEVEL" id="SKILL_LEVEL">
-<option value="Low">Low</option>
-<option value="Normal">Normal</option>
-<option value="High">High</option>
-
+          <div class="col-md-3">
+            <select class="form-select">
+              <option selected>Filter by Competency</option>
+              <option>Leadership</option>
+              <option>Technical Writing</option>
+              <option>Team Collaboration</option>
+              <!-- Optional: Dynamically populate from distinct COMPETENCY -->
             </select>
           </div>
-          <div class="mb-3">
-            <label for="RECOMMENDED_TRAINING" class="form-label">RECOMMENDED TRAINING</label>
-            <input type="text" name="RECOMMENDED_TRAINING" placeholder="Enter RECOMMENDED TRAINING" id="RECOMMENDED_TRAINING" class="form-control">
+          <div class="col-md-3">
+            <select class="form-select">
+              <option selected>Filter by Certification Status</option>
+              <option>Certified</option>
+              <option>In Progress</option>
+              <option>Not Certified</option>
+            </select>
           </div>
-
-          <div class="mb-3">
-            <label for="TRAINING_DEADLINE" class="form-label">Training Deadline</label>
-            <input type="date" name="TRAINING_DEADLINE" placeholder="Enter Training Deadline" id="TRAINING_DEADLINE" class="form-control">
+          <div class="col-md-2 text-end">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProfileModal">Add Profile</button>
           </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success" name="submit" >Submit</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
-          </div>
-
-</form>
         </div>
+
+        <!-- Competency Profile Table -->
+        <table class="table table-bordered table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Profile ID</th>
+              <th>Employee ID</th>
+              <th>Competency</th>
+              <th>Proficiency</th>
+              <th>Certification Status</th>
+              <th>Last Updated</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php while ($row = $result->fetch_assoc()): ?>
+              <tr>
+                <td><?= htmlspecialchars($row['PROFILE_ID']); ?></td>
+                <td><?= htmlspecialchars($row['EMPLOYEE_ID']); ?></td>
+                <td><?= htmlspecialchars($row['COMPETECY']); ?></td>
+                <td><?= htmlspecialchars($row['PROFICIENCY']); ?></td>
+                <td><?= htmlspecialchars($row['CERTIFICATION']); ?></td>
+                <td><?= htmlspecialchars($row['LASTUPDATED']); ?></td>
+                <td>
+                  <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal<?= $row['PROFILE_ID']; ?>">Edit</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteProfile(<?= $row['PROFILE_ID']; ?>)">Delete</button>
+                </td>
+              </tr>
+
+              <!-- Edit Modal -->
+              <div class="modal fade" id="editProfileModal<?= $row['PROFILE_ID']; ?>" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <form action="updateCompetencyProfile.php" method="post">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Edit Profile #<?= $row['PROFILE_ID']; ?></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <input type="hidden" name="PROFILE_ID" value="<?= $row['PROFILE_ID']; ?>">
+                        <div class="mb-3">
+                          <label class="form-label">Employee ID</label>
+                          <input type="text" name="EMPLOYEE_ID" class="form-control" value="<?= $row['EMPLOYEE_ID']; ?>">
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Competency</label>
+                          <input type="text" name="COMPETECY" class="form-control" value="<?= $row['COMPETECY']; ?>">
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Proficiency</label>
+                          <input type="text" name="PROFICIENCY" class="form-control" value="<?= $row['PROFICIENCY']; ?>">
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Certification Status</label>
+                          <select name="CERTIFICATION" class="form-select">
+                            <option value="Certified" <?= $row['CERTIFICATION'] === 'Certified' ? 'selected' : ''; ?>>Certified</option>
+                            <option value="In Progress" <?= $row['CERTIFICATION'] === 'In Progress' ? 'selected' : ''; ?>>In Progress</option>
+                            <option value="Not Certified" <?= $row['CERTIFICATION'] === 'Not Certified' ? 'selected' : ''; ?>>Not Certified</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+            <?php endwhile; ?>
+          </tbody>
+          <!-- Add Profile Modal -->
+<div class="modal fade" id="addProfileModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="addCompetencyProfile.php" method="post">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Competency Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Employee ID</label>
+            <input type="text" name="EMPLOYEE_ID" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Competency</label>
+            <input type="text" name="COMPETECY" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Proficiency</label>
+            <input type="text" name="PROFICIENCY" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Certification Status</label>
+            <select name="CERTIFICATION" class="form-select" required>
+              <option value="Certified">Certified</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Not Certified">Not Certified</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add Profile</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+        </table>
       </div>
     </div>
   </div>
-        </div> </div>
+</div>
+
+       
+
+<div class="tab-pane fade" id="pillsSGATR" role="tabpanel"> 
+  <br>
+  <div style="overflow-y: auto; height: 100%;">
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">Skill Qualification</h2>
+
+      <!-- Filter & Search Controls -->
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <input type="text" class="form-control" placeholder="Search by Employee ID or Name">
+        </div>
+        <div class="col-md-3">
+          <select class="form-select">
+            <option selected>Filter by Skill Level</option>
+            <option>Low</option>
+            <option>Normal</option>
+            <option>High</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <input type="date" class="form-control" placeholder="Training Deadline">
+        </div>
+        <div class="col-md-2 text-end">
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSQ">Add Skill Qualification</button>
+        </div>
+      </div>
+
+      <!-- Skill Qualification Table -->
+      <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Skill ID</th>
+            <th>Employee ID</th>
+            <th>Skill</th>
+            <th>Skill Level</th>
+            <th>Recommended Training</th>
+            <th>Training Deadline</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          // Your DB connection
+          $sql = "SELECT * FROM skill_qualification";
+          $result = $connection->query($sql);
+          while ($row = $result->fetch_assoc()):
+          ?>
+          <tr>
+            <td><?= htmlspecialchars($row['SKILL_ID']) ?></td>
+            <td><?= htmlspecialchars($row['EMPLOYEE_ID']) ?></td>
+            <td><?= htmlspecialchars($row['SKILL']) ?></td>
+            <td><?= htmlspecialchars($row['SKILL_LEVEL']) ?></td>
+            <td><?= htmlspecialchars($row['RECOMMENDED_TRAINING']) ?></td>
+            <td><?= htmlspecialchars($row['DEADLINE']) ?></td>
+            <td>
+              <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editSQ<?= $row['SKILL_ID'] ?>">Edit</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteSQ(<?= $row['SKILL_ID'] ?>)">Delete</button>
+            </td>
+          </tr>
+
+          <!-- Edit Modal (You can duplicate or load dynamically with JS) -->
+          <div class="modal fade" id="editSQ<?= $row['SKILL_ID'] ?>" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <form action="updateSQ.php" method="POST">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Skill Qualification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="SKILL_ID" value="<?= $row['SKILL_ID'] ?>">
+                    <div class="mb-3">
+                      <label class="form-label">Employee ID</label>
+                      <input type="text" name="EMPLOYEE_ID" class="form-control" value="<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Skill</label>
+                      <input type="text" name="SKILL" class="form-control" value="<?= htmlspecialchars($row['SKILL']) ?>">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Skill Level</label>
+                      <select class="form-select" name="SKILL_LEVEL">
+                        <option <?= $row['SKILL_LEVEL'] == 'Low' ? 'selected' : '' ?>>Low</option>
+                        <option <?= $row['SKILL_LEVEL'] == 'Normal' ? 'selected' : '' ?>>Normal</option>
+                        <option <?= $row['SKILL_LEVEL'] == 'High' ? 'selected' : '' ?>>High</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Recommended Training</label>
+                      <input type="text" name="RECOMMENDED_TRAINING" class="form-control" value="<?= htmlspecialchars($row['RECOMMENDED_TRAINING']) ?>">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Training Deadline</label>
+                      <input type="date" name="DEADLINE" class="form-control" value="<?= $row['DEADLINE'] ?>">
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add Modal -->
+  <div class="modal fade" id="addSQ">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form action="addSQ.php" method="POST">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Skill Qualification</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Employee ID</label>
+              <input type="number" name="EMPLOYEE_ID" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Skill</label>
+              <input type="text" name="SKILL" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Skill Level</label>
+              <select class="form-select" name="SKILL_LEVEL" required>
+                <option value="Low">Low</option>
+                <option value="Normal">Normal</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Recommended Training</label>
+              <input type="text" name="RECOMMENDED_TRAINING" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Training Deadline</label>
+              <input type="date" name="DEADLINE" class="form-control">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
         <div class="tab-pane fade" id="pillsCDP" role="tabpanel"> 
           
@@ -1187,6 +1318,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+function deleteProfile(profileId) {
+    if (confirm("Are you sure you want to delete this profile?")) {
+      window.location.href = "deleteCompetencyProfile.php?id=" + profileId;
+    }
+  }
+ 
+function deleteSQ(skillId) {
+  if (confirm("Are you sure you want to delete this skill qualification?")) {
+    fetch('deleteSQ.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'SKILL_ID=' + encodeURIComponent(skillId)
+    })
+    .then(response => response.text())
+    .then(data => {
+      if (data.trim() === 'Success') {
+        alert('Deleted successfully.');
+        location.reload();
+      } else {
+        alert('Error: ' + data);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+}
+
 
     </script>
 

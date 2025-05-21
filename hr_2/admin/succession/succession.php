@@ -1,5 +1,6 @@
 <?php
 session_start();
+include '../../../phpcon/conn.php';
 ?>
 
 <!DOCTYPE html>
@@ -146,6 +147,7 @@ session_start();
         <div style="overflow-y: auto; height: 100%;">
         <div class="container mt-4">
   <h2 class="text-center mb-4">Talent Identification</h2>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTalentModal">Add Talent</button>
 
   <!-- Filters -->
   <div class="row mb-3">
@@ -186,30 +188,35 @@ session_start();
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Jane Doe</td>
-          <td>IT</td>
-          <td>Senior Developer</td>
-          <td>CTO</td>
-          <td><span class="badge bg-success">High</span></td>
-          <td>Excellent</td>
-          <td>
-            <button class="btn btn-sm btn-outline-info">View Profile</button>
-            <button class="btn btn-sm btn-outline-success">Mark as Successor</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Mark Smith</td>
-          <td>Finance</td>
-          <td>Budget Analyst</td>
-          <td>CFO</td>
-          <td><span class="badge bg-warning text-dark">Medium</span></td>
-          <td>Strong</td>
-          <td>
-            <button class="btn btn-sm btn-outline-info">View Profile</button>
-            <button class="btn btn-sm btn-outline-primary">Add to Development Plan</button>
-          </td>
-        </tr>
+      <?php
+              
+
+              $sql = "SELECT * FROM talent_identification ORDER BY TALENT_ID DESC";
+              $result = mysqli_query($connection, $sql);
+
+              if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                  echo "<tr>";
+                  echo "<td>" . htmlspecialchars($row['EMPLOYEE']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['DEPARTMENT']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['CURRENT_ROLE']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['SUCCESSOR']) . "</td>";
+                  echo "<td><span class='badge bg-" . 
+                        ($row['READINESS'] == 'High' ? 'success' : ($row['READINESS'] == 'Medium' ? 'warning text-dark' : 'danger')) . "'>" . 
+                        htmlspecialchars($row['READINESS']) . "</span></td>";
+                  echo "<td>" . htmlspecialchars($row['POTENTIAL']) . "</td>";
+                  echo "<td>
+                          <button class='btn btn-sm btn-outline-info'>View</button>
+                          <button class='btn btn-sm btn-outline-danger' onclick='deleteTalent(" . $row['TALENT_ID'] . ")'>Delete</button>
+                        </td>";
+                  echo "</tr>";
+                }
+              } else {
+                echo "<tr><td colspan='7' class='text-center'>No talent records found.</td></tr>";
+              }
+
+              mysqli_close($connection);
+            ?>
         <!-- Add more rows -->
       </tbody>
     </table>
@@ -262,10 +269,11 @@ session_start();
         <option>Medium</option>
         <option>Low</option>
       </select>
+
     </div>
     <div class="col-md-4 text-end">
-      <button class="btn btn-success">Add Critical Position</button>
-    </div>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCritPositionModal">Add Critical Position</button>
+          </div>
   </div>
 
   <!-- Table of Critical Positions -->
@@ -283,30 +291,38 @@ session_start();
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Chief Technology Officer (CTO)</td>
-          <td>Executive</td>
-          <td>Jane Doe</td>
-          <td>2 Identified</td>
-          <td><span class="badge bg-danger">High</span></td>
-          <td>Occupied</td>
-          <td>
-            <button class="btn btn-sm btn-outline-info">View Details</button>
-            <button class="btn btn-sm btn-outline-warning">Update Risk</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Operations Manager</td>
-          <td>Operations</td>
-          <td>Vacant</td>
-          <td>None</td>
-          <td><span class="badge bg-warning text-dark">Medium</span></td>
-          <td><span class="text-danger">Vacant</span></td>
-          <td>
-            <button class="btn btn-sm btn-outline-info">Assign</button>
-            <button class="btn btn-sm btn-outline-success">Identify Successor</button>
-          </td>
-        </tr>
+      <?php
+             include '../../../phpcon/conn.php';
+
+              $result = mysqli_query($connection, "SELECT * FROM critical_position ORDER BY DEPARTMENT, POSITION_TITLE");
+
+              while ($Critrow = mysqli_fetch_assoc($result)) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($Critrow['POSITION_TITLE']) . "</td>";
+                echo "<td>" . htmlspecialchars($Critrow['DEPARTMENT']) . "</td>";
+                echo "<td>" . htmlspecialchars($Critrow['INCUMBERT']) . "</td>";
+                echo "<td>" . htmlspecialchars($Critrow['SUCCESSORS']) . "</td>";
+                echo "<td>";
+
+                if ($Critrow['RISKLEVEL'] === 'High') {
+                  echo '<span class="badge bg-danger">High</span>';
+                } elseif ($Critrow['RISKLEVEL'] === 'Medium') {
+                  echo '<span class="badge bg-warning text-dark">Medium</span>';
+                } else {
+                  echo '<span class="badge bg-success">Low</span>';
+                }
+
+                echo "</td>";
+                echo "<td>";
+                echo ($Critrow['STATUS'] === 'Vacant') ? '<span class="text-danger">Vacant</span>' : 'Occupied';
+                echo "</td>";
+                echo "<td>
+                        <button class='btn btn-sm btn-outline-info'>View</button>
+                        <button class='btn btn-sm btn-outline-warning'>Update Risk</button>
+                      </td>";
+                echo "</tr>";
+              }
+              ?>
         <!-- Add more rows -->
       </tbody>
     </table>
@@ -712,6 +728,100 @@ session_start();
     </div>
   </div>
 </div>
+<div class="modal fade" id="addTalentModal" tabindex="-1" aria-labelledby="addTalentLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="addTalent.php" method="post" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTalentLabel">Add Talent</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="employee" class="form-label">Employee</label>
+          <input type="text" name="EMPLOYEE" id="employee" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="department" class="form-label">Department</label>
+          <input type="text" name="DEPARTMENT" id="department" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="role" class="form-label">Current Role</label>
+          <input type="text" name="CURRENT_ROLE" id="role" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="successor" class="form-label">Successor For</label>
+          <input type="text" name="SUCCESSOR" id="successor" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="readiness" class="form-label">Readiness</label>
+          <select name="READINESS" id="readiness" class="form-select">
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="potential" class="form-label">Potential</label>
+          <input type="text" name="POTENTIAL" id="potential" class="form-control">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" name="submit" class="btn btn-success">Add</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Add Critical Position Modal -->
+<div class="modal fade" id="addCritPositionModal" tabindex="-1" aria-labelledby="addPositionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="add_critical_position.php" method="post">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Critical Position</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Form fields -->
+          <div class="mb-3">
+            <label>Position Title</label>
+            <input type="text" class="form-control" name="POSITION_TITLE" required>
+          </div>
+          <div class="mb-3">
+            <label>Department</label>
+            <input type="text" class="form-control" name="DEPARTMENT" required>
+          </div>
+          <div class="mb-3">
+            <label>Incumbent</label>
+            <input type="text" class="form-control" name="INCUMBERT">
+          </div>
+          <div class="mb-3">
+            <label>Successors Identified</label>
+            <input type="text" class="form-control" name="SUCCESSORS">
+          </div>
+          <div class="mb-3">
+            <label>Risk Level</label>
+            <select class="form-select" name="RISKLEVEL" required>
+              <option>High</option>
+              <option>Medium</option>
+              <option>Low</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Status</label>
+            <select class="form-select" name="STATUS" required>
+              <option>Occupied</option>
+              <option>Vacant</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- <nav class="navbar navbar-blue" style="height:70px;">
 <div class="container">
@@ -807,6 +917,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+function deleteTalent(id) {
+  if (confirm("Delete this talent record?")) {
+    fetch('deleteTalent.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'TALENT_ID=' + encodeURIComponent(id)
+    })
+    .then(res => res.text())
+    .then(response => {
+      if (response.trim() === "Success") {
+        alert("Deleted successfully");
+        location.reload();
+      } else {
+        alert("Error: " + response);
+      }
+    })
+    .catch(error => alert("Fetch Error: " + error));
+  }
+}
 
     </script>
 

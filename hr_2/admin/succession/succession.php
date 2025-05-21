@@ -188,35 +188,58 @@ include '../../../phpcon/conn.php';
         </tr>
       </thead>
       <tbody>
-      <?php
+      <
               
-
+              <?php
               $sql = "SELECT * FROM talent_identification ORDER BY TALENT_ID DESC";
               $result = mysqli_query($connection, $sql);
-
-              if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                  echo "<tr>";
-                  echo "<td>" . htmlspecialchars($row['EMPLOYEE']) . "</td>";
-                  echo "<td>" . htmlspecialchars($row['DEPARTMENT']) . "</td>";
-                  echo "<td>" . htmlspecialchars($row['CURRENT_ROLE']) . "</td>";
-                  echo "<td>" . htmlspecialchars($row['SUCCESSOR']) . "</td>";
-                  echo "<td><span class='badge bg-" . 
-                        ($row['READINESS'] == 'High' ? 'success' : ($row['READINESS'] == 'Medium' ? 'warning text-dark' : 'danger')) . "'>" . 
-                        htmlspecialchars($row['READINESS']) . "</span></td>";
-                  echo "<td>" . htmlspecialchars($row['POTENTIAL']) . "</td>";
-                  echo "<td>
-                          <button class='btn btn-sm btn-outline-info'>View</button>
-                          <button class='btn btn-sm btn-outline-danger' onclick='deleteTalent(" . $row['TALENT_ID'] . ")'>Delete</button>
-                        </td>";
-                  echo "</tr>";
-                }
-              } else {
-                echo "<tr><td colspan='7' class='text-center'>No talent records found.</td></tr>";
-              }
-
-              mysqli_close($connection);
             ?>
+            
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+              <tr>
+                <td><?= htmlspecialchars($row['EMPLOYEE']) ?></td>
+                <td><?= htmlspecialchars($row['DEPARTMENT']) ?></td>
+                <td><?= htmlspecialchars($row['CURRENT_ROLE']) ?></td>
+                <td><?= htmlspecialchars($row['SUCCESSOR']) ?></td>
+                <td>
+                  <span class="badge bg-<?= 
+                    $row['READINESS'] == 'High' ? 'success' : 
+                    ($row['READINESS'] == 'Medium' ? 'warning text-dark' : 'danger') 
+                  ?>">
+                    <?= htmlspecialchars($row['READINESS']) ?>
+                  </span>
+                </td>
+                <td><?= htmlspecialchars($row['POTENTIAL']) ?></td>
+                <td>
+                  <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#viewTalentModal<?= $row['TALENT_ID'] ?>">View</button>
+                  <button class="btn btn-sm btn-outline-danger" onclick="deleteTalent(<?= $row['TALENT_ID'] ?>)">Delete</button>
+                </td>
+              </tr>
+            
+              <!-- View Modal -->
+              <div class="modal fade" id="viewTalentModal<?= $row['TALENT_ID'] ?>" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Talent Information</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p><strong>Employee:</strong> <?= htmlspecialchars($row['EMPLOYEE']) ?></p>
+                      <p><strong>Department:</strong> <?= htmlspecialchars($row['DEPARTMENT']) ?></p>
+                      <p><strong>Current Role:</strong> <?= htmlspecialchars($row['CURRENT_ROLE']) ?></p>
+                      <p><strong>Successor For:</strong> <?= htmlspecialchars($row['SUCCESSOR']) ?></p>
+                      <p><strong>Readiness:</strong> <?= htmlspecialchars($row['READINESS']) ?></p>
+                      <p><strong>Potential:</strong> <?= htmlspecialchars($row['POTENTIAL']) ?></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endwhile; ?>
+            
         <!-- Add more rows -->
       </tbody>
     </table>
@@ -291,62 +314,71 @@ include '../../../phpcon/conn.php';
         </tr>
       </thead>
       <tbody>
-      <tr>
-          <td>Chief Technology Officer (CTO)</td>
-          <td>Executive</td>
-          <td>Jane Doe</td>
-          <td>2 Identified</td>
-          <td><span class="badge bg-danger">High</span></td>
-          <td>Occupied</td>
-          <td>
-            <button class="btn btn-sm btn-outline-info">View Details</button>
-            <button class="btn btn-sm btn-outline-warning">Update Risk</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Operations Manager</td>
-          <td>Operations</td>
-          <td>Vacant</td>
-          <td>None</td>
-          <td><span class="badge bg-warning text-dark">Medium</span></td>
-          <td><span class="text-danger">Vacant</span></td>
-          <td>
-            <button class="btn btn-sm btn-outline-info">Assign</button>
-            <button class="btn btn-sm btn-outline-success">Identify Successor</button>
-          </td>
-        </tr>
-      <?php
-             include '../../../phpcon/conn.php';
+      
+        <?php
+include '../../../phpcon/conn.php';
 
-              $result = mysqli_query($connection, "SELECT * FROM critical_position ORDER BY DEPARTMENT, POSITION_TITLE");
+$result = mysqli_query($connection, "SELECT * FROM critical_position ORDER BY DEPARTMENT, POSITION_TITLE");
 
-              while ($Critrow = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($Critrow['POSITION_TITLE']) . "</td>";
-                echo "<td>" . htmlspecialchars($Critrow['DEPARTMENT']) . "</td>";
-                echo "<td>" . htmlspecialchars($Critrow['INCUMBERT']) . "</td>";
-                echo "<td>" . htmlspecialchars($Critrow['SUCCESSORS']) . "</td>";
-                echo "<td>";
+while ($Critrow = mysqli_fetch_assoc($result)) {
+    echo "<tr>";
+    echo "<td>" . htmlspecialchars($Critrow['POSITION_TITLE']) . "</td>";
+    echo "<td>" . htmlspecialchars($Critrow['DEPARTMENT']) . "</td>";
+    echo "<td>" . htmlspecialchars($Critrow['INCUMBERT']) . "</td>";
+    echo "<td>" . htmlspecialchars($Critrow['SUCCESSORS']) . "</td>";
+    echo "<td>";
 
-                if ($Critrow['RISKLEVEL'] === 'High') {
-                  echo '<span class="badge bg-danger">High</span>';
-                } elseif ($Critrow['RISKLEVEL'] === 'Medium') {
-                  echo '<span class="badge bg-warning text-dark">Medium</span>';
-                } else {
-                  echo '<span class="badge bg-success">Low</span>';
-                }
+    if ($Critrow['RISKLEVEL'] === 'High') {
+        echo '<span class="badge bg-danger">High</span>';
+    } elseif ($Critrow['RISKLEVEL'] === 'Medium') {
+        echo '<span class="badge bg-warning text-dark">Medium</span>';
+    } else {
+        echo '<span class="badge bg-success">Low</span>';
+    }
 
-                echo "</td>";
-                echo "<td>";
-                echo ($Critrow['STATUS'] === 'Vacant') ? '<span class="text-danger">Vacant</span>' : 'Occupied';
-                echo "</td>";
-                echo "<td>
-                        <button class='btn btn-sm btn-outline-info'>View</button>
-                        <button class='btn btn-sm btn-outline-warning'>Update Risk</button>
-                      </td>";
-                echo "</tr>";
-              }
-              ?>
+    echo "</td>";
+    echo "<td>";
+    echo ($Critrow['STATUS'] === 'Vacant') ? '<span class="text-danger">Vacant</span>' : 'Occupied';
+    echo "</td>";
+
+    echo "<td>
+        <!-- View Button -->
+        <button class='btn btn-sm btn-outline-info' data-bs-toggle='modal' data-bs-target='#viewModal{$Critrow['CRITICAL_ID']}'>View</button>
+
+        <!-- Delete Form -->
+        <form action='deleteCriticalPosition.php' method='post' style='display:inline;'>
+            <input type='hidden' name='CRITICAL_ID' value='" . $Critrow['CRITICAL_ID'] . "'>
+            <button type='submit' class='btn btn-sm btn-outline-danger' onclick=\"return confirm('Are you sure you want to delete this position?')\">Delete</button>
+        </form>
+    </td>";
+    echo "</tr>";
+
+    // View Modal
+    echo "
+    <div class='modal fade' id='viewModal{$Critrow['CRITICAL_ID']}' tabindex='-1' aria-labelledby='viewModalLabel{$Critrow['CRITICAL_ID']}' aria-hidden='true'>
+      <div class='modal-dialog'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h5 class='modal-title'>Critical Position Details</h5>
+            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+          </div>
+          <div class='modal-body'>
+            <p><strong>Position Title:</strong> " . htmlspecialchars($Critrow['POSITION_TITLE']) . "</p>
+            <p><strong>Department:</strong> " . htmlspecialchars($Critrow['DEPARTMENT']) . "</p>
+            <p><strong>Incumbent:</strong> " . htmlspecialchars($Critrow['INCUMBERT']) . "</p>
+            <p><strong>Successors Identified:</strong> " . htmlspecialchars($Critrow['SUCCESSORS']) . "</p>
+            <p><strong>Risk Level:</strong> " . htmlspecialchars($Critrow['RISKLEVEL']) . "</p>
+            <p><strong>Status:</strong> " . htmlspecialchars($Critrow['STATUS']) . "</p>
+          </div>
+          <div class='modal-footer'>
+            <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>";
+}
+?>
+
         <!-- Add more rows -->
       </tbody>
     </table>
@@ -380,7 +412,8 @@ include '../../../phpcon/conn.php';
       </select>
     </div>
     <div class="col-md-6 text-end">
-      <button class="btn btn-success mt-4">Create New Plan</button>
+    <button class="btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#addSPDModal">Create New Plan</button>
+
     </div>
   </div>
 
@@ -429,22 +462,84 @@ include '../../../phpcon/conn.php';
           <td><span class="badge bg-warning text-dark"><?= htmlspecialchars($spdRow['READINESS_LEVEL']); ?></span></td>
           <td><?= htmlspecialchars($spdRow['DEVELOPMENT_ACTIONS']); ?></td>
           <td><?= htmlspecialchars($spdRow['TARGET_READINESS_DATE']); ?></td>
-          <td>Mark Lee</td>
+          <td><?= htmlspecialchars($spdRow['MENTOR_ASSIGNED']); ?></td>
           <td>
             <div class="progress" style="height: 20px;">
               <div class="progress-bar bg-info" role="progressbar" style="width: <?= htmlspecialchars($spdRow['PROGRESS']); ?>%"><?= htmlspecialchars($spdRow['PROGRESS']); ?>%</div>
             </div>
           </td>
           <td>
-            <button class="btn btn-sm btn-outline-primary">Edit</button>
-            <button class="btn btn-sm btn-outline-success">Update Progress</button>
+          <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editSPDModal<?= $spdRow['SUCCESSION_ID'] ?>">Edit</button>
+  <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#viewSPDModal<?= $spdRow['SUCCESSION_ID'] ?>">View</button>
+  <form action="deleteSuccessionPlan.php" method="post" style="display:inline;">
+    <input type="hidden" name="SUCCESSION_ID" value="<?= $spdRow['SUCCESSION_ID'] ?>">
+    <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this plan?')">Delete</button>
           </td>
         </tr>
-      
+        <!-- Edit Modal -->
+
+
+<!-- View Modal -->
+
+
         <!-- Add more successor rows -->
       </tbody>
-      <?php endwhile; ?>
+
+
+
+    
+<?php endwhile; ?>
+
+
+     
     </table>
+    <?php
+// Reset result pointer to re-loop over modal rendering
+mysqli_data_seek($spdResult, 0);
+while ($spdRow = $spdResult->fetch_assoc()):
+?>
+<!-- Edit Modal -->
+<div class="modal fade" id="editSPDModal<?= $spdRow['SUCCESSION_ID'] ?>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="editSuccessionPlan.php" method="post" class="modal-content">
+      <div class="modal-header"><h5>Edit Plan</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <input type="hidden" name="SUCCESSION_ID" value="<?= $spdRow['SUCCESSION_ID'] ?>">
+        <input type="text" name="CURRENT_ROLE" value="<?= $spdRow['CURRENT_ROLE'] ?>" class="form-control mb-2" required>
+        <input type="text" name="DEVELOPMENT_ACTIONS" value="<?= $spdRow['DEVELOPMENT_ACTIONS'] ?>" class="form-control mb-2" required>
+        <input type="date" name="TARGET_READINESS_DATE" value="<?= $spdRow['TARGET_READINESS_DATE'] ?>" class="form-control mb-2" required>
+        <input type="number" name="PROGRESS" value="<?= $spdRow['PROGRESS'] ?>" class="form-control mb-2" min="0" max="100" required>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- View Modal -->
+<div class="modal fade" id="viewSPDModal<?= $spdRow['SUCCESSION_ID'] ?>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5>Plan Details</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <p><strong>Successor:</strong> <?= $spdRow['FIRST_NAME'] ?> <?= $spdRow['LAST_NAME'] ?></p>
+        <p><strong>Current Role:</strong> <?= $spdRow['CURRENT_ROLE'] ?></p>
+        <p><strong>Readiness:</strong> <?= $spdRow['READINESS_LEVEL'] ?></p>
+        <p><strong>Actions:</strong> <?= $spdRow['DEVELOPMENT_ACTIONS'] ?></p>
+        <p><strong>Target Date:</strong> <?= $spdRow['TARGET_READINESS_DATE'] ?></p>
+        <p><strong>Progress:</strong> <?= $spdRow['PROGRESS'] ?>%</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<?php endwhile; ?>
+   
+   
   </div>
 </div>
 
@@ -858,7 +953,98 @@ include '../../../phpcon/conn.php';
     </form>
   </div>
 </div>
+<!-- Create New Plan Button -->
+<button class="btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#addSPDModal">Create New Plan</button>
 
+<!-- Add Modal -->
+<div class="modal fade" id="addSPDModal" tabindex="-1" aria-labelledby="addSPDLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="addSuccessionPlan.php" method="post" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Succession Plan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form Fields -->
+        <div class="mb-3">
+          <label class="form-label">Successor Name (Employee ID)</label>
+          <input type="text" name="SUCCESION_NAME" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Current Role</label>
+          <input type="text" name="CURRENT_ROLE" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Readiness Level</label>
+          <select name="READINESS_LEVEL" class="form-select">
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Development Actions</label>
+          <textarea name="DEVELOPMENT_ACTIONS" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Target Readiness Date</label>
+          <input type="date" name="TARGET_READINESS_DATE" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Progress (%)</label>
+          <input type="number" name="PROGRESS" class="form-control" min="0" max="100">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Add Plan</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal fade" id="addSPDModal" tabindex="-1" aria-labelledby="addSPDLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="addSuccessionPlan.php" method="post" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Succession Plan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form Fields -->
+        <div class="mb-3">
+          <label class="form-label">Successor Name (Employee ID)</label>
+          <input type="text" name="SUCCESION_NAME" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Current Role</label>
+          <input type="text" name="CURRENT_ROLE" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Readiness Level</label>
+          <select name="READINESS_LEVEL" class="form-select">
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Development Actions</label>
+          <textarea name="DEVELOPMENT_ACTIONS" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Target Readiness Date</label>
+          <input type="date" name="TARGET_READINESS_DATE" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Progress (%)</label>
+          <input type="number" name="PROGRESS" class="form-control" min="0" max="100">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Add Plan</button>
+      </div>
+    </form>
+  </div>
+</div>
 <!-- <nav class="navbar navbar-blue" style="height:70px;">
 <div class="container">
     <a href="#!" class="navbar-brand" data-bs-toggle="offcanvas" aria-controls="staticBackdrop" data-bs-target="#sideBarNav" >

@@ -1,5 +1,7 @@
 <?php
 session_start();
+include '../../../phpcon/conn.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -536,26 +538,63 @@ session_start();
             <th>Type</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Total Days</th>
+            <th>Reason</th>
             <th>Status</th>
-            <th>Action</th>
+           
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>L001</td>
-            <td>EMP002</td>
-            <td>Sick Leave</td>
-            <td>2025-05-01</td>
-            <td>2025-05-03</td>
-            <td>Pending</td>
-            <td>
-              <button class="btn btn-success btn-sm">Approve</button>
-              <button class="btn btn-danger btn-sm">Reject</button>
-            </td>
-          </tr>
-          <!-- More leave rows -->
-        </tbody>
-      </table>
+     
+
+<!-- Display the leave requests -->
+
+  <?php
+// Define the SQL query
+$leaveQuery = "
+  SELECT 
+    lr.request_id,
+    lr.leave_type_id,
+    lr.start_date,
+    lr.end_date,
+    lr.total_days,
+    lr.reason,
+    lr.status,
+    e.first_name,
+    e.last_name,
+    lr.employee_id
+  FROM 
+    hr3.leaverequests lr
+  LEFT JOIN 
+    hr3.employees e ON lr.employee_id = e.employee_id
+";
+// Execute the query and store the result
+$leaveResult = $connection->query($leaveQuery);
+// Check if the query was successful
+if (!$leaveResult) {
+  // Handle the error
+  echo "Error: " . $connection->error;
+  exit;
+}
+?>
+    <?php while ($leaveRow = $leaveResult->fetch_assoc()) : ?>
+      <tr>
+        <td><?= $leaveRow['request_id'] ?></td>
+        <td><?= $leaveRow['employee_id'] ?></td> 
+        <td><?= $leaveRow['leave_type_id'] ?></td>
+        <td><?= $leaveRow['start_date'] ?></td>
+         <td><?= $leaveRow['end_date'] ?></td>
+         <td><?= $leaveRow['total_days'] ?></td>
+         <td><?= $leaveRow['reason'] ?></td>
+       
+       
+        <td><?= $leaveRow['status'] ?></td>
+        
+      </tr>
+   
+  </tbody>
+  <?php endwhile; ?>
+</table>
     </div>
   </div>
 </div>

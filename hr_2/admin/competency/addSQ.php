@@ -2,14 +2,14 @@
 include '../../../phpcon/conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $employee_id = $_POST['EMPLOYEE_ID'];
+    $skill_id = $_POST['SKILL_ID'];
+   
     $skill = $_POST['SKILL'];
-    $skill_level = $_POST['SKILL_LEVEL'];
-    $recommended_training = $_POST['RECOMMENDED_TRAINING'];
-    $deadline = $_POST['DEADLINE'];
+    $position = $_POST['POSITION'];
+  
 
-    $stmt = $connection->prepare("INSERT INTO skill_qualification (EMPLOYEE_ID, SKILL, SKILL_LEVEL, RECOMMENDED_TRAINING, DEADLINE) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("issss", $employee_id, $skill, $skill_level, $recommended_training, $deadline);
+    $stmt = $connection->prepare("INSERT INTO skill_qualification ( SKILL,POSITION ) VALUES (?, ?)");
+    $stmt->bind_param("ss", $skill,  $position);
 
     if ($stmt->execute()) {
         header("Location: competency.php"); // redirect to the correct tab

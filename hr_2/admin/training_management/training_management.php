@@ -529,21 +529,7 @@ while ($sched=$result->fetch_assoc()):
   <div class="tab-content" id="v-pills-tabContent">
   <?php
 $queryNew = "
-SELECT 
-    tea.*, 
-    tf.FULLNAME AS TRAINER_FULLNAME,
-    et.FULLNAME AS EMPLOYEE_FULLNAME,
-    tp.PROGRAM_NAME
-FROM 
-    trainee_enrollment_approval tea
-LEFT JOIN 
-    trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
-LEFT JOIN 
-    employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
-LEFT JOIN 
-    training_program tp ON tea.COURSE_PROGRAM = tp.PROGRAM_ID
-WHERE 
-    tea.STATUS = 'New'
+SELECT * FROM onboarding_training_orientation WHERE status=''
 ";
 
 $queryApproved = "
@@ -585,7 +571,7 @@ WHERE
 
 
 
-$resultNew = $connection->query($queryNew);
+$resultNew = $connection_hr1->query($queryNew);
 $resultApproved = $connection->query($queryApproved);
 $resultRejected = $connection->query($queryRejected);
 ?>

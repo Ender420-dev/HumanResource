@@ -618,21 +618,8 @@ $result = $connection->query($query);
       <h2 class="text-center mb-4">Skill Qualification</h2>
 
       <!-- Filter & Search Controls -->
-      <div class="row mb-4">
-        <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="Search by Employee ID or Name">
-        </div>
-        <div class="col-md-3">
-          <select class="form-select">
-            <option selected>Filter by Skill Level</option>
-            <option>Low</option>
-            <option>Normal</option>
-            <option>High</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <input type="date" class="form-control" placeholder="Training Deadline">
-        </div>
+      
+        
         <div class="col-md-2 text-end">
           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSQ">Add Skill Qualification</button>
         </div>
@@ -643,11 +630,10 @@ $result = $connection->query($query);
         <thead class="table-dark">
           <tr>
             <th>Skill ID</th>
-            <th>Employee ID</th>
+       
             <th>Skill</th>
-            <th>Skill Level</th>
-            <th>Recommended Training</th>
-            <th>Training Deadline</th>
+           <th>Position</th>
+           
             <th>Actions</th>
           </tr>
         </thead>
@@ -660,11 +646,11 @@ $result = $connection->query($query);
           ?>
           <tr>
             <td><?= htmlspecialchars($row['SKILL_ID']) ?></td>
-            <td><?= htmlspecialchars($row['EMPLOYEE_ID']) ?></td>
+           
             <td><?= htmlspecialchars($row['SKILL']) ?></td>
-            <td><?= htmlspecialchars($row['SKILL_LEVEL']) ?></td>
-            <td><?= htmlspecialchars($row['RECOMMENDED_TRAINING']) ?></td>
-            <td><?= htmlspecialchars($row['DEADLINE']) ?></td>
+           
+            <td><?= htmlspecialchars($row['POSITION']) ?></td>
+          
             <td>
               <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editSQ<?= $row['SKILL_ID'] ?>">Edit</button>
               <button class="btn btn-sm btn-danger" onclick="deleteSQ(<?= $row['SKILL_ID'] ?>)">Delete</button>
@@ -682,30 +668,17 @@ $result = $connection->query($query);
                   </div>
                   <div class="modal-body">
                     <input type="hidden" name="SKILL_ID" value="<?= $row['SKILL_ID'] ?>">
-                    <div class="mb-3">
-                      <label class="form-label">Employee ID</label>
-                      <input type="text" name="EMPLOYEE_ID" class="form-control" value="<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>">
-                    </div>
+                    
                     <div class="mb-3">
                       <label class="form-label">Skill</label>
                       <input type="text" name="SKILL" class="form-control" value="<?= htmlspecialchars($row['SKILL']) ?>">
                     </div>
+                 
                     <div class="mb-3">
-                      <label class="form-label">Skill Level</label>
-                      <select class="form-select" name="SKILL_LEVEL">
-                        <option <?= $row['SKILL_LEVEL'] == 'Low' ? 'selected' : '' ?>>Low</option>
-                        <option <?= $row['SKILL_LEVEL'] == 'Normal' ? 'selected' : '' ?>>Normal</option>
-                        <option <?= $row['SKILL_LEVEL'] == 'High' ? 'selected' : '' ?>>High</option>
-                      </select>
+                      <label class="form-label">POSITION</label>
+                      <input type="text" name="POSITION" class="form-control" value="<?= htmlspecialchars($row['POSITION']) ?>">
                     </div>
-                    <div class="mb-3">
-                      <label class="form-label">Recommended Training</label>
-                      <input type="text" name="RECOMMENDED_TRAINING" class="form-control" value="<?= htmlspecialchars($row['RECOMMENDED_TRAINING']) ?>">
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label">Training Deadline</label>
-                      <input type="date" name="DEADLINE" class="form-control" value="<?= $row['DEADLINE'] ?>">
-                    </div>
+                   
                   </div>
                   <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Save</button>
@@ -724,38 +697,24 @@ $result = $connection->query($query);
   <!-- Add Modal -->
   <div class="modal fade" id="addSQ">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+      <div class="modal-content container">
         <form action="addSQ.php" method="POST">
-          <div class="modal-header">
+          <div class="modal-header ">
             <h5 class="modal-title">Add Skill Qualification</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Employee ID</label>
-              <input type="number" name="EMPLOYEE_ID" class="form-control" required>
-            </div>
+
             <div class="mb-3">
               <label class="form-label">Skill</label>
               <input type="text" name="SKILL" class="form-control" required>
             </div>
+           
             <div class="mb-3">
-              <label class="form-label">Skill Level</label>
-              <select class="form-select" name="SKILL_LEVEL" required>
-                <option value="Low">Low</option>
-                <option value="Normal">Normal</option>
-                <option value="High">High</option>
-              </select>
+              <label class="form-label">Position</label>
+              <input type="text" name="POSITION" class="form-control">
             </div>
-            <div class="mb-3">
-              <label class="form-label">Recommended Training</label>
-              <input type="text" name="RECOMMENDED_TRAINING" class="form-control">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Training Deadline</label>
-              <input type="date" name="DEADLINE" class="form-control">
-            </div>
-          </div>
+            
+       
           <div class="modal-footer">
             <button type="submit" class="btn btn-success">Submit</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

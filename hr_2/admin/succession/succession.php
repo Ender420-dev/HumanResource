@@ -291,6 +291,30 @@ include '../../../phpcon/conn.php';
         </tr>
       </thead>
       <tbody>
+      <tr>
+          <td>Chief Technology Officer (CTO)</td>
+          <td>Executive</td>
+          <td>Jane Doe</td>
+          <td>2 Identified</td>
+          <td><span class="badge bg-danger">High</span></td>
+          <td>Occupied</td>
+          <td>
+            <button class="btn btn-sm btn-outline-info">View Details</button>
+            <button class="btn btn-sm btn-outline-warning">Update Risk</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Operations Manager</td>
+          <td>Operations</td>
+          <td>Vacant</td>
+          <td>None</td>
+          <td><span class="badge bg-warning text-dark">Medium</span></td>
+          <td><span class="text-danger">Vacant</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-info">Assign</button>
+            <button class="btn btn-sm btn-outline-success">Identify Successor</button>
+          </td>
+        </tr>
       <?php
              include '../../../phpcon/conn.php';
 
@@ -376,16 +400,39 @@ include '../../../phpcon/conn.php';
         </tr>
       </thead>
       <tbody>
+
+      <?php
+      $spdQuery="
+      SELECT
+      sdp.SUCCESSION_ID,
+      sdp.SUCCESION_NAME,
+      sdp.CURRENT_ROLE,
+      sdp.READINESS_LEVEL,
+      sdp.DEVELOPMENT_ACTIONS,
+      sdp.TARGET_READINESS_DATE,
+      sdp.MENTOR_ASSIGNED,
+      sdp.PROGRESS,
+      e.first_name AS FIRST_NAME,
+      e.last_name  AS LAST_NAME
+      
+      
+      FROM succession_plan_dev sdp
+      LEFT JOIN hr4.employees e ON sdp.SUCCESION_NAME = e.employee_id
+      ";
+      $spdResult=$connection->query($spdQuery);
+      
+      ?>
+      <?php while ($spdRow=$spdResult->fetch_assoc()):?>
         <tr>
-          <td>Mary Johnson</td>
-          <td>Finance Manager</td>
-          <td><span class="badge bg-warning text-dark">12-18 months</span></td>
-          <td>Leadership Training, Shadowing CFO</td>
-          <td>2026-01-15</td>
+          <td><?= htmlspecialchars($spdRow['FIRST_NAME']); ?> <?= htmlspecialchars($spdRow['LAST_NAME']); ?></td>
+          <td><?= htmlspecialchars($spdRow['CURRENT_ROLE']); ?></td>
+          <td><span class="badge bg-warning text-dark"><?= htmlspecialchars($spdRow['READINESS_LEVEL']); ?></span></td>
+          <td><?= htmlspecialchars($spdRow['DEVELOPMENT_ACTIONS']); ?></td>
+          <td><?= htmlspecialchars($spdRow['TARGET_READINESS_DATE']); ?></td>
           <td>Mark Lee</td>
           <td>
             <div class="progress" style="height: 20px;">
-              <div class="progress-bar bg-info" role="progressbar" style="width: 50%">50%</div>
+              <div class="progress-bar bg-info" role="progressbar" style="width: <?= htmlspecialchars($spdRow['PROGRESS']); ?>%"><?= htmlspecialchars($spdRow['PROGRESS']); ?>%</div>
             </div>
           </td>
           <td>
@@ -393,25 +440,10 @@ include '../../../phpcon/conn.php';
             <button class="btn btn-sm btn-outline-success">Update Progress</button>
           </td>
         </tr>
-        <tr>
-          <td>John Doe</td>
-          <td>Finance Manager</td>
-          <td><span class="badge bg-warning text-dark">12-18 months</span></td>
-          <td>Leadership Training, Shadowing CFO</td>
-          <td>2026-01-15</td>
-          <td>Mark Lee</td>
-          <td>
-            <div class="progress" style="height: 20px;">
-              <div class="progress-bar bg-info" role="progressbar" style="width: 45%">45%</div>
-            </div>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-outline-primary">Edit</button>
-            <button class="btn btn-sm btn-outline-success">Update Progress</button>
-          </td>
-        </tr>
+      
         <!-- Add more successor rows -->
       </tbody>
+      <?php endwhile; ?>
     </table>
   </div>
 </div>
@@ -469,6 +501,10 @@ include '../../../phpcon/conn.php';
         </tr>
       </thead>
       <tbody>
+        <?php
+        
+        
+        ?>
         <tr>
           <td>Angela Rivera</td>
           <td>Senior Project Manager</td>

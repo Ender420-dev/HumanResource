@@ -529,49 +529,40 @@ while ($sched=$result->fetch_assoc()):
   <div class="tab-content" id="v-pills-tabContent">
   <?php
 $queryNew = "
-SELECT * FROM onboarding_training_orientation WHERE status=''
+SELECT 
+    oto.employee_id,
+    oto.training_id,
+    oto.training_name,
+    oto.status
+FROM hr1.onboarding_training_orientation oto 
+WHERE oto.status IS NULL OR oto.status = ''
 ";
+
 
 $queryApproved = "
 SELECT 
-    tea.*, 
-    tf.FULLNAME AS TRAINER_FULLNAME,
-    et.FULLNAME AS EMPLOYEE_FULLNAME,
-    tp.PROGRAM_NAME
-FROM 
-    trainee_enrollment_approval tea
-LEFT JOIN 
-    trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
-LEFT JOIN 
-    employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
-LEFT JOIN 
-    training_program tp ON tea.COURSE_PROGRAM = tp.PROGRAM_ID
-WHERE 
-    tea.STATUS = 'Approved'
+    oto.employee_id,
+    oto.training_id,
+    oto.training_name,
+    oto.status
+FROM hr1.onboarding_training_orientation oto 
+WHERE oto.status = 'Approved'
 ";
 
 $queryRejected = "
 SELECT 
-    tea.*, 
-    tf.FULLNAME AS TRAINER_FULLNAME,
-    et.FULLNAME AS EMPLOYEE_FULLNAME,
-    tp.PROGRAM_NAME
-FROM 
-    trainee_enrollment_approval tea
-LEFT JOIN 
-    trainer_faculty tf ON tea.TRAINER = tf.TRAINER_ID
-LEFT JOIN 
-    employe_table et ON tea.EMPLOYEE_ID = et.EMPLOYEE_ID
-LEFT JOIN 
-    training_program tp ON tea.COURSE_PROGRAM = tp.PROGRAM_ID
-WHERE 
-    tea.STATUS = 'Rejected'
+    oto.employee_id,
+    oto.training_id,
+    oto.training_name,
+    oto.status
+FROM hr1.onboarding_training_orientation oto 
+WHERE oto.status = 'Rejected'
 ";
 
 
 
 
-$resultNew = $connection_hr1->query($queryNew);
+$resultNew = $connection->query($queryNew);
 $resultApproved = $connection->query($queryApproved);
 $resultRejected = $connection->query($queryRejected);
 ?>
@@ -584,11 +575,10 @@ $resultRejected = $connection->query($queryRejected);
       <table class="table table-striped table-hover">
         <thead class="table-dark">
           <tr>
-            <th>Enrollment ID</th>
-            <th>Trainee ID</th>
             <th>Employee ID</th>
-            <th>Course Program</th>
-            <th>Trainer</th>
+            <th>Training ID</th>
+            <th>Training Name</th>
+           
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -596,15 +586,15 @@ $resultRejected = $connection->query($queryRejected);
         <tbody>
           <?php while($row = $resultNew->fetch_assoc()): ?>
           <tr>
-            <td><?php echo $row['ENROLLMENT_ID']; ?></td>
-            <td><?php echo $row['TRAINEE_ID']; ?></td>
-            <td><?php echo $row['EMPLOYEE_ID']; ?></td>
-            <td><?php echo $row['COURSE_PROGRAM']; ?></td>
-            <td><?php echo $row['TRAINER']; ?></td>
-            <td><?php echo $row['STATUS']; ?></td>
+            <td><?php echo $row['employee_id']; ?></td>
+            <td><?php echo $row['training_id']; ?></td>
+            <td><?php echo $row['training_name']; ?></td>
+           
+           
+            <td><?php echo $row['status']; ?></td>
             <td>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['ENROLLMENT_ID']; ?>">
+                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['employee_id']; ?>">
                   View
                 </button>
               </div>
@@ -612,34 +602,30 @@ $resultRejected = $connection->query($queryRejected);
           </tr>
 
           <!-- Modal per enrollment -->
-          <div class="modal fade" id="enroll-<?php echo $row['ENROLLMENT_ID']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
+          <div class="modal fade" id="enroll-<?php echo $row['employee_id']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>">Enrollment Details</h5>
+                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['employee_id']; ?>">Enrollment Details</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
-                  <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
+                  <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
-                  <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
-                  <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
-                  <p><strong>Trainer Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
-                  <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
-                  <p><strong>Program Title:</strong> <?php echo $row['PROGRAM_NAME']; ?></p>
-                  <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
-                  <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
+                  <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>
+                
+                  <p><strong>Status:</strong> <?php echo $row['status']; ?></p>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-success update-status-btn"
-        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-enrollment-id="<?php echo $row['employee_id']; ?>" 
         data-status="Approved">
   Approve
 </button>
 
 <button type="button" class="btn btn-danger update-status-btn"
-        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-enrollment-id="<?php echo $row['employee_id']; ?>" 
         data-status="Rejected">
   Reject
 </button>
@@ -660,29 +646,28 @@ $resultRejected = $connection->query($queryRejected);
         <div class="card-body">
           <h5 class="card-title">Approved Enrollments</h5>
           <table class="table table-striped table-hover">
-            <thead class="table-dark">
-              <tr>
-                <th>Enrollment ID</th>
-                <th>Trainee ID</th>
-                <th>Employee ID</th>
-                <th>Course Program</th>
-                <th>Trainer</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php while($row = $resultApproved->fetch_assoc()): ?>
-              <tr>
-                <td><?php echo $row['ENROLLMENT_ID']; ?></td>
-                <td><?php echo $row['TRAINEE_ID']; ?></td>
-                <td><?php echo $row['EMPLOYEE_ID']; ?></td>
-                <td><?php echo $row['COURSE_PROGRAM']; ?></td>
-                <td><?php echo $row['TRAINER']; ?></td>
-                <td><?php echo $row['STATUS']; ?></td>
-                <td>
+        <thead class="table-dark">
+          <tr>
+            <th>Employee ID</th>
+            <th>Training ID</th>
+            <th>Training Name</th>
+           
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while($row = $resultApproved->fetch_assoc()): ?>
+          <tr>
+            <td><?php echo $row['employee_id']; ?></td>
+            <td><?php echo $row['training_id']; ?></td>
+            <td><?php echo $row['training_name']; ?></td>
+           
+           
+            <td><?php echo $row['status']; ?></td>
+            <td>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['ENROLLMENT_ID']; ?>">
+                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['employee_id']; ?>">
                   View
                 </button>
               </div>
@@ -690,34 +675,30 @@ $resultRejected = $connection->query($queryRejected);
           </tr>
 
           <!-- Modal per enrollment -->
-          <div class="modal fade" id="enroll-<?php echo $row['ENROLLMENT_ID']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
+          <div class="modal fade" id="enroll-<?php echo $row['employee_id']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>">Enrollment Details</h5>
+                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['employee_id']; ?>">Enrollment Details</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
-                  <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
+                  <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
-                  <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
-                  <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
-                  <p><strong>Trainer Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
-                  <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
-                  <p><strong>Program Title:</strong> <?php echo $row['PROGRAM_NAME']; ?></p>
-                  <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
-                  <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
+                  <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>
+                
+                  <p><strong>Status:</strong> <?php echo $row['status']; ?></p>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-success update-status-btn"
-        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-enrollment-id="<?php echo $row['employee_id']; ?>" 
         data-status="Approved">
   Approve
 </button>
 
 <button type="button" class="btn btn-danger update-status-btn"
-        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-enrollment-id="<?php echo $row['employee_id']; ?>" 
         data-status="Rejected">
   Reject
 </button>
@@ -727,9 +708,9 @@ $resultRejected = $connection->query($queryRejected);
               </div>
             </div>
           </div>
-              <?php endwhile; ?>
-            </tbody>
-          </table>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
         </div>
       </div></div>
 
@@ -739,29 +720,28 @@ $resultRejected = $connection->query($queryRejected);
         <div class="card-body">
           <h5 class="card-title">Rejected Enrollments</h5>
           <table class="table table-striped table-hover">
-            <thead class="table-dark">
-              <tr>
-                <th>Enrollment ID</th>
-                <th>Trainee ID</th>
-                <th>Employee ID</th>
-                <th>Course Program</th>
-                <th>Trainer</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php while($row = $resultRejected->fetch_assoc()): ?>
-              <tr>
-                <td><?php echo $row['ENROLLMENT_ID']; ?></td>
-                <td><?php echo $row['TRAINEE_ID']; ?></td>
-                <td><?php echo $row['EMPLOYEE_ID']; ?></td>
-                <td><?php echo $row['COURSE_PROGRAM']; ?></td>
-                <td><?php echo $row['TRAINER']; ?></td>
-                <td><?php echo $row['STATUS']; ?></td>
-                <td>
+        <thead class="table-dark">
+          <tr>
+            <th>Employee ID</th>
+            <th>Training ID</th>
+            <th>Training Name</th>
+           
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while($row = $resultRejected->fetch_assoc()): ?>
+          <tr>
+            <td><?php echo $row['employee_id']; ?></td>
+            <td><?php echo $row['training_id']; ?></td>
+            <td><?php echo $row['training_name']; ?></td>
+           
+           
+            <td><?php echo $row['status']; ?></td>
+            <td>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['ENROLLMENT_ID']; ?>">
+                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#enroll-<?php echo $row['employee_id']; ?>">
                   View
                 </button>
               </div>
@@ -769,34 +749,30 @@ $resultRejected = $connection->query($queryRejected);
           </tr>
 
           <!-- Modal per enrollment -->
-          <div class="modal fade" id="enroll-<?php echo $row['ENROLLMENT_ID']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
+          <div class="modal fade" id="enroll-<?php echo $row['employee_id']; ?>" tabindex="-1" aria-labelledby="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['ENROLLMENT_ID']; ?>">Enrollment Details</h5>
+                  <h5 class="modal-title" id="enrollLabel-<?php echo $row['employee_id']; ?>">Enrollment Details</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <p><strong>Enrollment ID:</strong> <?php echo $row['ENROLLMENT_ID']; ?></p>
-                  <p><strong>Trainee ID:</strong> <?php echo $row['TRAINEE_ID']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
+                  <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
-                  <p><strong>Employee ID:</strong> <?php echo $row['EMPLOYEE_ID']; ?></p>
-                  <p><strong>Employee Name:</strong> <?php echo $row['EMPLOYEE_FULLNAME']; ?></p>
-                  <p><strong>Trainer Name:</strong> <?php echo $row['TRAINER_FULLNAME']; ?></p>
-                  <p><strong>Course Program:</strong> <?php echo $row['COURSE_PROGRAM']; ?></p>
-                  <p><strong>Program Title:</strong> <?php echo $row['PROGRAM_NAME']; ?></p>
-                  <p><strong>Trainer:</strong> <?php echo $row['TRAINER']; ?></p>
-                  <p><strong>Status:</strong> <?php echo $row['STATUS']; ?></p>
+                  <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>
+                
+                  <p><strong>Status:</strong> <?php echo $row['status']; ?></p>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-success update-status-btn"
-        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-enrollment-id="<?php echo $row['employee_id']; ?>" 
         data-status="Approved">
   Approve
 </button>
 
 <button type="button" class="btn btn-danger update-status-btn"
-        data-enrollment-id="<?php echo $row['ENROLLMENT_ID']; ?>" 
+        data-enrollment-id="<?php echo $row['employee_id']; ?>" 
         data-status="Rejected">
   Reject
 </button>
@@ -806,15 +782,14 @@ $resultRejected = $connection->query($queryRejected);
               </div>
             </div>
           </div>
-              <?php endwhile; ?>
-            </tbody>
-          </table>
-        </div>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
       </div>
     </div>
 
   </div>
-</div></div></div></div>
+</div></div></div></div></div>
 
 
 <div class="tab-pane fade" id="pillsFaculty" role="tabpanel">
@@ -1242,7 +1217,7 @@ $resultRejected = $connection->query($queryRejected);
 
     
     <script>
-     $(document).ready(function() {
+    $(document).ready(function() {
   $('.update-status-btn').on('click', function() {
     var enrollmentId = $(this).data('enrollment-id');
     var newStatus = $(this).data('status');
@@ -1253,14 +1228,16 @@ $resultRejected = $connection->query($queryRejected);
       type: 'POST',
       data: { enrollment_id: enrollmentId, status: newStatus },
       success: function(response) {
-        // Update status cell in the table
-        $('tr:has(button[data-enrollment-id="' + enrollmentId + '"]) td:nth-child(6)').text(newStatus);
-
-        // Optional: show toast / alert
+        // Optional: show alert
         alert(response);
 
         // Close the modal
         $('#enroll-' + enrollmentId).modal('hide');
+
+        // Reload the page after short delay
+        setTimeout(function() {
+          location.reload();
+        }, 300); // 300ms delay to allow modal to close cleanly
       },
       error: function() {
         alert('Failed to update status.');
@@ -1268,6 +1245,7 @@ $resultRejected = $connection->query($queryRejected);
     });
   });
 });
+
 function deleteTrainer(trainerID) {
     if (confirm("Are you sure you want to delete Trainer ID #" + trainerID + "?")) {
         const formData = new FormData();

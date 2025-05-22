@@ -618,7 +618,7 @@ $resultRejected = $connection->query($queryRejected);
                 </div>
                 <div class="modal-body">
                   <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
-                  <p><strong>Employee ID:</strong> <?php echo $row['FULLNAME']; ?></p>
+                  <p><strong>Employee Name:</strong> <?php echo $row['FULLNAME']; ?></p>
                   <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
                   <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>
@@ -692,7 +692,7 @@ $resultRejected = $connection->query($queryRejected);
                 </div>
                 <div class="modal-body">
                   <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
-                  <p><strong>Employee ID:</strong> <?php echo $row['FULLNAME']; ?></p>
+                  <p><strong>Employee Name:</strong> <?php echo $row['FULLNAME']; ?></p>
                   <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
                   <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>
@@ -768,7 +768,7 @@ $resultRejected = $connection->query($queryRejected);
                 </div>
                 <div class="modal-body">
                   <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
-                  <p><strong>Employee ID:</strong> <?php echo $row['FULLNAME']; ?></p>
+                  <p><strong>Employee Name:</strong> <?php echo $row['FULLNAME']; ?></p>
                   <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
                   <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>

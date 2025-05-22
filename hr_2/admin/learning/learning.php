@@ -550,10 +550,11 @@ while ($lcmRow=$lcm->fetch_assoc()):
               lp.STATUS,
               lp.COURSE,
               tp.PROGRAM_NAME,
-              tt.FULLNAME AS TRAINEE_NAME
+          CONCAT(tt.first_name, ' ', tt.last_name) AS TRAINEE_NAME
+
             FROM learning_progress lp
             LEFT JOIN training_program tp ON lp.COURSE = tp.PROGRAM_ID
-            LEFT JOIN trainee_table tt ON lp.EMPLOYEE_ID = tt.TRAINEE_ID
+            LEFT JOIN hr3.employees tt ON lp.EMPLOYEE_ID = tt.employee_id
           ";
           $LPResult = $connection->query($LPQuery);
           ?>
@@ -657,10 +658,19 @@ while ($lcmRow=$lcm->fetch_assoc()):
             <select name="EMPLOYEE_ID" class="form-select" required>
               <option value="" disabled selected>Select trainee</option>
               <?php
-              $trainees = $connection->query("SELECT TRAINEE_ID, FULLNAME FROM trainee_table");
+       $trainees = $connection_hr1->query("
+       SELECT 
+           oto.employee_id, 
+           oto.training_id, 
+           e.first_name, 
+           e.last_name 
+       FROM hr1.onboarding_training_orientation oto 
+       LEFT JOIN hr3.employees e ON oto.employee_id = e.employee_id  
+       WHERE oto.status = 'Approved'
+   ");
               while ($t = $trainees->fetch_assoc()):
               ?>
-                <option value="<?= $t['TRAINEE_ID']; ?>"><?= htmlspecialchars($t['FULLNAME']); ?></option>
+                <option value="<?= $t['employee_id']; ?>"><?= htmlspecialchars($t['first_name']); ?> <?= htmlspecialchars($t['last_name']); ?></option>
               <?php endwhile; ?>
             </select>
           </div>
@@ -734,6 +744,9 @@ while ($lcmRow=$lcm->fetch_assoc()):
         <tbody>
           <?php
           $query = "
+
+
+          
             SELECT 
               tp.PROGRAM_ID,
               tp.PROGRAM_NAME,
@@ -779,9 +792,12 @@ while ($lcmRow=$lcm->fetch_assoc()):
                     <ul>
                       <?php
                       $learnerQuery = "
-                        SELECT e.FULLNAME, lp.PROGRESS
+
+ 
+
+                        SELECT e.employee_id, lp.PROGRESS,  CONCAT(e.first_name, ' ', e.last_name) AS FULLNAME
                         FROM learning_progress lp
-                        LEFT JOIN hr1.employeeprofilesetup e ON lp.EMPLOYEE_ID = e.EmployeeID
+                        LEFT JOIN hr3.employees e ON lp.EMPLOYEE_ID = e.employee_id
                         WHERE lp.COURSE = " . intval($row['PROGRAM_ID']);
                       $learners = $connection->query($learnerQuery);
                       while ($learner = $learners->fetch_assoc()):

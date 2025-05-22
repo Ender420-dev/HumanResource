@@ -10,11 +10,11 @@ $lp_id = intval($_GET['lp_id']);
 
 $query = "
     SELECT 
-        tt.FULLNAME AS TRAINEE_NAME,
+        CONCAT(tt.first_name, ' ', tt.last_name) AS TRAINEE_NAME,
         tp.PROGRAM_NAME,
         lp.END
     FROM learning_progress lp
-    LEFT JOIN trainee_table tt ON lp.EMPLOYEE_ID = tt.TRAINEE_ID
+    LEFT JOIN hr3.employees tt ON lp.EMPLOYEE_ID = tt.employee_id
     LEFT JOIN training_program tp ON lp.COURSE = tp.PROGRAM_ID
     WHERE lp.LP_ID = ?
 ";

@@ -533,9 +533,11 @@ SELECT
     oto.employee_id,
     oto.training_id,
     oto.training_name,
-    oto.status
+    oto.status,
+CONCAT(e.first_name, ' ', e.last_name) AS FULLNAME
 FROM hr1.onboarding_training_orientation oto 
-WHERE oto.status IS NULL OR oto.status = ''
+LEFT JOIN hr3.employees e ON oto.employee_id = e.employee_id
+WHERE oto.status = ''
 ";
 
 
@@ -544,8 +546,10 @@ SELECT
     oto.employee_id,
     oto.training_id,
     oto.training_name,
-    oto.status
+    oto.status,
+CONCAT(e.first_name, ' ', e.last_name) AS FULLNAME
 FROM hr1.onboarding_training_orientation oto 
+LEFT JOIN hr3.employees e ON oto.employee_id = e.employee_id
 WHERE oto.status = 'Approved'
 ";
 
@@ -553,9 +557,12 @@ $queryRejected = "
 SELECT 
     oto.employee_id,
     oto.training_id,
-    oto.training_name,
-    oto.status
+    t.PROGRAM_NAME AS training_name,
+    oto.status,
+     CONCAT(e.first_name, ' ', e.last_name) AS FULLNAME
 FROM hr1.onboarding_training_orientation oto 
+LEFT JOIN hr3.employees e ON oto.employee_id = e.employee_id
+LEFT JOIN training_PROGRAM t ON oto.training_id = t.PROGRAM_ID
 WHERE oto.status = 'Rejected'
 ";
 
@@ -611,11 +618,12 @@ $resultRejected = $connection->query($queryRejected);
                 </div>
                 <div class="modal-body">
                   <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['FULLNAME']; ?></p>
                   <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
                   <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>
                 
-                  <p><strong>Status:</strong> <?php echo $row['status']; ?></p>
+                  <p><strong>Status:</strong> New</p>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-success update-status-btn"
@@ -684,6 +692,7 @@ $resultRejected = $connection->query($queryRejected);
                 </div>
                 <div class="modal-body">
                   <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['FULLNAME']; ?></p>
                   <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
                   <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>
@@ -734,6 +743,7 @@ $resultRejected = $connection->query($queryRejected);
           <?php while($row = $resultRejected->fetch_assoc()): ?>
           <tr>
             <td><?php echo $row['employee_id']; ?></td>
+          
             <td><?php echo $row['training_id']; ?></td>
             <td><?php echo $row['training_name']; ?></td>
            
@@ -758,6 +768,7 @@ $resultRejected = $connection->query($queryRejected);
                 </div>
                 <div class="modal-body">
                   <p><strong>Employee ID:</strong> <?php echo $row['employee_id']; ?></p>
+                  <p><strong>Employee ID:</strong> <?php echo $row['FULLNAME']; ?></p>
                   <p><strong>Training ID:</strong> <?php echo $row['training_id']; ?></p>
               
                   <p><strong>Training Name:</strong> <?php echo $row['training_name']; ?></p>
@@ -967,11 +978,11 @@ $resultRejected = $connection->query($queryRejected);
           SELECT 
             lp.LP_ID,
             lp.EMPLOYEE_ID,
-            tt.FULLNAME AS TRAINEE_NAME,
+            CONCAT(tt.first_name, ' ', tt.last_name) AS TRAINEE_NAME,
             tp.PROGRAM_NAME,
             lp.PROGRESS
           FROM learning_progress lp
-          LEFT JOIN trainee_table tt ON lp.EMPLOYEE_ID = tt.TRAINEE_ID
+          LEFT JOIN hr3.employees tt ON lp.EMPLOYEE_ID = tt.employee_id
           LEFT JOIN training_program tp ON lp.COURSE = tp.PROGRAM_ID
         ";
 

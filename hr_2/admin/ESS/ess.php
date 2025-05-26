@@ -530,6 +530,9 @@ include '../../../phpcon/conn.php';
 
     <!-- Leave Requests Tab -->
     <div class="tab-pane fade" id="leave" role="tabpanel">
+      <div class="justify-content-end">
+        <button data-bs-toggle="modal" data-bs-target="#addLeaveRequestModal" class="btn btn-primary">Add Leave Request</button>
+      </div>
       <table class="table table-hover">
         <thead class="table-secondary">
           <tr>
@@ -793,7 +796,11 @@ if (!$leaveResult) {
             </div>
         </div>
     </div>
-</div><div class="modal fade" id="trainerModal" tabindex="-1" aria-labelledby="trainerModalLabel" aria-hidden="true">
+</div>
+
+
+
+<div class="modal fade" id="trainerModal" tabindex="-1" aria-labelledby="trainerModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     
@@ -906,6 +913,75 @@ if (!$leaveResult) {
   </div>
 </div>
 
+
+<div id="addLeaveRequestModal" class="modal fade">
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header"><h5 class="modal-title">Add Request Leave</h5>  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+       
+    <div class="modal-body">
+<form action="addLR.php" method="post">
+  <div class="mb-3">
+    <label for="">Employee Name</label>
+    <select name="employee_id" id="employee_id" class="form-select">
+      <option value="">Select Employee</option>
+      <?php
+        // Fetch employee names from the database
+        $employeeQuery = "SELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name FROM hr4.employees";
+        $employeeResult = $connection->query($employeeQuery);
+        while ($row = $employeeResult->fetch_assoc()) {
+          echo "<option value='{$row['employee_id']}'>{$row['full_name']}</option>";
+        }
+      ?>
+
+
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="">Leave Type</label>
+    <select name="leave_type_id" id="leave_type_id" class="form-select">
+      <option value="">Select Leave Type</option>
+      <?php
+        // Fetch leave types from the database
+        $leaveTypeQuery = "SELECT leave_type_id, leave_type_name FROM hr3.leavetypes";
+        $leaveTypeResult = $connection->query($leaveTypeQuery);
+        while ($row = $leaveTypeResult->fetch_assoc()) {
+          echo "<option value='{$row['leave_type_id']}'>{$row['leave_type_name']}</option>";
+        }
+      ?>
+   
+    </select>
+  </div>
+<div class="row">
+<div class="col-6">
+    <label for="">Start Date</label>
+    <input type="date" name="start_date" id="start_date" class="form-control"></div>
+<div class="col-6">
+    <label for="">End Date</label>
+    <input type="date" name="end_date" id="end_date" class="form-control"></div>
+</div>
+  
+  <div class="mb-3">
+    <label for="">Total Days</label>
+    <input type="number" name="total_days" id="total_days" class="form-control" readonly>
+  </div>
+
+  <div class="mb-3">
+    <label for="">Reason</label>
+    <textarea name="reason" id="reason" class="form-control"></textarea>
+  </div>
+
+    <input type="hidden" name="status" value="Pending">
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Submit Request</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</form>
+    </div>
+  </div>
+</div>
+</div>
 <!-- <nav class="navbar navbar-blue" style="height:70px;">
 <div class="container">
     <a href="#!" class="navbar-brand" data-bs-toggle="offcanvas" aria-controls="staticBackdrop" data-bs-target="#sideBarNav" >
@@ -922,7 +998,25 @@ if (!$leaveResult) {
 
     
     <script>
+const startDateInput = document.getElementById('start_date');
+  const endDateInput = document.getElementById('end_date');
+  const totalDaysInput = document.getElementById('total_days');
 
+  function calculateTotalDays() {
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+
+    if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
+      const timeDiff = endDate - startDate;
+      const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1; // +1 to include both start and end dates
+      totalDaysInput.value = daysDiff;
+    } else {
+      totalDaysInput.value = '';
+    }
+  }
+
+  startDateInput.addEventListener('change', calculateTotalDays);
+  endDateInput.addEventListener('change', calculateTotalDays);
 window.addEventListener('scroll',function(){
     let sidenav=document.querySelector('.bg-side');
     if (window.scrollY>50){

@@ -658,19 +658,20 @@ while ($lcmRow=$lcm->fetch_assoc()):
             <select name="EMPLOYEE_ID" class="form-select" required>
               <option value="" disabled selected>Select trainee</option>
               <?php
-       $trainees = $connection_hr1->query("
+       $trainees = $connection->query("
        SELECT 
            oto.employee_id, 
            oto.training_id, 
            e.first_name, 
            e.last_name 
        FROM hr1.onboarding_training_orientation oto 
-       LEFT JOIN hr3.employees e ON oto.employee_id = e.employee_id  
-       WHERE oto.status = 'Approved'
+       LEFT JOIN hr4.employees e ON oto.employee_id = e.employee_id  
+       WHERE oto.status = 'Completed'
    ");
               while ($t = $trainees->fetch_assoc()):
               ?>
-                <option value="<?= $t['employee_id']; ?>"><?= htmlspecialchars($t['first_name']); ?> <?= htmlspecialchars($t['last_name']); ?></option>
+                <option value="<?= $t['employee_id']; ?>">
+                  <?= htmlspecialchars($t['first_name']); ?> <?= htmlspecialchars($t['last_name']); ?></option>
               <?php endwhile; ?>
             </select>
           </div>

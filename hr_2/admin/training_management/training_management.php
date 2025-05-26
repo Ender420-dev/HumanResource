@@ -518,9 +518,9 @@ while ($sched=$result->fetch_assoc()):
   <div class="col-md-2">
     <!-- Vertical Nav Pills -->
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-    <button class="nav-link new-tab active" id="v-pills-new-tab" data-bs-toggle="pill" data-bs-target="#v-pills-new" type="button" role="tab" aria-controls="v-pills-new" aria-selected="true">New</button>
-        <button class="nav-link approved-tab" id="v-pills-approve-tab" data-bs-toggle="pill" data-bs-target="#v-pills-approve" type="button" role="tab" aria-controls="v-pills-approve" aria-selected="false">Approved</button>
-        <button class="nav-link rejected-tab" id="v-pills-rejected-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rejected" type="button" role="tab" aria-controls="v-pills-rejected" aria-selected="false">Rejected</button>
+    <button class="nav-link new-tab active" id="v-pills-new-tab" data-bs-toggle="pill" data-bs-target="#v-pills-new" type="button" role="tab" aria-controls="v-pills-new" aria-selected="true">Pending</button>
+        <button class="nav-link approved-tab" id="v-pills-approve-tab" data-bs-toggle="pill" data-bs-target="#v-pills-approve" type="button" role="tab" aria-controls="v-pills-approve" aria-selected="false">Completed</button>
+        <button class="nav-link rejected-tab" id="v-pills-rejected-tab" data-bs-toggle="pill" data-bs-target="#v-pills-rejected" type="button" role="tab" aria-controls="v-pills-rejected" aria-selected="false">Inprogress</button>
 
     </div>
   </div>
@@ -537,7 +537,7 @@ SELECT
 CONCAT(e.first_name, ' ', e.last_name) AS FULLNAME
 FROM hr1.onboarding_training_orientation oto 
 LEFT JOIN hr3.employees e ON oto.employee_id = e.employee_id
-WHERE oto.status = ''
+WHERE oto.status = 'Pending' OR oto.status = ''
 ";
 
 
@@ -550,7 +550,7 @@ SELECT
 CONCAT(e.first_name, ' ', e.last_name) AS FULLNAME
 FROM hr1.onboarding_training_orientation oto 
 LEFT JOIN hr3.employees e ON oto.employee_id = e.employee_id
-WHERE oto.status = 'Approved'
+WHERE oto.status = 'Completed'
 ";
 
 $queryRejected = "
@@ -563,7 +563,7 @@ SELECT
 FROM hr1.onboarding_training_orientation oto 
 LEFT JOIN hr3.employees e ON oto.employee_id = e.employee_id
 LEFT JOIN training_PROGRAM t ON oto.training_id = t.PROGRAM_ID
-WHERE oto.status = 'Rejected'
+WHERE oto.status = 'Inprogress'
 ";
 
 
@@ -628,14 +628,14 @@ $resultRejected = $connection->query($queryRejected);
                 <div class="modal-footer">
                 <button type="button" class="btn btn-success update-status-btn"
         data-enrollment-id="<?php echo $row['employee_id']; ?>" 
-        data-status="Approved">
-  Approve
+        data-status="Completed">
+  Completed
 </button>
 
 <button type="button" class="btn btn-danger update-status-btn"
         data-enrollment-id="<?php echo $row['employee_id']; ?>" 
-        data-status="Rejected">
-  Reject
+        data-status="Inprogress">
+  Inprogress
 </button>
 
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -702,14 +702,14 @@ $resultRejected = $connection->query($queryRejected);
                 <div class="modal-footer">
                 <button type="button" class="btn btn-success update-status-btn"
         data-enrollment-id="<?php echo $row['employee_id']; ?>" 
-        data-status="Approved">
-  Approve
+        data-status="Completed">
+  Completed
 </button>
 
 <button type="button" class="btn btn-danger update-status-btn"
         data-enrollment-id="<?php echo $row['employee_id']; ?>" 
-        data-status="Rejected">
-  Reject
+        data-status="Inprogress">
+  Inprogress
 </button>
 
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -778,14 +778,14 @@ $resultRejected = $connection->query($queryRejected);
                 <div class="modal-footer">
                 <button type="button" class="btn btn-success update-status-btn"
         data-enrollment-id="<?php echo $row['employee_id']; ?>" 
-        data-status="Approved">
-  Approve
+        data-status="Completed">
+  Completed
 </button>
 
 <button type="button" class="btn btn-danger update-status-btn"
         data-enrollment-id="<?php echo $row['employee_id']; ?>" 
-        data-status="Rejected">
-  Reject
+        data-status="Inprogress">
+  Inprogress
 </button>
 
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -993,7 +993,7 @@ $resultRejected = $connection->query($queryRejected);
           <td><?= htmlspecialchars($record['EMPLOYEE_ID']) ?></td>
           <td><?= htmlspecialchars($record['TRAINEE_NAME']) ?></td>
           <td><?= htmlspecialchars($record['PROGRAM_NAME']) ?></td>
-          <td><?= ((int)$record['PROGRESS'] === 100) ? 'Complete' : 'Incomplete' ?></td>
+          <td><?= ((int)$record['PROGRESS'] === 100) ? 'Complete' : 'Inprogress' ?></td>
           <td>
             <!-- Edit Button -->
             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editRecordModal<?= $record['LP_ID'] ?>">Edit</button>

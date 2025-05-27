@@ -1,11 +1,11 @@
 <?php
 include '../../../phpcon/conn.php';
 
-$enrollmentId = $_POST['enrollment_id'];
-$status = $_POST['status'];
+$enrollmentId = $_POST['ENROLLMENT_ID'];
+$status = $_POST['STATUS'];
 
-$query = "UPDATE onboarding_training_orientation SET status = ? WHERE employee_id = ?";
-$stmt = $connection_hr1->prepare($query);
+$query = "UPDATE trainee_enrollment_approval SET STATUS = ? WHERE ENROLLMENT_ID = ?";
+$stmt = $connection->prepare($query);
 $stmt->bind_param('si', $status, $enrollmentId);
 
 if ($stmt->execute()) {

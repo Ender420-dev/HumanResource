@@ -1,0 +1,396 @@
+============================payroll_processing.php==============================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <aside>
+        <?php
+        include 'dashboard.php'
+        ?>
+    </aside>
+    <div class="main">
+        <div class="container">
+            <button><a href="add_employee.php">Add employee</a></button>
+             <?php
+include '../Database/db.php';
+
+// Assume 160 working hours per month (adjust if needed)
+define('STANDARD_MONTHLY_HOURS', 160);
+
+// Get active employees and their latest salary
+$sql = "
+SELECT 
+    e.employee_id,
+    e.first_name,
+    e.last_name,
+    sr.base_salary,
+
+    IFNULL(SUM(sl.total_hours), 0) AS total_hours,
+    IFNULL(SUM(sl.overtime), 0) AS overtime,
+    IFNULL(SUM(sl.night_diff_hours), 0) AS night_diff_hours,
+
+    IFNULL(SUM(ed.amount), 0) AS total_deductions
+
+FROM employees e
+LEFT JOIN salary_records sr ON sr.employee_id = e.employee_id 
+    AND sr.effective_date = (
+        SELECT MAX(effective_date) FROM salary_records 
+        WHERE employee_id = e.employee_id
+    )
+LEFT JOIN shift_logs sl ON sl.employee_id = e.employee_id
+    AND MONTH(sl.shift_date) = MONTH(CURRENT_DATE())
+    AND YEAR(sl.shift_date) = YEAR(CURRENT_DATE())
+LEFT JOIN employee_deductions ed ON ed.employee_id = e.employee_id
+    AND (ed.end_date IS NULL OR ed.end_date >= CURRENT_DATE())
+
+WHERE e.status = 'Active'
+GROUP BY e.employee_id
+";
+
+$result = $conn->query($sql);
+?>
+
+<h2>Payroll Processing</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>Employee ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Base Salary (₱)</th>
+        <th>Total Hours</th>
+        <th>Overtime</th>
+        <th>Night Diff</th>
+        <th>Gross Pay (₱)</th>
+        <th>Deductions (₱)</th>
+        <th>Net Pay (₱)</th>
+        <th>action</th>
+    </tr>
+
+    <?php while ($row = $result->fetch_assoc()): ?>
+        <?php
+            $base_salary = $row['base_salary'] ?? 0;
+            $hourly_rate = $base_salary / STANDARD_MONTHLY_HOURS;
+
+            $total_hours = $row['total_hours'];
+            $overtime = $row['overtime'];
+            $night_diff = $row['night_diff_hours'];
+            $deduction = $row['total_deductions'];
+
+            // Gross pay = Regular + OT + Night diff
+            $gross_pay = ($total_hours * $hourly_rate)
+                        + ($overtime * $hourly_rate * 1.25)
+                        + ($night_diff * $hourly_rate * 1.10);
+
+            $net_pay = $gross_pay - $deduction;
+        ?>
+        <tr>
+            <td><?= $row['employee_id'] ?></td>
+            <td><?= htmlspecialchars($row['first_name']) ?></td>
+            <td><?= htmlspecialchars($row['last_name']) ?></td>
+            <td><?= number_format($base_salary, 2) ?></td>
+            <td><?= number_format($total_hours, 2) ?></td>
+            <td><?= number_format($overtime, 2) ?></td>
+            <td><?= number_format($night_diff, 2) ?></td>
+            <td><?= number_format($gross_pay, 2) ?></td>
+            <td><?= number_format($deduction, 2) ?></td>
+            <td><strong><?= number_format($net_pay, 2) ?></strong></td>
+            <td>
+    <a href="add_shift_log.php?employee_id=<?= $row['employee_id'] ?>">
+        <button>Edit Shift</button>
+    </a>
+    <a href="edit_salary.php?employee_id=<?= $row['employee_id'] ?>">
+        <button>Edit Salary</button>
+    </a>
+</td>
+
+        </tr>
+    <?php endwhile; ?>
+</table>
+        </div>
+    </div>
+    <!-- <button><a href="add_employee.php">Add employee</a></button> -->
+    <!-- <button><a href="assign_salary.php">Add Salary</a></button> -->
+    <!-- <button><a href="add_shift_log.php">Shift</a></button> -->
+   
+
+</body>
+</html>
+===============================deduction.php===============================
+<?php
+include '../Database/db.php';
+
+// Fetch employees and their total deductions
+$sql = "
+SELECT 
+    e.employee_id,
+    e.first_name,
+    e.last_name,
+    IFNULL(SUM(ed.amount), 0) AS total_deductions
+FROM employees e
+LEFT JOIN employee_deductions ed 
+    ON e.employee_id = ed.employee_id 
+    AND (ed.end_date IS NULL OR ed.end_date >= CURRENT_DATE())
+GROUP BY e.employee_id
+";
+$result = $conn->query($sql);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <aside>
+        <?php
+        include 'dashboard.php'
+        ?>
+    </aside>
+    <div class="main">
+        <div class="container">
+             <h2>Employee Deductions</h2>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Total Deductions (₱)</th>
+            <th>View</th>
+            <th>Add Deduction</th>
+        </tr>
+        <?php while ($row = $result->fetch_assoc()): ?>
+            <tr>
+                <td><?= htmlspecialchars($row['first_name']) ?></td>
+                <td><?= htmlspecialchars($row['last_name']) ?></td>
+                <td><?= number_format($row['total_deductions'], 2) ?></td>
+                <td>
+                    <details>
+                        <summary>Show</summary>
+                        <table border="1" cellpadding="3" cellspacing="0">
+                            <tr>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Effective</th>
+                                <th>End</th>
+                                <th>Edit</th>
+                            </tr>
+                            <?php
+                            $emp_id = $row['employee_id'];
+                            $deduction_sql = "
+                                SELECT ed.employee_deduction_id, d.deduction_name, ed.amount, ed.effective_date, ed.end_date 
+                                FROM employee_deductions ed 
+                                JOIN deductions d ON d.deduction_id = ed.deduction_id
+                                WHERE ed.employee_id = $emp_id
+                            ";
+                            $deductions = $conn->query($deduction_sql);
+                            while ($deduction = $deductions->fetch_assoc()):
+                            ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($deduction['deduction_name']) ?></td>
+                                    <td><?= number_format($deduction['amount'], 2) ?></td>
+                                    <td><?= $deduction['effective_date'] ?></td>
+                                    <td><?= $deduction['end_date'] ?? 'Ongoing' ?></td>
+                                    <td>
+                                        <a href="edit_deduction.php?id=<?= $deduction['employee_deduction_id'] ?>">Edit</a>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </table>
+                    </details>
+                </td>
+                <td>
+                    <a href="add_deduction.php?employee_id=<?= $row['employee_id'] ?>">
+                        <button>Add</button>
+                    </a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    </table>
+        </div>
+    </div>
+    <button style="height: 50px;"><a href="assign_employee.php">Add Deduction</a></button>
+</body>
+</html>
+==================================================payroll_processing.php(complate)=================================================
+<?php
+include '../Database/db.php';
+
+// Display success/error messages if they exist
+if (isset($_GET['success'])) {
+    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            '.htmlspecialchars($_GET['success']).'
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+} elseif (isset($_GET['error'])) {
+    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Error: ' . htmlspecialchars($_GET['error']) . '
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>';
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Payroll Processing</title>
+    <style>
+        .main {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .table-responsive {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .action-cell {
+            white-space: nowrap;
+        }
+        tr th {
+            text-align: center;
+        }
+        .add-employee-btn {
+            margin-bottom: 20px;
+        }
+        .amount-cell {
+            text-align: right;
+            padding-right: 30px !important;
+        }
+        .shift-details {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <aside>
+        <?php include 'dashboard.php'; ?>
+    </aside>
+    <div class="main" style="margin: 0; width: 100%;">
+        <div class="container" style="width: 100%;">
+            <h1>Payroll Processing</h1>
+            
+            <!-- Add Employee Button -->
+            <a href="add_employee.php" class="btn btn-primary add-employee-btn">
+                <i class="fas fa-plus"></i> Add Employee
+            </a>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="">
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th class="amount-cell">Base Salary (₱)</th>
+                            <th>Total Hours</th>
+                            <th>Overtime</th>
+                            <th>Night Diff</th>
+                            <th class="amount-cell">Gross Pay (₱)</th>
+                            <th class="amount-cell">Deductions (₱)</th>
+                            <th class="amount-cell">Net Pay (₱)</th>
+                            <th style="width: 200px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Assume 160 working hours per month (adjust if needed)
+                        define('STANDARD_MONTHLY_HOURS', 160);
+
+                        // Get active employees and their latest salary
+                        $sql = "
+                        SELECT 
+                            e.employee_id,
+                            e.first_name,
+                            e.last_name,
+                            sr.base_salary,
+
+                            IFNULL(SUM(sl.total_hours), 0) AS total_hours,
+                            IFNULL(SUM(sl.overtime), 0) AS overtime,
+                            IFNULL(SUM(sl.night_diff_hours), 0) AS night_diff_hours,
+
+                            IFNULL(SUM(ed.amount), 0) AS total_deductions
+
+                        FROM employees e
+                        LEFT JOIN salary_records sr ON sr.employee_id = e.employee_id 
+                            AND sr.effective_date = (
+                                SELECT MAX(effective_date) FROM salary_records 
+                                WHERE employee_id = e.employee_id
+                            )
+                        LEFT JOIN shift_logs sl ON sl.employee_id = e.employee_id
+                            AND MONTH(sl.shift_date) = MONTH(CURRENT_DATE())
+                            AND YEAR(sl.shift_date) = YEAR(CURRENT_DATE())
+                        LEFT JOIN employee_deductions ed ON ed.employee_id = e.employee_id
+                            AND (ed.end_date IS NULL OR ed.end_date >= CURRENT_DATE())
+
+                        WHERE e.status = 'Active'
+                        GROUP BY e.employee_id
+                        ";
+
+                        $result = mysqli_query($conn, $sql);
+
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)): 
+                                $base_salary = $row['base_salary'] ?? 0;
+                                $hourly_rate = $base_salary / STANDARD_MONTHLY_HOURS;
+
+                                $total_hours = $row['total_hours'];
+                                $overtime = $row['overtime'];
+                                $night_diff = $row['night_diff_hours'];
+                                $deduction = $row['total_deductions'];
+
+                                // Gross pay = Regular + OT + Night diff
+                                $gross_pay = ($total_hours * $hourly_rate)
+                                            + ($overtime * $hourly_rate * 1.25)
+                                            + ($night_diff * $hourly_rate * 1.10);
+
+                                $net_pay = $gross_pay - $deduction;
+                        ?>
+                        <tr class="employee-row" data-employee-id="<?= $row['employee_id'] ?>">
+                            <td><?= $row['employee_id'] ?></td>
+                            <td><?= htmlspecialchars($row['first_name']) ?></td>
+                            <td><?= htmlspecialchars($row['last_name']) ?></td>
+                            <td class="amount-cell">₱<?= number_format($base_salary, 2) ?></td>
+                            <td><?= number_format($total_hours, 2) ?></td>
+                            <td><?= number_format($overtime, 2) ?></td>
+                            <td><?= number_format($night_diff, 2) ?></td>
+                            <td class="amount-cell">₱<?= number_format($gross_pay, 2) ?></td>
+                            <td class="amount-cell">₱<?= number_format($deduction, 2) ?></td>
+                            <td class="amount-cell"><strong>₱<?= number_format($net_pay, 2) ?></strong></td>
+                            <td class="action-cell">
+                                <a href="add_shift_log.php?employee_id=<?= $row['employee_id'] ?>" class="btn btn-sm btn-info me-1">
+                                    <i class="fas fa-edit"></i> Add Shift
+                                </a>
+                                <a href="edit_salary.php?employee_id=<?= $row['employee_id'] ?>" class="btn btn-sm btn-success">
+                                    <i class="fas fa-peso-sign"></i> Update Salary
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endwhile; 
+                        } else {
+                            echo "<tr><td colspan='11' class='text-center'>No payroll records found</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<?php
+mysqli_close($conn);
+?>

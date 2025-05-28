@@ -1,0 +1,124 @@
+############ new hr3 DB #############
+
+claims	
+CREATE TABLE `claims` (
+ `claim_id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL,
+ `type` varchar(50) DEFAULT NULL,
+ `reason` text DEFAULT NULL,
+ `created_at` datetime DEFAULT current_timestamp(),
+ `start_date` date DEFAULT NULL,
+ `end_date` date DEFAULT NULL,
+ `status` varchar(50) DEFAULT NULL,
+ PRIMARY KEY (`claim_id`),
+ KEY `user_id` (`user_id`),
+ CONSTRAINT `claims_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `login` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+leave_request	
+CREATE TABLE `leave_request` (
+ `leave_id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL,
+ `type` varchar(50) DEFAULT NULL,
+ `reason` text DEFAULT NULL,
+ `created_at` datetime DEFAULT current_timestamp(),
+ `start_date` date DEFAULT NULL,
+ `end_date` date DEFAULT NULL,
+ `status` varchar(50) DEFAULT NULL,
+ PRIMARY KEY (`leave_id`),
+ KEY `user_id` (`user_id`),
+ CONSTRAINT `leave_request_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `login` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+login	
+CREATE TABLE `login` (
+ `user_id` int(11) NOT NULL AUTO_INCREMENT,
+ `email` varchar(255) NOT NULL,
+ `password` varchar(255) NOT NULL,
+ `account_type` enum('admin','manager','user') NOT NULL DEFAULT 'user',
+ PRIMARY KEY (`user_id`),
+ UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+schedule	
+CREATE TABLE `schedule` (
+ `sched_id` int(11) NOT NULL AUTO_INCREMENT,
+ `teams_id` int(11) NOT NULL,
+ `shift_id` int(11) NOT NULL,
+ PRIMARY KEY (`sched_id`),
+ KEY `teams_id` (`teams_id`),
+ KEY `shift_id` (`shift_id`),
+ CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`teams_id`) REFERENCES `teams` (`teams_id`) ON DELETE CASCADE,
+ CONSTRAINT `schedule_ibfk_2` FOREIGN KEY (`shift_id`) REFERENCES `shift` (`shift_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+shift	
+CREATE TABLE `shift` (
+ `shift_id` int(11) NOT NULL AUTO_INCREMENT,
+ `mon` time DEFAULT NULL,
+ `tue` time DEFAULT NULL,
+ `wed` time DEFAULT NULL,
+ `thu` time DEFAULT NULL,
+ `fri` time DEFAULT NULL,
+ `sat` time DEFAULT NULL,
+ `sun` time DEFAULT NULL,
+ `time` enum('morning','night') NOT NULL,
+ PRIMARY KEY (`shift_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+teams	
+CREATE TABLE `teams` (
+ `teams_id` int(11) NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY (`teams_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+team_members	
+CREATE TABLE `team_members` (
+ `teams_id` int(11) NOT NULL,
+ `user_id` int(11) NOT NULL,
+ PRIMARY KEY (`teams_id`,`user_id`),
+ KEY `user_id` (`user_id`),
+ CONSTRAINT `team_members_ibfk_1` FOREIGN KEY (`teams_id`) REFERENCES `teams` (`teams_id`) ON DELETE CASCADE,
+ CONSTRAINT `team_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `login` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+timeclocking	
+CREATE TABLE `timeclocking` (
+ `attendance_id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL,
+ `date` date NOT NULL DEFAULT current_timestamp(),
+ `clock_in` datetime DEFAULT NULL,
+ `break_start` datetime DEFAULT NULL,
+ `break_end` datetime DEFAULT NULL,
+ `clock_out` datetime DEFAULT NULL,
+ `total_hours` decimal(5,2) DEFAULT NULL,
+ PRIMARY KEY (`attendance_id`),
+ KEY `user_id` (`user_id`),
+ CONSTRAINT `timeclocking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `login` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+timesheet	
+CREATE TABLE `timesheet` (
+ `timesheet_id` int(11) NOT NULL AUTO_INCREMENT,
+ `user_id` int(11) NOT NULL,
+ `attendance_id` int(11) DEFAULT NULL,
+ `status` varchar(50) DEFAULT NULL,
+ PRIMARY KEY (`timesheet_id`),
+ UNIQUE KEY `attendance_id` (`attendance_id`),
+ KEY `user_id` (`user_id`),
+ CONSTRAINT `timesheet_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `login` (`user_id`) ON DELETE CASCADE,
+ CONSTRAINT `timesheet_ibfk_2` FOREIGN KEY (`attendance_id`) REFERENCES `timeclocking` (`attendance_id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+user_profile	
+CREATE TABLE `user_profile` (
+ `user_id` int(11) NOT NULL,
+ `name` varchar(255) NOT NULL,
+ `job` varchar(255) DEFAULT NULL,
+ PRIMARY KEY (`user_id`),
+ CONSTRAINT `user_profile_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `login` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+
+
+########### OLD DB #############

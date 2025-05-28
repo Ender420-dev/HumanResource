@@ -154,19 +154,91 @@ include '../../../phpcon/conn.php';
         <th>Actions</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>001</td>
-        <td>Jane Doe</td>
-        <td>IT</td>
-        <td>Developer</td>
-        <td>
-          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">Edit</button>
-        </td>
-      </tr>
-      <!-- More employee rows -->
-    </tbody>
+   <tbody>
+<?php
+$employeeQuery = $connection->query("SELECT 
+  a.applicantID, a.name,   
+  es.schedule_id,
+  es.shift_id,
+  es.schedule_date,
+  es.department_id,
+  es.updated_at,
+  d.department_name
+  FROM hr1.applicant a
+  LEFT JOIN hr3.employee_schedules es ON a.applicantID = es.EmployeeID
+  LEFT JOIN hr4.departments d ON es.department_id = d.department_id
+");
+
+$modals = ''; // Store modals to output after the table
+?>
+
+<?php 
+while ($er = $employeeQuery->fetch_assoc()): ?>
+  <tr>
+    <td><?= htmlspecialchars($er['applicantID']); ?></td>
+    <td><?= htmlspecialchars($er['name']); ?></td>
+    <td><?= htmlspecialchars($er['department_name']); ?></td>
+    <td>Developer</td>
+    <td>
+      <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal-<?= htmlspecialchars($er['applicantID']); ?>">View</button>
+    </td>
+  </tr>
+<?php
+// Build modal HTML and append to $modals
+$modalId = htmlspecialchars($er['applicantID']);
+$modalName = htmlspecialchars($er['name']);
+$modalScheduleId = htmlspecialchars($er['schedule_id']);
+$modalShiftId = htmlspecialchars($er['shift_id']);
+$modalScheduleDate = htmlspecialchars($er['schedule_date']);
+$modalDeptName = htmlspecialchars($er['department_name']);
+$modalUpdatedAt = htmlspecialchars($er['updated_at']);
+$modals .= <<<HTML
+<div class="modal fade" id="viewEmployeeModal-{$modalId}" tabindex="-1" aria-labelledby="viewEmployeeModalLabel-{$modalId}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewEmployeeModalLabel-{$modalId}">
+          Schedule for {$modalName}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Schedule ID</th>
+              <th>Shift ID</th>
+              <th>Schedule Date</th>
+              <th>Department</th>
+              <th>Last Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{$modalScheduleId}</td>
+              <td>{$modalShiftId}</td>
+              <td>{$modalScheduleDate}</td>
+              <td>{$modalDeptName}</td>
+              <td>{$modalUpdatedAt}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+HTML;
+?>
+<?php endwhile; ?>
+  </tbody>
   </table>
+<?= $modals ?>
 
   <!-- Edit Modal -->
   <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-hidden="true">

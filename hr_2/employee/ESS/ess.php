@@ -348,6 +348,49 @@ session_start();
                 </div>
             </div>
         </div>
+        <!-- Schedule Card -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h2 class="card-title text-center">Schedule</h2>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monday</td>
+                            <td>08:00 AM</td>
+                            <td>05:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>Tuesday</td>
+                            <td>08:00 AM</td>
+                            <td>05:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>Wednesday</td>
+                            <td>08:00 AM</td>
+                            <td>05:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>Thursday</td>
+                            <td>08:00 AM</td>
+                            <td>05:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>Friday</td>
+                            <td>08:00 AM</td>
+                            <td>05:00 PM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End Schedule Card -->
         <div class="col">
           
         </div>
